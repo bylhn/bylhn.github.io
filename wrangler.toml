@@ -1,0 +1,8 @@
+name = "bylhn-portfolio"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bylhn-blog"
+database_id = "da15b40c-4d47-45e4-a5cf-51c2f554029a"
