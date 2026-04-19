@@ -414,19 +414,19 @@ const Admin = () => {
   const [form, setForm] = useState({ title: '', slug: '', tag: '', excerpt: '', content: '' })
   const [msg, setMsg] = useState('')
   const [posts, setPosts] = useState([])
-  const login = e => { e.preventDefault(); if (pw === 'bylhn2026') setAuth(true); else setMsg('비밀번호가 틀렸습니다.') }
+  const login = e => { e.preventDefault(); if (pw === 'star6768@@') setAuth(true); else setMsg('비밀번호가 틀렸습니다.') }
   const loadPosts = () => fetch('/api/posts').then(r => r.json()).then(setPosts)
   useEffect(() => { if (auth && tab === 'manage') loadPosts() }, [auth, tab])
   const submit = async e => {
     e.preventDefault(); setMsg('저장 중...')
-    const res = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer bylhn2026' }, body: JSON.stringify(form) })
+    const res = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer star6768@@' }, body: JSON.stringify(form) })
     const data = await res.json()
     if (data.ok) { setMsg('글이 저장됐습니다.'); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }) }
     else setMsg(data.error || '오류가 발생했습니다.')
   }
   const deletePost = async slug => {
     if (!confirm(`"${slug}" 글을 삭제할까요?`)) return
-    await fetch(`/api/posts/${slug}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer bylhn2026' } })
+    await fetch(`/api/posts/${slug}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer star6768@@' } })
     loadPosts()
   }
   const inp = { width: '100%', padding: '12px 16px', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }

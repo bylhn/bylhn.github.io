@@ -1,4 +1,4 @@
-const ADMIN_PASSWORD = 'bylhn2026'
+const ADMIN_PASSWORD = 'star6768@@'
 
 export async function onRequestGet({ params, env }) {
   const post = await env.DB.prepare(
