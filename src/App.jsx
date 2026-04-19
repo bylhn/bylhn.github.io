@@ -312,22 +312,52 @@ const useReveal = () => {
 const BlogList = ({ onPost }) => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [activeTag, setActiveTag] = useState('All')
+
   useEffect(() => {
     fetch('/api/posts').then(r => r.json()).then(data => { setPosts(data); setLoading(false) }).catch(() => setLoading(false))
   }, [])
+
+  const tags = ['All', ...Array.from(new Set(posts.map(p => p.tag || 'Note').filter(Boolean)))]
+  const filtered = activeTag === 'All' ? posts : posts.filter(p => (p.tag || 'Note') === activeTag)
+
   return (
     <section style={{ background: 'var(--bg)', padding: 'clamp(80px, 12vw, 140px) clamp(24px, 10vw, 160px)', minHeight: '60vh' }}>
-      <div className="reveal" style={{ marginBottom: 'clamp(48px, 6vw, 72px)' }}>
+      <div style={{ marginBottom: 'clamp(32px, 4vw, 48px)' }}>
         <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.15em', marginBottom: 14 }}>BLOG</p>
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5 }}>생각을 기록합니다.</h2>
       </div>
+
+      {/* 카테고리 탭 */}
+      {!loading && posts.length > 0 && (
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 'clamp(32px, 5vw, 56px)' }}>
+          {tags.map(tag => (
+            <button key={tag} onClick={() => setActiveTag(tag)} style={{
+              padding: '6px 16px',
+              border: '1px solid',
+              borderColor: activeTag === tag ? 'var(--accent)' : 'rgba(0,0,0,0.1)',
+              borderRadius: 100,
+              background: activeTag === tag ? 'rgba(126,168,196,0.12)' : 'none',
+              color: activeTag === tag ? 'var(--accent)' : 'var(--text-muted)',
+              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.1em',
+              cursor: 'pointer', transition: 'all 0.2s',
+            }}>
+              {tag}
+              <span style={{ marginLeft: 6, opacity: 0.6 }}>
+                {tag === 'All' ? posts.length : posts.filter(p => (p.tag || 'Note') === tag).length}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+
       {loading && <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)' }}>불러오는 중...</p>}
       {!loading && posts.length === 0 && <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8 }}>아직 작성된 글이 없습니다.</p>}
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {posts.map((post, i) => (
+        {filtered.map((post, i) => (
           <a key={post.id} href={`/blog/${post.slug}`} onClick={e => { e.preventDefault(); onPost(post.slug) }}
-            className="reveal"
-            style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '0 40px', alignItems: 'start', padding: '36px 0', borderBottom: '1px solid rgba(0,0,0,0.07)', textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s', transitionDelay: `${i * 0.1}s` }}
+            style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '0 40px', alignItems: 'start', padding: '36px 0', borderBottom: '1px solid rgba(0,0,0,0.07)', textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
             onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
             <div style={{ paddingTop: 4 }}>
@@ -341,6 +371,10 @@ const BlogList = ({ onPost }) => {
           </a>
         ))}
       </div>
+
+      {!loading && filtered.length === 0 && activeTag !== 'All' && (
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)', paddingTop: 24 }}>이 카테고리에 글이 없습니다.</p>
+      )}
     </section>
   )
 }
