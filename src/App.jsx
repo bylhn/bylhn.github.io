@@ -1,5 +1,181 @@
 import { useEffect, useRef, useState } from 'react'
 
+/* ─── Chibi SVG (chat emotions) ─── */
+const ChibiChat = ({ emotion = 'idle' }) => {
+  const lidOpen = emotion === 'thinking' || emotion === 'happy'
+  const eyeH = emotion === 'happy' ? 2 : emotion === 'confused' ? 4 : 5.5
+  const mouth = emotion === 'happy'
+    ? 'M-7 -56 Q0 -48 7 -56'
+    : emotion === 'confused'
+    ? 'M-5 -54 Q2 -56 7 -52'
+    : 'M-6 -56 Q0 -52 6 -56'
+  return (
+    <svg viewBox="-80 -165 160 300" width="80" height="150" style={{ overflow: 'visible' }}>
+      <defs>
+        <style>{`
+          .cc-lid { transform-origin: 0px 2px; transform: ${lidOpen ? 'rotate(-108deg)' : 'rotate(0deg)'}; transition: transform 0.6s ease; }
+        `}</style>
+      </defs>
+      {/* Legs */}
+      <g style={{ transformOrigin: '-15px 52px', transform: 'rotate(38deg)' }}>
+        <rect x="-24" y="52" width="18" height="38" rx="9" fill="#f0e0c8"/>
+        <ellipse cx="-15" cy="91" rx="15" ry="6" fill="#5a3a2a"/>
+      </g>
+      <g style={{ transformOrigin: '15px 52px', transform: 'rotate(-38deg)' }}>
+        <rect x="6" y="52" width="18" height="38" rx="9" fill="#f0e0c8"/>
+        <ellipse cx="15" cy="91" rx="15" ry="6" fill="#5a3a2a"/>
+      </g>
+      {/* Skirt */}
+      <path d="M-30 24 Q-38 60 -40 80 Q0 94 40 80 Q38 60 30 24 Z" fill="#c8a47a"/>
+      {/* Body */}
+      <rect x="-28" y="-8" width="56" height="38" rx="13" fill="#f2dca4"/>
+      {/* Arms */}
+      <rect x="-42" y="-4" width="16" height="30" rx="8" fill="#f2dca4"/>
+      <circle cx="-34" cy="28" r="8" fill="#fddec0"/>
+      <rect x="26" y="-4" width="16" height="30" rx="8" fill="#f2dca4"/>
+      <circle cx="34" cy="28" r="8" fill="#fddec0"/>
+      {/* Laptop on lap */}
+      <g transform="translate(0, 68)">
+        <rect x="-32" y="-6" width="64" height="12" rx="4" fill="#8899aa"/>
+        <g className="cc-lid">
+          <rect x="-30" y="-58" width="60" height="52" rx="5" fill="#6a7a8a"/>
+          <rect x="-27" y="-55" width="54" height="46" rx="3" fill={lidOpen ? '#cce8f5' : '#1a2a3a'}/>
+          {lidOpen && <ellipse cx="0" cy="-32" rx="22" ry="16" fill="rgba(126,168,196,0.2)"/>}
+        </g>
+      </g>
+      {/* Neck */}
+      <rect x="-9" y="-22" width="18" height="16" rx="6" fill="#fddec0"/>
+      {/* Head */}
+      <ellipse cx="0" cy="-72" rx="38" ry="36" fill="#a07850"/>
+      <path d="M-28 -92 Q-36 -110 -25 -112 Q-14 -110 -18 -92 Z" fill="#a07850"/>
+      <path d="M-8 -100 Q-10 -118 0 -120 Q10 -118 8 -100 Z" fill="#a07850"/>
+      <path d="M28 -92 Q36 -110 25 -112 Q14 -110 18 -92 Z" fill="#a07850"/>
+      <ellipse cx="0" cy="-68" rx="33" ry="31" fill="#fddec0"/>
+      <ellipse cx="-21" cy="-60" rx="9" ry="6" fill="rgba(255,130,110,0.28)"/>
+      <ellipse cx="21" cy="-60" rx="9" ry="6" fill="rgba(255,130,110,0.28)"/>
+      <ellipse cx="-13" cy="-70" rx="5" ry={eyeH} fill="#2a1a0e"/>
+      <ellipse cx="13" cy="-70" rx="5" ry={eyeH} fill="#2a1a0e"/>
+      <circle cx="-11" cy="-72" r="1.8" fill="white"/>
+      <circle cx="15" cy="-72" r="1.8" fill="white"/>
+      <path d={mouth} stroke="#c07060" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      {/* Confused swirl */}
+      {emotion === 'confused' && <text x="20" y="-100" fontSize="18" fill="#a07850">?</text>}
+    </svg>
+  )
+}
+
+/* ─── Chatbot ─── */
+const Chatbot = () => {
+  const [open, setOpen] = useState(false)
+  const [msgs, setMsgs] = useState([{ role: 'assistant', content: '안녕! 궁금한 거 있으면 물어봐 😊' }])
+  const [input, setInput] = useState('')
+  const [emotion, setEmotion] = useState('idle')
+  const [loading, setLoading] = useState(false)
+  const bottomRef = useRef(null)
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [msgs])
+
+  const send = async () => {
+    const msg = input.trim()
+    if (!msg || loading) return
+    setInput('')
+    setMsgs(m => [...m, { role: 'user', content: msg }])
+    setLoading(true)
+    setEmotion('thinking')
+
+    const history = msgs.slice(-6)
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, history }),
+      })
+      const data = await res.json()
+      const reply = data.reply || '잠깐, 생각 중이에요...'
+      const confused = reply.includes('없어요') || reply.includes('모르')
+      setEmotion(confused ? 'confused' : 'happy')
+      setMsgs(m => [...m, { role: 'assistant', content: reply }])
+      setTimeout(() => setEmotion('idle'), 3000)
+    } catch {
+      setMsgs(m => [...m, { role: 'assistant', content: '잠깐 연결이 안 됐어요 😅' }])
+      setEmotion('confused')
+      setTimeout(() => setEmotion('idle'), 2000)
+    }
+    setLoading(false)
+  }
+
+  return (
+    <>
+      {/* 플로팅 버튼 */}
+      <div onClick={() => setOpen(o => !o)} style={{
+        position: 'fixed', bottom: 28, right: 28, zIndex: 1000,
+        cursor: 'pointer', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))',
+        transition: 'transform 0.2s',
+      }}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+      >
+        <ChibiChat emotion={open ? 'happy' : 'idle'} />
+      </div>
+
+      {/* 채팅 창 */}
+      {open && (
+        <div style={{
+          position: 'fixed', bottom: 180, right: 28, zIndex: 1000,
+          width: 320, background: 'var(--bg)', borderRadius: 16,
+          boxShadow: '0 8px 40px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.07)',
+          display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        }}>
+          {/* 헤더 */}
+          <div style={{ padding: '14px 18px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7ea8c4' }} />
+            <span style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>bylhn 도우미</span>
+            <button onClick={() => setOpen(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text-light)', lineHeight: 1 }}>×</button>
+          </div>
+
+          {/* 메시지 */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 320 }}>
+            {msgs.map((m, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{
+                  maxWidth: '80%', padding: '9px 13px', borderRadius: m.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
+                  background: m.role === 'user' ? 'rgba(126,168,196,0.15)' : 'rgba(0,0,0,0.04)',
+                  fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7,
+                }}>
+                  {m.content}
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div style={{ display: 'flex', gap: 4, padding: '9px 13px', background: 'rgba(0,0,0,0.04)', borderRadius: '14px 14px 14px 4px', width: 'fit-content' }}>
+                {[0,1,2].map(i => <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', display: 'block', animation: `chatDot 1s ${i*0.2}s ease-in-out infinite` }} />)}
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* 입력 */}
+          <div style={{ padding: '10px 12px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', gap: 8 }}>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && send()}
+              placeholder="궁금한 거 물어봐..."
+              style={{ flex: 1, padding: '8px 12px', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13, outline: 'none', background: 'transparent', color: 'var(--text-primary)' }}
+            />
+            <button onClick={send} disabled={loading} style={{ padding: '8px 14px', background: 'rgba(126,168,196,0.2)', border: 'none', borderRadius: 8, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 14, color: 'var(--accent)', transition: 'background 0.2s' }}>
+              →
+            </button>
+          </div>
+        </div>
+      )}
+      <style>{`@keyframes chatDot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }`}</style>
+    </>
+  )
+}
+
 /* ─── Pixel Cat Intro Overlay ─── */
 const CAT_PX = [
   ['_','_','_','B','B','_','_','_','_','B','B','_','_','_','_','_'],
@@ -660,6 +836,7 @@ export default function App() {
   return (
     <>
       <CursorDot />
+      {!intro && <Chatbot />}
       {intro && <IntroOverlay onDone={onIntroDone} />}
       {!intro && page === 'home' && <MainPage onNav={onNav} />}
       {!intro && page !== 'home' && (
