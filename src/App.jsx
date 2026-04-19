@@ -685,13 +685,13 @@ const useReveal = () => {
 const Hero = ({ onOpen }) => (
   <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
     <div style={{ textAlign: 'center', maxWidth: 560 }}>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 500, color: 'var(--text-primary)', letterSpacing: '0.08em', marginBottom: 6 }}>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(52px, 9vw, 88px)', fontWeight: 500, color: 'var(--text-primary)', letterSpacing: '0.04em', marginBottom: 16, lineHeight: 1 }}>
         bylhn
       </p>
-      <p style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-light)', letterSpacing: '0.18em', marginBottom: 48 }}>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)', letterSpacing: '0.2em', marginBottom: 40 }}>
         Digital Forensics
       </p>
-      <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(20px, 3.2vw, 28px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.9, marginBottom: 52, wordBreak: 'keep-all' }}>
+      <p style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(13px, 1.6vw, 16px)', fontWeight: 300, color: 'var(--text-muted)', lineHeight: 2, marginBottom: 52, wordBreak: 'keep-all' }}>
         기록된 흔적으로 진실을 밝혀,<br />사람에게 닿게 한다.
       </p>
       <button
