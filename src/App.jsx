@@ -379,6 +379,101 @@ const BlogList = ({ onPost }) => {
   )
 }
 
+/* ─── Comments ─── */
+const Comments = ({ slug }) => {
+  const [comments, setComments] = useState([])
+  const [form, setForm] = useState({ name: '', content: '', password: '' })
+  const [msg, setMsg] = useState('')
+  const [delId, setDelId] = useState(null)
+  const [delPw, setDelPw] = useState('')
+
+  const load = () => fetch(`/api/comments?slug=${slug}`).then(r => r.json()).then(setComments).catch(() => {})
+  useEffect(() => { load() }, [slug]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const submit = async e => {
+    e.preventDefault()
+    if (!form.name || !form.content || !form.password) return
+    setMsg('저장 중...')
+    const res = await fetch('/api/comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, ...form }),
+    })
+    const data = await res.json()
+    if (data.ok) { setForm({ name: '', content: '', password: '' }); setMsg(''); load() }
+    else setMsg(data.error || '오류')
+  }
+
+  const deleteComment = async (id) => {
+    if (!delPw) return
+    const res = await fetch(`/api/comments/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: delPw }),
+    })
+    const data = await res.json()
+    if (data.ok) { setDelId(null); setDelPw(''); load() }
+    else alert(data.error)
+  }
+
+  const inp = { width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }
+
+  return (
+    <div style={{ marginTop: 80, paddingTop: 48, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.15em', marginBottom: 32 }}>
+        COMMENTS {comments.length > 0 && `· ${comments.length}`}
+      </p>
+
+      {/* 댓글 목록 */}
+      {comments.map(c => (
+        <div key={c.id} style={{ padding: '20px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)' }}>{c.name}</span>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{c.created_at}</span>
+            </div>
+            <button onClick={() => { setDelId(delId === c.id ? null : c.id); setDelPw('') }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, color: 'var(--text-light)', padding: 0 }}>
+              삭제
+            </button>
+          </div>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{c.content}</p>
+          {delId === c.id && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+              <input type="password" placeholder="비밀번호" value={delPw} onChange={e => setDelPw(e.target.value)}
+                style={{ ...inp, width: 160 }} />
+              <button onClick={() => deleteComment(c.id)}
+                style={{ padding: '8px 16px', background: 'none', border: '1px solid rgba(192,57,43,0.3)', borderRadius: 6, fontSize: 12, color: '#c0392b', cursor: 'pointer' }}>
+                확인
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {comments.length === 0 && (
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)', marginBottom: 32 }}>첫 번째 댓글을 남겨보세요.</p>
+      )}
+
+      {/* 댓글 작성 */}
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 32 }}>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <input placeholder="이름" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ ...inp, flex: 1 }} required />
+          <input type="password" placeholder="비밀번호 (삭제용)" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ ...inp, flex: 1 }} required />
+        </div>
+        <textarea placeholder="댓글을 입력하세요..." value={form.content} onChange={e => setForm({ ...form, content: e.target.value })}
+          rows={4} style={{ ...inp, resize: 'vertical', lineHeight: 1.7 }} required />
+        {msg && <p style={{ fontSize: 12, color: '#c0392b' }}>{msg}</p>}
+        <button type="submit" style={{ alignSelf: 'flex-end', padding: '10px 24px', background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.15)'; e.currentTarget.style.color = 'var(--text-muted)' }}>
+          남기기
+        </button>
+      </form>
+    </div>
+  )
+}
+
 /* ─── Blog Post ─── */
 const BlogPost = ({ slug, onBack }) => {
   const [post, setPost] = useState(null)
@@ -402,6 +497,7 @@ const BlogPost = ({ slug, onBack }) => {
       </div>
       <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 48, wordBreak: 'keep-all' }}>{post.title}</h1>
       <div style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all' }}>{renderContent(post.content)}</div>
+      <Comments slug={slug} />
     </article>
   )
 }
