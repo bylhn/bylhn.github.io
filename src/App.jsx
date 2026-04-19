@@ -375,6 +375,119 @@ const Intro = ({ onDone }) => {
   )
 }
 
+/* ─── Splash Overlay ─── */
+const SP_CSS = `
+#sp-ov{position:fixed;inset:0;z-index:9999;background:#0d0f0f;overflow:hidden}
+.sp-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.04;pointer-events:none;z-index:100}
+.sp-scan{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px);pointer-events:none;z-index:101}
+.sp-cur{position:fixed;width:4px;height:18px;background:#5a9a8a;pointer-events:none;z-index:999;transform:translate(-50%,-50%);mix-blend-mode:screen}
+.sp-splash{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 0 0 12vw;z-index:10;transition:opacity .8s ease}
+.sp-splash.fade-out{opacity:0;pointer-events:none}
+.sp-terminal{margin-bottom:4rem}
+.sp-line{font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:.06em;line-height:2.2;color:transparent;white-space:nowrap;overflow:hidden;max-width:0;transition:max-width 0s}
+.sp-line.show{color:#4a7a72;max-width:600px;transition:max-width 1.2s steps(40)}
+.sp-prompt{color:#2a5a52;margin-right:.6em}
+.sp-line.sp-hl{color:#7ab8ae}
+.sp-line.sp-hl .sp-prompt{color:#4a8a80}
+.sp-logo-wrap{opacity:0;transform:translateY(8px);transition:opacity 1s ease,transform 1s ease;margin-bottom:3rem}
+.sp-logo-wrap.show{opacity:1;transform:translateY(0)}
+.sp-logo{font-family:'Share Tech Mono',monospace;font-size:clamp(3.5rem,8vw,7rem);letter-spacing:-.03em;color:#e8e4dc;line-height:1;position:relative}
+.sp-logo::after{content:'';position:absolute;bottom:-8px;left:0;width:0;height:1px;background:#4a7a72;transition:width 1.2s ease .3s}
+.sp-logo-wrap.show .sp-logo::after{width:100%}
+.sp-logo-sub{font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.25em;color:#3a5a54;text-transform:uppercase;margin-top:1rem}
+.sp-enter-wrap{opacity:0;transition:opacity .8s ease}
+.sp-enter-wrap.show{opacity:1}
+.sp-btn{display:inline-flex;align-items:center;gap:1rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:#4a7a72;text-transform:uppercase;background:none;border:1px solid #1e3532;padding:.9rem 2rem;cursor:none;transition:border-color .3s,color .3s;position:relative;overflow:hidden}
+.sp-btn::before{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:#1e3532;transition:left .3s ease;z-index:-1}
+.sp-btn:hover{color:#e8e4dc;border-color:#2a4a44}
+.sp-btn:hover::before{left:0}
+.sp-arrow{display:inline-block;transition:transform .3s}
+.sp-btn:hover .sp-arrow{transform:translateX(4px)}
+.sp-hint{margin-top:1rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:#1e3532}
+.sp-coords{position:fixed;bottom:2rem;right:3rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:#1e3532;z-index:10;opacity:0;transition:opacity .8s ease}
+.sp-coords.show{opacity:1}
+@keyframes sp-blink{0%,100%{opacity:1}50%{opacity:0}}
+.sp-blink{display:inline-block;animation:sp-blink 1s step-end infinite;color:#4a7a72}
+`
+
+const SplashOverlay = ({ onDone }) => {
+  useEffect(() => {
+    const st = document.createElement('style')
+    st.id = 'sp-css'; st.textContent = SP_CSS
+    document.head.appendChild(st)
+    document.body.style.cursor = 'none'
+
+    const cur = document.getElementById('sp-cur')
+    const onMouseMove = e => { if(cur){ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px' } }
+    document.addEventListener('mousemove', onMouseMove)
+
+    const timers = []
+    const t = (fn, ms) => timers.push(setTimeout(fn, ms))
+    const show = id => { const el=document.getElementById(id); if(el) el.classList.add('show') }
+
+    t(() => show('sp-l1'), 400)
+    t(() => show('sp-l2'), 1200)
+    t(() => show('sp-l3'), 2000)
+    t(() => show('sp-l4'), 2800)
+    t(() => show('sp-lw'),  4000)
+    t(() => { show('sp-ew'); show('sp-co') }, 5000)
+
+    let entered = false
+    function enterMain() {
+      if (entered) return; entered = true
+      timers.forEach(clearTimeout)
+      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('mousemove', onMouseMove)
+      document.body.style.cursor = ''
+      const splash = document.getElementById('sp-splash')
+      if (splash) splash.classList.add('fade-out')
+      setTimeout(onDone, 800)
+    }
+
+    function onKeyDown() {
+      const ew = document.getElementById('sp-ew')
+      if (ew && ew.classList.contains('show')) enterMain()
+    }
+    document.addEventListener('keydown', onKeyDown)
+
+    const btn = document.getElementById('sp-btn')
+    if (btn) btn.addEventListener('click', enterMain)
+
+    return () => {
+      timers.forEach(clearTimeout)
+      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('mousemove', onMouseMove)
+      document.body.style.cursor = ''
+      document.getElementById('sp-css')?.remove()
+    }
+  }, []) // eslint-disable-line
+
+  return (
+    <div id="sp-ov">
+      <div className="sp-noise"/>
+      <div className="sp-scan"/>
+      <div className="sp-cur" id="sp-cur"/>
+      <div className="sp-splash" id="sp-splash">
+        <div className="sp-terminal">
+          <div className="sp-line" id="sp-l1"><span className="sp-prompt">›</span> initializing bylhn.system...</div>
+          <div className="sp-line" id="sp-l2"><span className="sp-prompt">›</span> loading memory fragments...</div>
+          <div className="sp-line" id="sp-l3"><span className="sp-prompt">›</span> mounting evidence volume...</div>
+          <div className="sp-line sp-hl" id="sp-l4"><span className="sp-prompt">›</span> access granted.<span className="sp-blink"> _</span></div>
+        </div>
+        <div className="sp-logo-wrap" id="sp-lw">
+          <div className="sp-logo">bylhn</div>
+          <div className="sp-logo-sub">Digital Forensics</div>
+        </div>
+        <div className="sp-enter-wrap" id="sp-ew">
+          <button className="sp-btn" id="sp-btn">Enter <span className="sp-arrow">→</span></button>
+          <div className="sp-hint">[ press any key or click ]</div>
+        </div>
+      </div>
+      <div className="sp-coords show" id="sp-co">37.5665° N&nbsp;&nbsp;126.9780° E // Seoul</div>
+    </div>
+  )
+}
+
 /* ─── Pixel Cat Intro Overlay ─── */
 const CAT_PX = [
   ['_','_','_','B','B','_','_','_','_','B','B','_','_','_','_','_'],
