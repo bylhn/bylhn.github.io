@@ -401,9 +401,37 @@ const BlogPost = ({ slug, onBack }) => {
         {post.tag && <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--accent)', padding: '3px 8px', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 100 }}>{post.tag}</span>}
       </div>
       <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 48, wordBreak: 'keep-all' }}>{post.title}</h1>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', whiteSpace: 'pre-wrap', wordBreak: 'keep-all' }}>{post.content}</div>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all' }}>{renderContent(post.content)}</div>
     </article>
   )
+}
+
+/* ─── Image compress util ─── */
+const compressImage = (file) => new Promise(resolve => {
+  const img = new Image()
+  const url = URL.createObjectURL(file)
+  img.onload = () => {
+    const MAX = 1000
+    let w = img.width, h = img.height
+    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX }
+    if (h > MAX) { w = Math.round(w * MAX / h); h = MAX }
+    const canvas = document.createElement('canvas')
+    canvas.width = w; canvas.height = h
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+    URL.revokeObjectURL(url)
+    resolve(canvas.toDataURL('image/jpeg', 0.75))
+  }
+  img.src = url
+})
+
+/* ─── Content renderer (text + images) ─── */
+const renderContent = (text) => {
+  const parts = text.split(/(!\[.*?\]\(.*?\))/g)
+  return parts.map((part, i) => {
+    const m = part.match(/^!\[(.*?)\]\((.*?)\)$/)
+    if (m) return <img key={i} src={m[2]} alt={m[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block' }} />
+    return <span key={i} style={{ whiteSpace: 'pre-wrap' }}>{part}</span>
+  })
 }
 
 /* ─── Admin ─── */
@@ -455,7 +483,23 @@ const Admin = () => {
           <input placeholder="슬러그" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} style={inp} required />
           <input placeholder="태그" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} style={inp} />
           <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={inp} />
-          <textarea placeholder="본문..." value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} rows={18} style={{ ...inp, resize: 'vertical', lineHeight: 1.8 }} required />
+          <textarea
+            placeholder="본문... (이미지는 Ctrl+V로 붙여넣기)"
+            value={form.content}
+            onChange={e => setForm({ ...form, content: e.target.value })}
+            onPaste={async e => {
+              const item = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
+              if (!item) return
+              e.preventDefault()
+              const b64 = await compressImage(item.getAsFile())
+              const cursor = e.target.selectionStart
+              const next = form.content.slice(0, cursor) + `![image](${b64})` + form.content.slice(cursor)
+              setForm(f => ({ ...f, content: next }))
+            }}
+            rows={18}
+            style={{ ...inp, resize: 'vertical', lineHeight: 1.8 }}
+            required
+          />
           {msg && <p style={{ fontSize: 13, color: msg.includes('저장됐') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
           <button type="submit" style={{ padding: 14, background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', letterSpacing: '0.06em' }}>발행하기</button>
         </form>
