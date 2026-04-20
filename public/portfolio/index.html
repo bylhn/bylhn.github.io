@@ -629,6 +629,7 @@
           <p class="hero-label">Digital Forensics Portfolio</p>
           <h1 class="hero-name">bylhn</h1>
           <p class="hero-title">Digital Forensics Analyst</p>
+          <p style="font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.04em;margin-bottom:28px;">백석대학교 컴퓨터공학부 정보보호 전공 · 3학년</p>
           <p class="hero-tagline">기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</p>
           <a href="#projects" class="btn">Investigate <span class="arrow">→</span></a>
         </div>
@@ -664,6 +665,14 @@
         <h2 class="section-title">지금 하고 있는 것들</h2>
       </div>
       <div class="activities-list">
+        <div class="role-card">
+          <div class="role-icon">💼</div>
+          <div>
+            <span class="role-tag">Internship · 2026.01 ~ 2026.02</span>
+            <h3>드림텍 — 모바일 개발 2팀</h3>
+            <p>모바일 개발 2팀 소속으로 약 2개월간 인턴십 수행. 실제 개발 현장에서 팀 협업 방식과 업무 프로세스를 경험하며 소프트웨어 개발 전반의 실무 감각을 익혔다.</p>
+          </div>
+        </div>
         <div class="role-card">
           <div class="role-icon">🔬</div>
           <div>
@@ -761,47 +770,12 @@
       </div>
       <div class="projects-grid">
 
-        <!-- Card 1 -->
-        <div class="project-card" onclick="openModal(this)">
-          <div class="card-top">
-            <p class="card-type">Case 01 · File System Forensics</p>
-            <h3 class="card-title">파일 삭제 흔적 분석</h3>
-            <p class="card-desc">삭제된 파일의 잔존 흔적으로부터 사용자 행동을 복원한다.</p>
-          </div>
-          <div class="card-toggle">
-            <span class="t-icon">▶</span>
-            <span class="toggle-label">사례 열기</span>
-          </div>
-          <div class="card-detail">
-            <div class="detail-row">
-              <div class="detail-label">Situation</div>
-              <div class="detail-text">특정 시점 이후 사용자가 주요 문서를 삭제했다는 의혹이 제기되었다. 공식 저장소에는 해당 파일이 존재하지 않았다.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Evidence</div>
-              <div class="detail-text">$MFT 잔존 엔트리, $LogFile 트랜잭션 로그, 쉘 링크(.lnk) 파일, 레지스트리 RecentDocs 키.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Analysis</div>
-              <div class="detail-text">MFT 분석으로 삭제 파일의 이름·크기·타임스탬프 복원. $LogFile에서 삭제 연산 순서 역추적. LNK 파일 접근 시각과 교차 검증.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Reconstruction</div>
-              <div class="detail-text">의혹 시점 4분 전 명시적 삭제. 삭제 직전 12초간 해당 파일이 열려 있었음을 타임라인으로 확인.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Conclusion</div>
-              <div class="conclusion">삭제 행위는 우발적이 아닌 의도적 조작으로 판단. 복원된 타임라인은 이후 조사의 핵심 근거로 활용되었다.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
+        <!-- Research Paper — 첫 번째 -->
         <div class="project-card card-full" onclick="openModal(this)">
           <div class="card-top">
-            <p class="card-type">Research Paper · Cybersecurity Law</p>
+            <p class="card-type">Research Paper · Cybersecurity Law · 백석대학교 컴퓨터공학부</p>
             <h3 class="card-title">화이트해커의 법적 지위 확립을 위한 인증 및 윤리 관리 제도 연구</h3>
-            <p class="card-desc">화이트해커의 법적 공백 문제를 분석하고, 인증·평가·서약·교육 4단계 제도를 제안한 학술 연구. (공동저자: 김한별, 이근호 / 백석대학교 컴퓨터공학부)</p>
+            <p class="card-desc">화이트해커의 법적 공백 문제를 분석하고, 인증·평가·서약·교육 4단계 제도를 제안한 학술 연구. (공동저자: 김한별, 이근호)</p>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
@@ -823,21 +797,56 @@
           </div>
         </div>
 
-        <!-- Card 2 -->
+        <!-- Scenario 01 -->
         <div class="project-card" onclick="openModal(this)">
           <div class="card-top">
-            <p class="card-type">Case 02 · Log Analysis</p>
-            <h3 class="card-title">사용자 행동 로그 분석</h3>
-            <p class="card-desc">시스템 로그에서 행동 흐름을 역추적하여 전체 경위를 복원한다.</p>
+            <p class="card-type">실습 시나리오 01 · File System Forensics</p>
+            <h3 class="card-title">파일 삭제 흔적 분석</h3>
+            <p class="card-desc">가상의 내부 조사 시나리오를 설정하고, NTFS 아티팩트를 활용해 삭제된 파일의 흔적과 사용자 행동을 복원하는 과정을 직접 수행했다.</p>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
-            <span class="toggle-label">사례 열기</span>
+            <span class="toggle-label">풀이 보기</span>
           </div>
           <div class="card-detail">
             <div class="detail-row">
               <div class="detail-label">Situation</div>
-              <div class="detail-text">플랫폼 내 특정 계정에서 비정상적인 접근 패턴이 감지되었다. 피해 발생 경위가 불명확한 상태였다.</div>
+              <div class="detail-text">특정 시점 이후 사용자가 주요 문서를 삭제했다는 의혹이 제기된 시나리오. 공식 저장소에는 해당 파일이 존재하지 않는 상태에서 분석 시작.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Evidence</div>
+              <div class="detail-text">$MFT 잔존 엔트리, $LogFile 트랜잭션 로그, 쉘 링크(.lnk) 파일, 레지스트리 RecentDocs 키.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Analysis</div>
+              <div class="detail-text">MFT 분석으로 삭제 파일의 이름·크기·타임스탬프 복원. $LogFile에서 삭제 연산 순서 역추적. LNK 파일 접근 시각과 교차 검증.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Reconstruction</div>
+              <div class="detail-text">의혹 시점 4분 전 명시적 삭제. 삭제 직전 12초간 해당 파일이 열려 있었음을 타임라인으로 확인.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">삭제 행위는 우발적이 아닌 의도적 조작으로 판단. 복원된 타임라인은 이후 조사의 핵심 근거로 활용될 수 있음을 확인.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scenario 02 -->
+        <div class="project-card" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">실습 시나리오 02 · Log Analysis</p>
+            <h3 class="card-title">사용자 행동 로그 분석</h3>
+            <p class="card-desc">세션 하이재킹 침해 시나리오를 설정하고, 시스템 로그로부터 행동 흐름을 역추적해 전체 경위를 재구성하는 분석을 수행했다.</p>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">풀이 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Situation</div>
+              <div class="detail-text">특정 계정에서 비정상적인 접근 패턴이 감지된 시나리오. 피해 발생 경위가 불명확한 상태에서 분석 시작.</div>
             </div>
             <div class="detail-row">
               <div class="detail-label">Evidence</div>
@@ -853,7 +862,7 @@
             </div>
             <div class="detail-row">
               <div class="detail-label">Conclusion</div>
-              <div class="conclusion">외부 침입자에 의한 세션 탈취로 결론. 복원된 행동 로그는 계정 피해 범위 산정의 기준이 되었다.</div>
+              <div class="conclusion">외부 침입자에 의한 세션 탈취로 결론. 복원된 행동 로그는 계정 피해 범위 산정의 기준이 될 수 있음을 확인.</div>
             </div>
           </div>
         </div>
