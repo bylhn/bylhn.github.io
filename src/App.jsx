@@ -613,9 +613,7 @@ const Nav = ({ onNav }) => {
       borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
       transition: 'all 0.4s ease',
     }}>
-      <span onClick={() => onNav('home')} style={{ fontFamily: 'var(--sans)', fontSize: 15, fontWeight: 500, color: '#3a3a3a', letterSpacing: '0.04em', cursor: 'pointer' }}>
-        bylhn
-      </span>
+      <span />
       <div style={{ display: 'flex', gap: 28 }}>
         {[['Records', 'home'], ['Blog', 'blog']].map(([label, page]) => (
           <a key={label} href="#" onClick={e => { e.preventDefault(); onNav(page) }}
