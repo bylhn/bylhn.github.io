@@ -118,6 +118,23 @@
       align-items: center;
       padding-top: 54px;
     }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 60px;
+      align-items: center;
+      width: 100%;
+    }
+    .hero-img {
+      width: 300px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      image-rendering: pixelated;
+    }
+    @media (max-width: 720px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-img { width: 100%; max-width: 280px; margin: 0 auto; }
+    }
     .hero-label {
       font-family: var(--sans);
       font-size: 11px;
@@ -372,11 +389,16 @@
   <!-- HERO -->
   <section id="hero">
     <div class="container">
-      <p class="hero-label">Digital Forensics Portfolio</p>
-      <h1 class="hero-name">bylhn</h1>
-      <p class="hero-title">Digital Forensics Analyst</p>
-      <p class="hero-tagline">기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</p>
-      <a href="#projects" class="btn">Investigate <span class="arrow">→</span></a>
+      <div class="hero-inner">
+        <div>
+          <p class="hero-label">Digital Forensics Portfolio</p>
+          <h1 class="hero-name">bylhn</h1>
+          <p class="hero-title">Digital Forensics Analyst</p>
+          <p class="hero-tagline">기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</p>
+          <a href="#projects" class="btn">Investigate <span class="arrow">→</span></a>
+        </div>
+        <img src="/portfolio/hero.png" alt="Digital Forensics Analyst" class="hero-img" />
+      </div>
     </div>
   </section>
 
