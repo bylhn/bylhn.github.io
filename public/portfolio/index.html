@@ -253,6 +253,9 @@
     .role-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }
     .role-card p { font-family: var(--sans); font-size: 14px; color: #5a5a5a; line-height: 1.85; }
 
+    /* ── ACTIVITIES ── */
+    .activities-list { display: flex; flex-direction: column; gap: 16px; }
+
     /* ── SKILLS ── */
     .skills-grid {
       display: grid;
@@ -290,6 +293,7 @@
       cursor: pointer;
       transition: box-shadow .3s, transform .25s, border-color .3s;
     }
+    .card-full { grid-column: 1 / -1; }
     .project-card:hover {
       box-shadow: 0 12px 40px rgba(0,0,0,.08);
       transform: translateY(-4px);
@@ -501,19 +505,45 @@
 
   <hr class="divider" />
 
-  <!-- CURRENT ROLE -->
+  <!-- ACTIVITIES -->
   <section id="role">
     <div class="container fade-in">
       <div class="section-heading">
-        <span class="section-label">Current Role</span>
-        <h2 class="section-title">현재 하는 일</h2>
+        <span class="section-label">Activities</span>
+        <h2 class="section-title">지금 하고 있는 것들</h2>
       </div>
-      <div class="role-card">
-        <div class="role-icon">🖥️</div>
-        <div>
-          <span class="role-tag">Platform Operations</span>
-          <h3>플랫폼 운영자</h3>
-          <p>플랫폼 내 사용자 행동을 관찰하고 이상 패턴을 감지하며 의사결정을 지원한다. 단순한 운영을 넘어 로그와 흔적으로부터 의미를 읽어내는 분석적 시선을 유지한다. 관찰한 것을 기록하고, 기록된 것을 해석하는 것이 지금의 일상이다.</p>
+      <div class="activities-list">
+        <div class="role-card">
+          <div class="role-icon">🔬</div>
+          <div>
+            <span class="role-tag">Research Lab · 2024.11 ~</span>
+            <h3>NGMS 연구실</h3>
+            <p>정보보안 관련 연구 활동에 참여 중. 실제 연구 환경에서 보안 이슈를 분석하고 학문적 시각으로 접근하는 훈련을 지속하고 있다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🛡️</div>
+          <div>
+            <span class="role-tag">Security Club · 2024.10 ~</span>
+            <h3>HUB 정보보안 동아리</h3>
+            <p>교내 정보보안 동아리 소속. CTF, 취약점 분석 등 실습 중심의 보안 학습을 이어가며 팀 단위 문제 해결 역량을 키우고 있다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">📖</div>
+          <div>
+            <span class="role-tag">Club President · 2년째</span>
+            <h3>책갈피 독서동아리 회장</h3>
+            <p>교내 독서동아리를 2년째 이끌고 있다. 글을 읽고 맥락을 파악하는 습관은 디지털 포렌식의 분석적 사고와 같은 뿌리에서 자란다고 생각한다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🖥️</div>
+          <div>
+            <span class="role-tag">Platform Operations</span>
+            <h3>플랫폼 운영자</h3>
+            <p>플랫폼 내 사용자 행동을 관찰하고 이상 패턴을 감지하며 의사결정을 지원한다. 로그와 흔적으로부터 의미를 읽어내는 분석적 시선을 유지한다.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -590,6 +620,33 @@
             <div class="detail-row">
               <div class="detail-label">Conclusion</div>
               <div class="conclusion">삭제 행위는 우발적이 아닌 의도적 조작으로 판단. 복원된 타임라인은 이후 조사의 핵심 근거로 활용되었다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="project-card card-full" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">Research Paper · Cybersecurity Law</p>
+            <h3 class="card-title">화이트해커의 법적 지위 확립을 위한 인증 및 윤리 관리 제도 연구</h3>
+            <p class="card-desc">화이트해커의 법적 공백 문제를 분석하고, 인증·평가·서약·교육 4단계 제도를 제안한 학술 연구. (공동저자: 김한별, 이근호 / 백석대학교 컴퓨터공학부)</p>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">논문 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Problem</div>
+              <div class="detail-text">화이트해커는 법적 지위가 모호해 선의의 보안 점검조차 처벌 위험에 노출되어 있다. 이 법적 공백은 보안 연구를 위축시키고 국가 보안 체계에 부정적 영향을 미친다.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Proposal</div>
+              <div class="detail-text">① 화이트해커 인증제 — 자격·평가 과정을 거쳐 공인된 해커로 활동. ② 윤리·심리 평가 시스템 — MMPI·SJT·CTF/PoC 다단계 평가. ③ 비밀 서약 기반 제한적 공개 — 국가기관 승인을 거친 취약점 공개. ④ 정기 법률·윤리 교육 프로그램 — 연 1회 최신 법률 동향 및 사례 교육.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">화이트해커가 불법의 경계에 머무르지 않고 국가 보안의 핵심 자산으로 자리매김하는 전환점을 제시한다. 기술 역량뿐 아니라 공익 의식과 사회적 책임을 갖춘 보안 인재 성장의 제도적 기반을 마련한다.</div>
             </div>
           </div>
         </div>
