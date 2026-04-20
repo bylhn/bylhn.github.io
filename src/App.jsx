@@ -617,7 +617,7 @@ const Nav = ({ onNav }) => {
         bylhn
       </span>
       <div style={{ display: 'flex', gap: 28 }}>
-        {[['Records', 'home'], ['Blog', 'blog'], ['Contact', 'contact']].map(([label, page]) => (
+        {[['Records', 'home'], ['Blog', 'blog']].map(([label, page]) => (
           <a key={label} href="#" onClick={e => { e.preventDefault(); onNav(page) }}
             style={{ fontSize: 13, color: 'var(--text-muted)', textDecoration: 'none', letterSpacing: '0.06em', transition: 'color 0.2s' }}
             onMouseEnter={e => e.target.style.color = 'var(--text-primary)'}
@@ -625,6 +625,12 @@ const Nav = ({ onNav }) => {
             {label}
           </a>
         ))}
+        <a href="/contact"
+          style={{ fontSize: 13, color: 'var(--text-muted)', textDecoration: 'none', letterSpacing: '0.06em', transition: 'color 0.2s' }}
+          onMouseEnter={e => e.target.style.color = 'var(--text-primary)'}
+          onMouseLeave={e => e.target.style.color = 'var(--text-muted)'}>
+          Contact
+        </a>
       </div>
     </nav>
   )
