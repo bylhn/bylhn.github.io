@@ -745,16 +745,23 @@ const BlogList = ({ onPost }) => {
         <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.15em', marginBottom: 14 }}>BLOG</p>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5 }}>생각을 기록합니다.</h2>
-          <button onClick={() => setPanelOpen(true)} style={{
-            fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)',
-            background: 'none', border: '1px solid rgba(110,155,181,.4)',
-            borderRadius: 8, padding: '6px 14px', cursor: 'pointer',
-            letterSpacing: '.04em', transition: 'border-color .2s, background .2s', whiteSpace: 'nowrap',
-          }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.background='rgba(110,155,181,.07)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(110,155,181,.4)'; e.currentTarget.style.background='none' }}>
-            전체 보기 ≡
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <a href="/roadmap" style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.04em', borderBottom: '1px solid transparent', transition: 'border-color .2s', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => e.target.style.borderBottomColor = 'var(--accent)'}
+              onMouseLeave={e => e.target.style.borderBottomColor = 'transparent'}>
+              로드맵 ↗
+            </a>
+            <button onClick={() => setPanelOpen(true)} style={{
+              fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)',
+              background: 'none', border: '1px solid rgba(110,155,181,.4)',
+              borderRadius: 8, padding: '6px 14px', cursor: 'pointer',
+              letterSpacing: '.04em', transition: 'border-color .2s, background .2s', whiteSpace: 'nowrap',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.background='rgba(110,155,181,.07)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(110,155,181,.4)'; e.currentTarget.style.background='none' }}>
+              전체 보기 ≡
+            </button>
+          </div>
         </div>
       </div>
 
