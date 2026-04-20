@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다." />
+  <title>bylhn — Digital Forensics Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #F7F6F3;
+      --bg-alt:  #F0EEE9;
+      --text:    #2C2C2C;
+      --accent:  #7EA8C4;
+      --muted:   #8A8A8A;
+      --border:  #E2DFD9;
+      --card:    #fff;
+      --serif:   'Noto Serif KR', Georgia, serif;
+      --sans:    'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(247,246,243,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+    }
+    .nav-logo {
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 15px;
+      letter-spacing: .05em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul a {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section { padding: 88px 0 72px; }
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-bottom: 36px;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 54px;
+    }
+    .hero-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(52px, 10vw, 88px);
+      font-weight: 700;
+      letter-spacing: -.03em;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .hero-title {
+      font-family: var(--sans);
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 30px;
+    }
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(15px, 2vw, 18px);
+      font-style: italic;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      max-width: 500px;
+      margin-bottom: 44px;
+      color: #444;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 30px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .btn:hover { background: #5a90b0; transform: translateY(-2px); }
+    .btn .arrow { transition: transform .2s; }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    /* ── ABOUT ── */
+    .about-text {
+      max-width: 620px;
+      color: #444;
+      font-family: var(--serif);
+    }
+    .about-text p + p { margin-top: 14px; }
+    .about-link {
+      font-family: var(--sans);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 20px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+    .about-link:hover { border-color: var(--accent); }
+
+    /* ── ROLE ── */
+    #role { background: var(--bg-alt); }
+    .role-card {
+      display: flex;
+      gap: 24px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px;
+      background: var(--card);
+    }
+    .role-icon { font-size: 30px; flex-shrink: 0; margin-top: 2px; }
+    .role-tag {
+      font-family: var(--sans);
+      display: inline-block;
+      background: rgba(126,168,196,.12);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+    .role-card h3 { font-family: var(--serif); font-size: 20px; margin-bottom: 8px; }
+    .role-card p { font-family: var(--sans); font-size: 15px; color: #555; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .skill-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 30px 22px;
+      text-align: center;
+      transition: border-color .2s, box-shadow .2s;
+      background: var(--card);
+    }
+    .skill-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(126,168,196,.15);
+    }
+    .skill-icon { font-size: 30px; margin-bottom: 12px; }
+    .skill-name { font-family: var(--sans); font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .skill-desc { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .25s, transform .2s, border-color .25s;
+    }
+    .project-card:hover {
+      box-shadow: 0 10px 36px rgba(0,0,0,.08);
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .card-top { padding: 24px 24px 0; }
+    .card-type {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .card-title { font-family: var(--serif); font-size: 18px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .card-desc { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .card-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 24px 20px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      user-select: none;
+    }
+    .t-icon {
+      display: inline-block;
+      font-size: 10px;
+      transition: transform .25s;
+    }
+    .project-card.open .t-icon { transform: rotate(90deg); }
+
+    .card-detail {
+      border-top: 1px solid var(--border);
+      padding: 22px 24px;
+      display: none;
+    }
+    .project-card.open .card-detail { display: block; }
+
+    .detail-row { margin-bottom: 16px; }
+    .detail-row:last-child { margin-bottom: 0; }
+    .detail-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .detail-text { font-family: var(--sans); font-size: 14px; color: #444; }
+    .conclusion {
+      background: rgba(126,168,196,.1);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      padding: 10px 14px;
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+      color: #2a5a7a;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+    }
+    footer p { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+    footer em { color: var(--accent); font-style: normal; }
+
+    /* ── FADE-IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 660px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .role-card { flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 420px) {
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-logo">bylhn</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#role">Role</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+      <a href="/" class="nav-back">← 홈으로</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <p class="hero-label">Digital Forensics Portfolio</p>
+      <h1 class="hero-name">bylhn</h1>
+      <p class="hero-title">Digital Forensics Analyst</p>
+      <p class="hero-tagline">기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</p>
+      <a href="#projects" class="btn">Investigate <span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container fade-in">
+      <p class="section-label">About</p>
+      <h2 class="section-title">흔적을 읽는 사람</h2>
+      <div class="about-text">
+        <p>글쓰기에서 시작했다. 언어로 사실을 기록하고, 기록으로 맥락을 복원하는 일이 좋았다. 그 관심은 자연스럽게 디지털 포렌식으로 이어졌다—삭제된 파일, 남겨진 로그, 보이지 않는 행동의 흔적.</p>
+        <p>데이터는 거짓말하지 않는다고 믿는다. 지금은 시스템 안에서 사람의 행동을 관찰하고, 그 패턴으로부터 진실에 가까운 그림을 그리는 연습을 하고 있다. 분석은 도구지만, 목적은 언제나 사람이다.</p>
+        <a class="about-link" href="/blog">블로그에서 더 읽기 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- CURRENT ROLE -->
+  <section id="role">
+    <div class="container fade-in">
+      <p class="section-label">Current Role</p>
+      <h2 class="section-title">현재 하는 일</h2>
+      <div class="role-card">
+        <div class="role-icon">🖥️</div>
+        <div>
+          <span class="role-tag">Platform Operations</span>
+          <h3>플랫폼 운영자</h3>
+          <p>플랫폼 내 사용자 행동을 관찰하고 이상 패턴을 감지하며 의사결정을 지원한다. 단순한 운영을 넘어 로그와 흔적으로부터 의미를 읽어내는 분석적 시선을 유지한다. 관찰한 것을 기록하고, 기록된 것을 해석하는 것이 지금의 일상이다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container fade-in">
+      <p class="section-label">Skills</p>
+      <h2 class="section-title">분석의 세 단계</h2>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-icon">🔍</div>
+          <div class="skill-name">Trace</div>
+          <div class="skill-desc">삭제된 파일, 숨겨진 메타데이터, 잔존 흔적 탐지</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🧩</div>
+          <div class="skill-name">Analyze</div>
+          <div class="skill-desc">로그 패턴 분석, 타임라인 구성, 이상 행동 식별</div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-icon">🗺️</div>
+          <div class="skill-name">Reconstruct</div>
+          <div class="skill-desc">행동 흐름 복원, 사실 관계 재구성, 보고서 작성</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container fade-in">
+      <p class="section-label">Projects</p>
+      <h2 class="section-title">분석 사례</h2>
+      <div class="projects-grid">
+
+        <!-- Card 1 -->
+        <div class="project-card" onclick="toggleCard(this)">
+          <div class="card-top">
+            <p class="card-type">Case 01 · File System Forensics</p>
+            <h3 class="card-title">파일 삭제 흔적 분석</h3>
+            <p class="card-desc">삭제된 파일의 잔존 흔적으로부터 사용자 행동을 복원한다.</p>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">사례 열기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Situation</div>
+              <div class="detail-text">특정 시점 이후 사용자가 주요 문서를 삭제했다는 의혹이 제기되었다. 공식 저장소에는 해당 파일이 존재하지 않았다.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Evidence</div>
+              <div class="detail-text">$MFT 잔존 엔트리, $LogFile 트랜잭션 로그, 쉘 링크(.lnk) 파일, 레지스트리 RecentDocs 키.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Analysis</div>
+              <div class="detail-text">MFT 분석으로 삭제 파일의 이름·크기·타임스탬프 복원. $LogFile에서 삭제 연산 순서 역추적. LNK 파일 접근 시각과 교차 검증.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Reconstruction</div>
+              <div class="detail-text">의혹 시점 4분 전 명시적 삭제. 삭제 직전 12초간 해당 파일이 열려 있었음을 타임라인으로 확인.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">삭제 행위는 우발적이 아닌 의도적 조작으로 판단. 복원된 타임라인은 이후 조사의 핵심 근거로 활용되었다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="project-card" onclick="toggleCard(this)">
+          <div class="card-top">
+            <p class="card-type">Case 02 · Log Analysis</p>
+            <h3 class="card-title">사용자 행동 로그 분석</h3>
+            <p class="card-desc">시스템 로그에서 행동 흐름을 역추적하여 전체 경위를 복원한다.</p>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">사례 열기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Situation</div>
+              <div class="detail-text">플랫폼 내 특정 계정에서 비정상적인 접근 패턴이 감지되었다. 피해 발생 경위가 불명확한 상태였다.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Evidence</div>
+              <div class="detail-text">웹 서버 액세스 로그(Apache), 세션 토큰 발급 기록, 사용자 에이전트 문자열, IP 지오로케이션 데이터.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Analysis</div>
+              <div class="detail-text">로그 정규화 후 시계열 정렬. 동일 세션 내 물리적으로 불가능한 이중 접속 위치 확인. 자동화 요청 패턴(간격 균일성) 탐지.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Reconstruction</div>
+              <div class="detail-text">세션 하이재킹 이후 봇 기반 자동화 스크립트가 17분간 작동. 행동 흐름을 6단계 타임라인으로 재구성.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">외부 침입자에 의한 세션 탈취로 결론. 복원된 행동 로그는 계정 피해 범위 산정의 기준이 되었다.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2026 <em>bylhn</em> · Digital Forensics Analyst</p>
+      <p style="margin-top:6px;">기록은 사라지지 않는다.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleCard(card) {
+      const isOpen = card.classList.toggle('open');
+      card.querySelector('.toggle-label').textContent = isOpen ? '사례 닫기' : '사례 열기';
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
