@@ -649,6 +649,7 @@ const BlogList = ({ onPost }) => {
   const [loading, setLoading] = useState(true)
   const [activeTag, setActiveTag] = useState('All')
   const [panelOpen, setPanelOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     fetch('/api/posts').then(r => r.json()).then(data => { setPosts(data); setLoading(false) }).catch(() => setLoading(false))
@@ -657,11 +658,14 @@ const BlogList = ({ onPost }) => {
   const tags = ['All', ...Array.from(new Set(posts.map(p => p.tag || 'Note').filter(Boolean)))]
   const filtered = activeTag === 'All' ? posts : posts.filter(p => (p.tag || 'Note') === activeTag)
 
-  // 카테고리별 그룹
+  // 카테고리별 그룹 (검색 적용)
+  const searchFiltered = searchQuery.trim()
+    ? posts.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
+    : posts
   const grouped = tags.slice(1).map(tag => ({
     tag,
-    posts: posts.filter(p => (p.tag || 'Note') === tag)
-  }))
+    posts: searchFiltered.filter(p => (p.tag || 'Note') === tag)
+  })).filter(g => g.posts.length > 0)
 
   return (
     <>
@@ -683,14 +687,38 @@ const BlogList = ({ onPost }) => {
         transition: 'transform .3s cubic-bezier(.4,0,.2,1)',
         overflowY: 'auto',
       }}>
-        <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid rgba(0,0,0,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: 'var(--bg)', zIndex: 1 }}>
-          <div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '.15em', color: 'var(--accent)', marginBottom: 4 }}>ALL POSTS</p>
-            <p style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 400, color: 'var(--text-primary)' }}>전체 글 목록</p>
+        <div style={{ padding: '20px 24px 16px', borderBottom: '1px solid rgba(0,0,0,0.07)', position: 'sticky', top: 0, background: 'var(--bg)', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <div>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '.15em', color: 'var(--accent)', marginBottom: 4 }}>ALL POSTS</p>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 18, fontWeight: 400, color: 'var(--text-primary)' }}>전체 글 목록</p>
+            </div>
+            <button onClick={() => { setPanelOpen(false); setSearchQuery('') }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: 'var(--text-muted)', padding: '4px 8px', borderRadius: 6, lineHeight: 1 }}>✕</button>
           </div>
-          <button onClick={() => setPanelOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: 'var(--text-muted)', padding: '4px 8px', borderRadius: 6, lineHeight: 1 }}>✕</button>
+          <input
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="글 검색..."
+            style={{
+              width: '100%', padding: '8px 12px',
+              background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(0,0,0,0.08)',
+              borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13,
+              color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box',
+              transition: 'border-color .2s',
+            }}
+            onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+            onBlur={e => e.target.style.borderColor = 'rgba(0,0,0,0.08)'}
+          />
+          {searchQuery && (
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
+              {searchFiltered.length}개 결과
+            </p>
+          )}
         </div>
         <div style={{ padding: '16px 0', flex: 1 }}>
+          {grouped.length === 0 && (
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)', padding: '24px', textAlign: 'center' }}>검색 결과가 없어요.</p>
+          )}
           {grouped.map(({ tag, posts: gPosts }) => (
             <div key={tag} style={{ marginBottom: 8 }}>
               <div style={{ padding: '8px 24px', display: 'flex', alignItems: 'center', gap: 8 }}>
