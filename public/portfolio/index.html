@@ -479,16 +479,15 @@
       position: fixed;
       bottom: 28px; right: 28px;
       z-index: 300;
-      width: 52px; height: 52px;
+      width: 56px; height: 56px;
       border-radius: 50%;
       background: var(--card);
       border: 1.5px solid var(--border);
       box-shadow: 0 4px 20px rgba(0,0,0,.12);
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
+      padding: 0;
       transition: transform .2s, box-shadow .2s;
-      image-rendering: pixelated;
     }
     .klru-btn:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(110,155,181,.25); }
     .klru-panel {
@@ -513,7 +512,7 @@
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px;
     }
-    .klru-avatar { font-size: 22px; line-height: 1; image-rendering: pixelated; }
+    .klru-avatar { line-height: 1; image-rendering: pixelated; display: flex; align-items: center; }
     .klru-header-info { flex: 1; }
     .klru-header-name { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text); }
     .klru-header-status { font-family: var(--sans); font-size: 11px; color: var(--muted); }
@@ -986,10 +985,10 @@
   </div>
 
   <!-- CHATBOT -->
-  <button class="klru-btn" id="klruBtn" aria-label="클루에게 질문하기" title="클루에게 물어보기">🐱</button>
+  <button class="klru-btn" id="klruBtn" aria-label="클루에게 질문하기" title="클루에게 물어보기"><canvas id="klruBtnCanvas" width="40" height="40" style="image-rendering:pixelated;display:block;"></canvas></button>
   <div class="klru-panel" id="klruPanel" role="dialog" aria-label="클루 챗봇">
     <div class="klru-header">
-      <div class="klru-avatar">🐱</div>
+      <div class="klru-avatar"><canvas id="klruHeaderCanvas" width="22" height="22" style="image-rendering:pixelated;display:block;"></canvas></div>
       <div class="klru-header-info">
         <div class="klru-header-name">클루</div>
         <div class="klru-header-status">bylhn의 블로그 도우미</div>
@@ -1050,6 +1049,43 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.fade-in, .skill-item').forEach(el => observer.observe(el));
+
+    /* ── Pixel Cat ── */
+    const CAT_PX = [
+      ['_','_','_','B','B','_','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','B','B','B','B','_','_','B','B','B','B','_','_','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','W','W','W','G','B','B','W','W','W','_','B','B','_','_'],
+      ['B','B','W','G','G','G','B','B','W','G','G','_','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','G','G','G','G','B','B','B','B','B','_','_'],
+      ['B','B','B','B','G','G','G','_','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','_'],
+      ['_','B','B','_','B','B','B','B','B','B','B','_','B','B','_','_'],
+      ['_','_','_','_','B','B','_','D','D','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+    ];
+    const PX_C = {B:'#1a5fff',W:'#eef3ff',G:'#8899bb',D:'#334466','_':null};
+
+    function drawCat(canvas, pxSize) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      CAT_PX.forEach((row, ri) => row.forEach((c, ci) => {
+        const color = PX_C[c];
+        if (!color) return;
+        ctx.fillStyle = color;
+        ctx.fillRect(ci * pxSize, ri * pxSize, pxSize, pxSize);
+      }));
+    }
+
+    // Button: 40px canvas, 16 pixels → 2.5px per pixel
+    drawCat(document.getElementById('klruBtnCanvas'), 2.5);
+    // Header: 22px canvas, 16 pixels → ~1.375px per pixel
+    drawCat(document.getElementById('klruHeaderCanvas'), 1.375);
 
     /* ── Klru Chatbot ── */
     const klruBtn   = document.getElementById('klruBtn');
