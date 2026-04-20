@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="bylhn의 학습 로드맵 — 카테고리별 기록과 타임라인" />
+  <title>bylhn — Learning Roadmap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #F7F6F3;
+      --bg-alt:  #EFECE6;
+      --text:    #242424;
+      --accent:  #6E9BB5;
+      --muted:   #909090;
+      --border:  #E0DDD7;
+      --card:    #FDFCFA;
+      --serif:   'Noto Serif KR', Georgia, serif;
+      --sans:    'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 40px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(247,246,243,.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between; height: 58px;
+    }
+    .nav-logo { font-family: var(--sans); font-weight: 500; font-size: 14px; letter-spacing: .08em; color: var(--text); text-decoration: none; }
+    .nav-back { font-family: var(--sans); font-size: 12px; letter-spacing: .06em; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .nav-back:hover { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul a { font-family: var(--sans); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+    nav ul a:hover { color: var(--text); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding-top: calc(58px + 80px);
+      padding-bottom: 64px;
+    }
+    .page-label { font-family: var(--sans); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 14px; }
+    .page-title { font-family: var(--serif); font-size: clamp(28px, 5vw, 44px); font-weight: 300; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 16px; }
+    .page-desc { font-family: var(--sans); font-size: 14px; color: var(--muted); max-width: 480px; line-height: 1.8; }
+
+    .divider { border: none; border-top: 1px solid var(--border); }
+
+    /* SECTION */
+    .section { padding: 80px 0 64px; }
+    .section-heading { margin-bottom: 48px; }
+    .section-label { font-family: var(--sans); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 12px; }
+    .section-title { font-family: var(--serif); font-size: clamp(20px, 3vw, 28px); font-weight: 400; }
+
+    /* LOADING / EMPTY */
+    .state-msg { font-family: var(--sans); font-size: 14px; color: var(--muted); text-align: center; padding: 48px 0; }
+
+    /* CATEGORY GRID */
+    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 660px) { .cat-grid { grid-template-columns: 1fr; } .container { padding: 0 24px; } }
+
+    .cat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: box-shadow .25s, border-color .25s;
+    }
+    .cat-card:hover { border-color: var(--accent); box-shadow: 0 6px 24px rgba(110,155,181,.1); }
+    .cat-card-head {
+      padding: 22px 22px 16px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 12px;
+      user-select: none;
+    }
+    .cat-icon { font-size: 22px; flex-shrink: 0; }
+    .cat-info { flex: 1; min-width: 0; }
+    .cat-name { font-family: var(--sans); font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .cat-count { font-family: var(--sans); font-size: 11px; color: var(--muted); }
+    .cat-chevron { font-size: 10px; color: var(--muted); flex-shrink: 0; transition: transform .25s; }
+    .cat-card.open .cat-chevron { transform: rotate(90deg); }
+
+    .cat-posts {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 8px 0;
+    }
+    .cat-card.open .cat-posts { display: block; }
+    .cat-post-link {
+      display: block;
+      padding: 9px 22px;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.5;
+      transition: background .15s, color .15s;
+    }
+    .cat-post-link:hover { background: rgba(110,155,181,.07); color: var(--accent); }
+    .cat-post-date { font-size: 10px; color: var(--muted); margin-top: 1px; display: block; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px; top: 8px; bottom: 8px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .tl-month { margin-bottom: 36px; position: relative; }
+    .tl-month-label {
+      position: relative;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 14px;
+    }
+    .tl-dot {
+      position: absolute;
+      left: -28px;
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      top: 50%; transform: translateY(-50%);
+      transition: border-color .2s;
+    }
+    .tl-month:hover .tl-dot { border-color: var(--accent); }
+    .tl-month-name {
+      font-family: var(--sans); font-size: 12px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+    }
+    .tl-month-count {
+      font-family: var(--sans); font-size: 10px;
+      background: rgba(110,155,181,.1); color: var(--accent);
+      padding: 2px 8px; border-radius: 99px;
+    }
+
+    .tl-posts { display: flex; flex-direction: column; gap: 8px; }
+    .tl-post {
+      display: flex; align-items: baseline; gap: 12px;
+      padding: 10px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .tl-post:hover { border-color: var(--accent); box-shadow: 0 3px 12px rgba(110,155,181,.1); }
+    .tl-post-cat {
+      font-family: var(--sans); font-size: 9px; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); flex-shrink: 0;
+      min-width: 64px;
+    }
+    .tl-post-title { font-family: var(--sans); font-size: 13px; color: var(--text); line-height: 1.5; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 48px 0; text-align: center; }
+    footer p { font-family: var(--sans); font-size: 12px; color: var(--muted); }
+    footer em { color: var(--accent); font-style: normal; }
+
+    /* FADE */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-logo">bylhn</a>
+      <ul>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#timeline">Timeline</a></li>
+      </ul>
+      <a href="/blog" class="nav-back">← 블로그</a>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <span class="page-label">Learning Roadmap</span>
+      <h1 class="page-title">기록의 지도</h1>
+      <p class="page-desc">지금까지 공부하고 기록한 것들을 카테고리와 시간 흐름으로 정리했다. 어디서 왔는지, 지금 어디에 있는지.</p>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- CATEGORIES -->
+  <section id="categories" class="section">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">Categories</span>
+        <h2 class="section-title">주제별 기록</h2>
+      </div>
+      <div class="cat-grid" id="catGrid">
+        <div class="state-msg">불러오는 중...</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="section">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">Timeline</span>
+        <h2 class="section-title">시간 순서로 보기</h2>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="state-msg">불러오는 중...</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 <em>bylhn</em> · 기록은 사라지지 않는다.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ── 카테고리 분류 ── */
+    const CATS = [
+      { key: 'security',  name: 'Security',      icon: '🛡️', color: '#6E9BB5',
+        test: t => /해킹|포렌식|보안|ctf|취약점|암호|사이버|malware|forensic|iot|sentinel|지문|인증/i.test(t) },
+      { key: 'db',        name: 'Database',       icon: '🗄️', color: '#7EB5A0',
+        test: t => /데이터베이스|sql|mysql|dbms|db|테이블|쿼리|관계형|정규화|모델링|릴레이션/i.test(t) },
+      { key: 'linux',     name: 'Linux / OS',     icon: '🐧', color: '#9B8BB5',
+        test: t => /리눅스|linux|ubuntu|우분투|쉘|shell|\bvi\b|vim|디렉터|명령어|사용자 관리|파일 시스템|운영체제/i.test(t) },
+      { key: 'clang',     name: 'C Language',     icon: '⚙️', color: '#B5956E',
+        test: t => /c언어|c language|포인터|printf|scanf|배열|구조체|함수|변수|연산자|프로그램 구성/i.test(t) },
+      { key: 'python',    name: 'Python / ML',    icon: '🐍', color: '#7EB57E',
+        test: t => /파이썬|python|머신러닝|cnn|딥러닝|numpy|pandas|ml/i.test(t) },
+      { key: 'general',   name: 'General',        icon: '📝', color: '#909090',
+        test: () => true },
+    ];
+
+    function categorize(title) {
+      for (const cat of CATS) {
+        if (cat.test(title)) return cat;
+      }
+      return CATS[CATS.length - 1];
+    }
+
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    }
+    function fmtMonth(iso) {
+      const d = new Date(iso);
+      return `${d.getFullYear()}년 ${d.getMonth()+1}월`;
+    }
+    function monthKey(iso) {
+      const d = new Date(iso);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    }
+
+    /* ── 렌더 ── */
+    async function load() {
+      const res = await fetch('/api/posts').catch(() => null);
+      if (!res || !res.ok) {
+        document.getElementById('catGrid').innerHTML = '<div class="state-msg">불러오지 못했어요.</div>';
+        document.getElementById('timeline').innerHTML = '<div class="state-msg">불러오지 못했어요.</div>';
+        return;
+      }
+      const posts = await res.json();
+      if (!posts.length) {
+        document.getElementById('catGrid').innerHTML = '<div class="state-msg">게시물이 없습니다.</div>';
+        document.getElementById('timeline').innerHTML = '<div class="state-msg">게시물이 없습니다.</div>';
+        return;
+      }
+
+      renderCategories(posts);
+      renderTimeline(posts);
+    }
+
+    function renderCategories(posts) {
+      // 분류
+      const buckets = {};
+      CATS.forEach(c => { buckets[c.key] = []; });
+      posts.forEach(p => {
+        const cat = categorize(p.title);
+        buckets[cat.key].push(p);
+      });
+
+      const grid = document.getElementById('catGrid');
+      grid.innerHTML = '';
+
+      CATS.forEach(cat => {
+        const list = buckets[cat.key];
+        if (!list.length) return;
+
+        const card = document.createElement('div');
+        card.className = 'cat-card';
+        card.innerHTML = `
+          <div class="cat-card-head" onclick="this.parentElement.classList.toggle('open')">
+            <span class="cat-icon">${cat.icon}</span>
+            <div class="cat-info">
+              <div class="cat-name">${cat.name}</div>
+              <div class="cat-count">${list.length}개의 기록</div>
+            </div>
+            <span class="cat-chevron">▶</span>
+          </div>
+          <div class="cat-posts">
+            ${list.map(p => `
+              <a class="cat-post-link" href="/blog/${encodeURIComponent(p.slug)}">
+                ${p.title}
+                <span class="cat-post-date">${fmtDate(p.created_at)}</span>
+              </a>
+            `).join('')}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTimeline(posts) {
+      // 월별 그룹
+      const months = {};
+      [...posts].sort((a,b) => new Date(b.created_at)-new Date(a.created_at))
+        .forEach(p => {
+          const key = monthKey(p.created_at);
+          if (!months[key]) months[key] = { label: fmtMonth(p.created_at), posts: [] };
+          months[key].posts.push(p);
+        });
+
+      const tl = document.getElementById('timeline');
+      tl.innerHTML = '';
+
+      Object.entries(months).forEach(([, month]) => {
+        const block = document.createElement('div');
+        block.className = 'tl-month';
+        block.innerHTML = `
+          <div class="tl-month-label">
+            <div class="tl-dot"></div>
+            <span class="tl-month-name">${month.label}</span>
+            <span class="tl-month-count">${month.posts.length}개</span>
+          </div>
+          <div class="tl-posts">
+            ${month.posts.map(p => {
+              const cat = categorize(p.title);
+              return `
+                <a class="tl-post" href="/blog/${encodeURIComponent(p.slug)}">
+                  <span class="tl-post-cat">${cat.name}</span>
+                  <span class="tl-post-title">${p.title}</span>
+                </a>
+              `;
+            }).join('')}
+          </div>
+        `;
+        tl.appendChild(block);
+      });
+    }
+
+    load();
+
+    /* ── 스크롤 애니메이션 ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

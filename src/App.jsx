@@ -660,7 +660,14 @@ const BlogList = ({ onPost }) => {
     <section style={{ background: 'var(--bg)', padding: 'clamp(80px, 12vw, 140px) clamp(24px, 10vw, 160px)', minHeight: '60vh' }}>
       <div style={{ marginBottom: 'clamp(32px, 4vw, 48px)' }}>
         <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.15em', marginBottom: 14 }}>BLOG</p>
-        <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5 }}>생각을 기록합니다.</h2>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(22px, 3.5vw, 32px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5 }}>생각을 기록합니다.</h2>
+          <a href="/roadmap" style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.04em', borderBottom: '1px solid transparent', transition: 'border-color .2s', whiteSpace: 'nowrap' }}
+            onMouseEnter={e => e.target.style.borderBottomColor = 'var(--accent)'}
+            onMouseLeave={e => e.target.style.borderBottomColor = 'transparent'}>
+            로드맵으로 보기 ↗
+          </a>
+        </div>
       </div>
 
       {/* 카테고리 탭 */}
