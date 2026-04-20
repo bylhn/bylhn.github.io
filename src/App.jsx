@@ -1,77 +1,230 @@
 import { useEffect, useRef, useState } from 'react'
 
-/* ─── Chibi SVG (chat emotions) ─── */
-const ChibiChat = ({ emotion = 'idle' }) => {
-  const lidOpen = emotion === 'thinking' || emotion === 'happy'
-  const eyeH = emotion === 'happy' ? 2 : emotion === 'confused' ? 4 : 5.5
-  const mouth = emotion === 'happy'
-    ? 'M-7 -56 Q0 -48 7 -56'
+/* ─── Pixel Cat Float (chat emotions) ─── */
+// 감정별 눈/입 픽셀 (row 4,5 = 눈, row 7,8 = 입)
+const FACE_PX = {
+  idle: {
+    4: ['B','B','W','W','W','G','B','B','W','W','W','_','B','B','_','_'],
+    5: ['B','B','W','G','G','G','B','B','W','G','G','_','B','B','_','_'],
+    7: ['B','B','B','B','B','G','G','G','G','B','B','B','B','B','_','_'],
+    8: ['B','B','B','B','G','G','G','_','B','B','B','B','B','B','_','_'],
+  },
+  happy: {
+    // 눈 = 초승달(^) 모양, 입 = 활짝 웃음
+    4: ['B','B','B','G','G','G','B','B','B','G','G','B','B','B','_','_'],
+    5: ['B','B','G','G','B','B','B','B','G','G','B','_','B','B','_','_'],
+    7: ['B','B','B','G','G','G','G','G','G','G','G','B','B','B','_','_'],
+    8: ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+  },
+  thinking: {
+    // 왼눈 정상, 오른눈 반쯤 감김, 입 작게
+    4: ['B','B','W','W','W','G','B','B','B','G','G','_','B','B','_','_'],
+    5: ['B','B','W','G','G','G','B','B','B','G','B','_','B','B','_','_'],
+    7: ['B','B','B','B','B','B','G','G','B','B','B','B','B','B','_','_'],
+    8: ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+  },
+  confused: {
+    // 눈 = X 모양, 입 = 지그재그
+    4: ['B','B','G','W','G','W','B','B','G','W','G','_','B','B','_','_'],
+    5: ['B','B','W','G','W','G','B','B','W','G','W','_','B','B','_','_'],
+    7: ['B','B','B','G','B','G','B','G','B','G','B','B','B','B','_','_'],
+    8: ['B','B','B','B','G','B','G','_','B','B','B','B','B','B','_','_'],
+  },
+}
+
+const buildCatPx = (emotion) => {
+  const face = FACE_PX[emotion] || FACE_PX.idle
+  return CAT_PX.map((row, ri) => face[ri] ? face[ri] : row)
+}
+
+const CatChibiFloat = ({ emotion = 'idle' }) => {
+  const glow = emotion === 'happy'
+    ? 'rgba(60,200,120,0.85)'
+    : emotion === 'thinking'
+    ? 'rgba(200,160,60,0.65)'
     : emotion === 'confused'
-    ? 'M-5 -54 Q2 -56 7 -52'
-    : 'M-6 -56 Q0 -52 6 -56'
+    ? 'rgba(200,80,60,0.75)'
+    : 'rgba(60,120,255,0.7)'
+  const anim = emotion === 'happy'
+    ? 'catBounce 0.55s ease-in-out infinite'
+    : emotion === 'confused'
+    ? 'catShake 0.35s ease-in-out infinite'
+    : 'catFloat 2.4s ease-in-out infinite'
+  const px = buildCatPx(emotion)
   return (
-    <svg viewBox="-80 -165 160 300" width="80" height="150" style={{ overflow: 'visible' }}>
-      <defs>
-        <style>{`
-          .cc-lid { transform-origin: 0px 2px; transform: ${lidOpen ? 'rotate(-108deg)' : 'rotate(0deg)'}; transition: transform 0.6s ease; }
-        `}</style>
-      </defs>
-      {/* Legs */}
-      <g style={{ transformOrigin: '-15px 52px', transform: 'rotate(38deg)' }}>
-        <rect x="-24" y="52" width="18" height="38" rx="9" fill="#f0e0c8"/>
-        <ellipse cx="-15" cy="91" rx="15" ry="6" fill="#5a3a2a"/>
-      </g>
-      <g style={{ transformOrigin: '15px 52px', transform: 'rotate(-38deg)' }}>
-        <rect x="6" y="52" width="18" height="38" rx="9" fill="#f0e0c8"/>
-        <ellipse cx="15" cy="91" rx="15" ry="6" fill="#5a3a2a"/>
-      </g>
-      {/* Skirt */}
-      <path d="M-30 24 Q-38 60 -40 80 Q0 94 40 80 Q38 60 30 24 Z" fill="#c8a47a"/>
-      {/* Body */}
-      <rect x="-28" y="-8" width="56" height="38" rx="13" fill="#f2dca4"/>
-      {/* Arms */}
-      <rect x="-42" y="-4" width="16" height="30" rx="8" fill="#f2dca4"/>
-      <circle cx="-34" cy="28" r="8" fill="#fddec0"/>
-      <rect x="26" y="-4" width="16" height="30" rx="8" fill="#f2dca4"/>
-      <circle cx="34" cy="28" r="8" fill="#fddec0"/>
-      {/* Laptop on lap */}
-      <g transform="translate(0, 68)">
-        <rect x="-32" y="-6" width="64" height="12" rx="4" fill="#8899aa"/>
-        <g className="cc-lid">
-          <rect x="-30" y="-58" width="60" height="52" rx="5" fill="#6a7a8a"/>
-          <rect x="-27" y="-55" width="54" height="46" rx="3" fill={lidOpen ? '#cce8f5' : '#1a2a3a'}/>
-          {lidOpen && <ellipse cx="0" cy="-32" rx="22" ry="16" fill="rgba(126,168,196,0.2)"/>}
-        </g>
-      </g>
-      {/* Neck */}
-      <rect x="-9" y="-22" width="18" height="16" rx="6" fill="#fddec0"/>
-      {/* Head */}
-      <ellipse cx="0" cy="-72" rx="38" ry="36" fill="#a07850"/>
-      <path d="M-28 -92 Q-36 -110 -25 -112 Q-14 -110 -18 -92 Z" fill="#a07850"/>
-      <path d="M-8 -100 Q-10 -118 0 -120 Q10 -118 8 -100 Z" fill="#a07850"/>
-      <path d="M28 -92 Q36 -110 25 -112 Q14 -110 18 -92 Z" fill="#a07850"/>
-      <ellipse cx="0" cy="-68" rx="33" ry="31" fill="#fddec0"/>
-      <ellipse cx="-21" cy="-60" rx="9" ry="6" fill="rgba(255,130,110,0.28)"/>
-      <ellipse cx="21" cy="-60" rx="9" ry="6" fill="rgba(255,130,110,0.28)"/>
-      <ellipse cx="-13" cy="-70" rx="5" ry={eyeH} fill="#2a1a0e"/>
-      <ellipse cx="13" cy="-70" rx="5" ry={eyeH} fill="#2a1a0e"/>
-      <circle cx="-11" cy="-72" r="1.8" fill="white"/>
-      <circle cx="15" cy="-72" r="1.8" fill="white"/>
-      <path d={mouth} stroke="#c07060" strokeWidth="2" fill="none" strokeLinecap="round"/>
-      {/* Confused swirl */}
-      {emotion === 'confused' && <text x="20" y="-100" fontSize="18" fill="#a07850">?</text>}
-    </svg>
+    <div style={{ position: 'relative', display: 'inline-block', animation: anim }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16,5px)', gridTemplateRows: 'repeat(16,5px)', imageRendering: 'pixelated', filter: `drop-shadow(0 0 8px ${glow})`, transition: 'filter 0.5s ease' }}>
+        {px.flatMap((row, ri) => row.map((c, ci) => (
+          <div key={`${ri}-${ci}`} style={{ width: 5, height: 5, background: PX_C[c] }} />
+        )))}
+      </div>
+      {emotion === 'confused' && (
+        <div style={{ position: 'absolute', top: -10, right: -10, fontSize: 15, color: '#c04040', fontWeight: 'bold', lineHeight: 1 }}>?</div>
+      )}
+      {emotion === 'thinking' && (
+        <div style={{ position: 'absolute', top: -12, right: -14, fontSize: 13, lineHeight: 1 }}>💭</div>
+      )}
+      <div style={{ width: 46, height: 7, background: 'rgba(30,60,200,0.18)', borderRadius: '50%', margin: '4px auto 0', animation: 'catShadow 2.4s ease-in-out infinite' }} />
+    </div>
+  )
+}
+
+/* ─── Emoji Picker ─── */
+const EMOJIS = ['😊','😂','😍','🥺','😭','😅','🤔','😎','🥳','😴','❤️','🔥','✨','💯','👍','👏','🙏','💪','👀','😢','😤','🤣','😇','🤗','😏','🙄','😬','🫡','😮','📝','💡','🔍','💻','🛡️','⚡','🎯','🔐','📁','🐱','✅','🕵️','📂','🧩','🖥️','🔗','⚠️','🗂️','📌']
+
+const EmojiPicker = ({ onSelect }) => {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (!open) return
+    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
+      <button type="button" onClick={() => setOpen(o => !o)} style={{ background: 'none', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', fontSize: 14, color: 'var(--text-muted)', transition: 'border-color 0.2s' }}
+        onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+        onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'}>
+        😊
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: 0, background: 'var(--bg)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 12, padding: 10, display: 'grid', gridTemplateColumns: 'repeat(8, 34px)', gap: 2, zIndex: 300, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+          {EMOJIS.map(em => (
+            <button key={em} type="button" onClick={() => { onSelect(em); setOpen(false) }}
+              style={{ width: 34, height: 34, fontSize: 18, background: 'none', border: 'none', cursor: 'pointer', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.06)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+              {em}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ─── Pixel Stickers ─── */
+const HEART_PX = [
+  ['_','R','R','_','_','R','R','_'],
+  ['R','R','R','R','R','R','R','_'],
+  ['R','R','R','R','R','R','R','R'],
+  ['_','R','R','R','R','R','R','_'],
+  ['_','_','R','R','R','R','_','_'],
+  ['_','_','_','R','R','_','_','_'],
+  ['_','_','_','_','_','_','_','_'],
+  ['_','_','_','_','_','_','_','_'],
+]
+const HEART_C = { R: '#ff6b8a', _: 'transparent' }
+
+const STAR_PX = [
+  ['_','_','_','Y','_','_','_','_'],
+  ['_','_','_','Y','_','_','_','_'],
+  ['_','_','_','Y','_','_','_','_'],
+  ['Y','Y','Y','Y','Y','Y','Y','_'],
+  ['_','_','_','Y','_','_','_','_'],
+  ['_','_','_','Y','_','_','_','_'],
+  ['_','_','_','Y','_','_','_','_'],
+  ['_','_','_','_','_','_','_','_'],
+]
+const STAR_C = { Y: '#ffd700', _: 'transparent' }
+
+const StickerCat = () => {
+  const [blink, setBlink] = useState(false)
+  useEffect(() => {
+    const id = setInterval(() => { setBlink(true); setTimeout(() => setBlink(false), 130) }, 2800)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div style={{ display: 'inline-block', animation: 'stickerFloat 2s ease-in-out infinite' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16,4px)', gridTemplateRows: 'repeat(16,4px)', imageRendering: 'pixelated', filter: 'drop-shadow(0 0 5px rgba(60,120,255,0.55))' }}>
+        {CAT_PX.flatMap((row, ri) => row.map((c, ci) => {
+          let bg = PX_C[c]
+          if (blink && (ri === 4 || ri === 5) && (c === 'W' || c === 'G')) bg = PX_C['B']
+          return <div key={`${ri}-${ci}`} style={{ width: 4, height: 4, background: bg }} />
+        }))}
+      </div>
+    </div>
+  )
+}
+const StickerHeart = () => (
+  <div style={{ display: 'inline-block', animation: 'stickerPulse 1.1s ease-in-out infinite' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8,5px)', gridTemplateRows: 'repeat(8,5px)', imageRendering: 'pixelated', filter: 'drop-shadow(0 0 5px rgba(255,107,138,0.65))' }}>
+      {HEART_PX.flatMap((row, ri) => row.map((c, ci) => (
+        <div key={`${ri}-${ci}`} style={{ width: 5, height: 5, background: HEART_C[c] }} />
+      )))}
+    </div>
+  </div>
+)
+const StickerStar = () => (
+  <div style={{ display: 'inline-block', animation: 'stickerSpin 2.5s linear infinite' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8,5px)', gridTemplateRows: 'repeat(8,5px)', imageRendering: 'pixelated', filter: 'drop-shadow(0 0 5px rgba(255,215,0,0.8))' }}>
+      {STAR_PX.flatMap((row, ri) => row.map((c, ci) => (
+        <div key={`${ri}-${ci}`} style={{ width: 5, height: 5, background: STAR_C[c] }} />
+      )))}
+    </div>
+  </div>
+)
+const STICKER_LIST = [
+  { name: 'cat', label: '고양이', C: StickerCat },
+  { name: 'heart', label: '하트', C: StickerHeart },
+  { name: 'star', label: '별', C: StickerStar },
+]
+const STICKER_MAP = { cat: StickerCat, heart: StickerHeart, star: StickerStar }
+
+const StickerPicker = ({ onSelect }) => {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (!open) return
+    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
+      <button type="button" onClick={() => setOpen(o => !o)}
+        style={{ background: 'none', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', fontSize: 14, color: 'var(--text-muted)', transition: 'border-color 0.2s' }}
+        onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+        onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'}>
+        🎭
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: 0, background: 'var(--bg)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, padding: 14, display: 'flex', gap: 10, zIndex: 300, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+          {STICKER_LIST.map(s => (
+            <button key={s.name} type="button" onClick={() => { onSelect(s.name); setOpen(false) }}
+              style={{ background: 'none', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 10, padding: '10px 14px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, transition: 'background 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.04)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+              <s.C />
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--text-light)' }}>{s.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <style>{`
+        @keyframes stickerFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        @keyframes stickerPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.22)} }
+        @keyframes stickerSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+      `}</style>
+    </div>
   )
 }
 
 /* ─── Chatbot ─── */
 const Chatbot = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(() => {
+    try { return localStorage.getItem('klru_open') === 'true' } catch { return false }
+  })
   const [msgs, setMsgs] = useState([{ role: 'assistant', content: '안녕! 궁금한 거 있으면 물어봐 😊' }])
   const [input, setInput] = useState('')
   const [emotion, setEmotion] = useState('idle')
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef(null)
+
+  useEffect(() => {
+    try { localStorage.setItem('klru_open', open) } catch {}
+  }, [open])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -117,7 +270,7 @@ const Chatbot = () => {
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
       >
-        <ChibiChat emotion={open ? 'happy' : 'idle'} />
+        <CatChibiFloat emotion={open ? 'happy' : emotion} />
       </div>
 
       {/* 채팅 창 */}
@@ -131,7 +284,7 @@ const Chatbot = () => {
           {/* 헤더 */}
           <div style={{ padding: '14px 18px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7ea8c4' }} />
-            <span style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>bylhn 도우미</span>
+            <span style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>클루</span>
             <button onClick={() => setOpen(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text-light)', lineHeight: 1 }}>×</button>
           </div>
 
@@ -171,7 +324,13 @@ const Chatbot = () => {
           </div>
         </div>
       )}
-      <style>{`@keyframes chatDot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }`}</style>
+      <style>{`
+        @keyframes chatDot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        @keyframes catFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes catBounce { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-12px) scale(1.06)} }
+        @keyframes catShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+        @keyframes catShadow { 0%,100%{transform:scaleX(1);opacity:0.5} 50%{transform:scaleX(0.65);opacity:0.15} }
+      `}</style>
     </>
   )
 }
@@ -562,6 +721,7 @@ const Comments = ({ slug }) => {
   const [msg, setMsg] = useState('')
   const [delId, setDelId] = useState(null)
   const [delPw, setDelPw] = useState('')
+  const commentRef = useRef(null)
 
   const load = () => fetch(`/api/comments?slug=${slug}`).then(r => r.json()).then(setComments).catch(() => {})
   useEffect(() => { load() }, [slug]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -637,8 +797,27 @@ const Comments = ({ slug }) => {
           <input placeholder="이름" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ ...inp, flex: 1 }} required />
           <input type="password" placeholder="비밀번호 (삭제용)" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ ...inp, flex: 1 }} required />
         </div>
-        <textarea placeholder="댓글을 입력하세요..." value={form.content} onChange={e => setForm({ ...form, content: e.target.value })}
-          rows={4} style={{ ...inp, resize: 'vertical', lineHeight: 1.7 }} required />
+        <div style={{ position: 'relative' }}>
+          <textarea ref={commentRef} placeholder="댓글을 입력하세요..." value={form.content} onChange={e => setForm({ ...form, content: e.target.value })}
+            rows={4} style={{ ...inp, resize: 'vertical', lineHeight: 1.7 }} required />
+          <div style={{ marginTop: 6, display: 'flex', gap: 8 }}>
+            <EmojiPicker onSelect={em => {
+              const el = commentRef.current
+              const s = el?.selectionStart ?? form.content.length
+              const next = form.content.slice(0, s) + em + form.content.slice(s)
+              setForm(f => ({ ...f, content: next }))
+              requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+            }} />
+            <StickerPicker onSelect={name => {
+              const tag = `[sticker:${name}]`
+              const el = commentRef.current
+              const s = el?.selectionStart ?? form.content.length
+              const next = form.content.slice(0, s) + tag + form.content.slice(s)
+              setForm(f => ({ ...f, content: next }))
+              requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+            }} />
+          </div>
+        </div>
         {msg && <p style={{ fontSize: 12, color: '#c0392b' }}>{msg}</p>}
         <button type="submit" style={{ alignSelf: 'flex-end', padding: '10px 24px', background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
@@ -655,7 +834,7 @@ const BlogPost = ({ slug, onBack }) => {
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    fetch(`/api/posts/${slug}`).then(r => r.json()).then(data => { setPost(data); setLoading(false) }).catch(() => setLoading(false))
+    fetch(`/api/posts/${encodeURIComponent(slug)}`).then(r => r.json()).then(data => { setPost(data); setLoading(false) }).catch(() => setLoading(false))
   }, [slug])
   if (loading) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)' }}>불러오는 중...</p></div>
   if (!post) return (
@@ -671,8 +850,13 @@ const BlogPost = ({ slug, onBack }) => {
         <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{post.created_at}</span>
         {post.tag && <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--accent)', padding: '3px 8px', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 100 }}>{post.tag}</span>}
       </div>
-      <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 48, wordBreak: 'keep-all' }}>{post.title}</h1>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all' }}>{renderContent(post.content)}</div>
+      <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 20, wordBreak: 'keep-all' }}>{post.title}</h1>
+      <hr style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.12)', marginBottom: 48 }} />
+      <div
+        style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all', userSelect: 'none', WebkitUserSelect: 'none' }}
+        onCopy={e => e.preventDefault()}
+        onContextMenu={e => e.preventDefault()}
+      >{renderContent(post.content)}</div>
       <Comments slug={slug} />
     </article>
   )
@@ -696,39 +880,185 @@ const compressImage = (file) => new Promise(resolve => {
   img.src = url
 })
 
-/* ─── Content renderer (text + images) ─── */
-const renderContent = (text) => {
-  const parts = text.split(/(!\[.*?\]\(.*?\))/g)
-  return parts.map((part, i) => {
-    const m = part.match(/^!\[(.*?)\]\((.*?)\)$/)
-    if (m) return <img key={i} src={m[2]} alt={m[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block' }} />
-    return <span key={i} style={{ whiteSpace: 'pre-wrap' }}>{part}</span>
+/* ─── Content renderer (markdown + images + stickers) ─── */
+const BookmarkCard = ({ url }) => {
+  const [meta, setMeta] = useState(null)
+  useEffect(() => {
+    fetch(`/api/ogp?url=${encodeURIComponent(url)}`).then(r => r.json()).then(setMeta).catch(() => {})
+  }, [url])
+  const display = meta?.title || url
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'stretch', border: '1px solid rgba(0,0,0,0.09)', borderRadius: 10, overflow: 'hidden', margin: '20px 0', textDecoration: 'none', background: '#fafafa', transition: 'box-shadow 0.2s', minHeight: 90 }}
+      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 2px 14px rgba(0,0,0,0.09)'}
+      onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
+      <div style={{ flex: 1, padding: '16px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, overflow: 'hidden' }}>
+        <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{display}</div>
+        {meta?.description && <div style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-muted)', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{meta.description}</div>}
+        <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', marginTop: 2 }}>{meta?.siteName || new URL(url).hostname}</div>
+      </div>
+      {meta?.image && <div style={{ width: 120, flexShrink: 0, background: `url(${meta.image}) center/cover no-repeat` }} />}
+    </a>
+  )
+}
+
+const parseInline = (text) => {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|!\[.*?\]\(.*?\)|\[sticker:[a-z]+\])/g)
+  return parts.map((p, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(p)) return <strong key={i} style={{ fontWeight: 600 }}>{p.slice(2, -2)}</strong>
+    if (/^\*[^*]+\*$/.test(p))   return <em key={i}>{p.slice(1, -1)}</em>
+    const img = p.match(/^!\[(.*?)\]\((.*?)\)$/)
+    if (img) return <img key={i} src={img[2]} alt={img[1]} style={{ maxWidth: '100%', borderRadius: 6, verticalAlign: 'middle' }} />
+    const stk = p.match(/^\[sticker:([a-z]+)\]$/)
+    if (stk) { const C = STICKER_MAP[stk[1]]; return C ? <span key={i} style={{ display: 'inline-block', verticalAlign: 'middle', margin: '0 3px' }}><C /></span> : null }
+    return p
   })
+}
+const renderContent = (text) => {
+  if (!text) return null
+  return text.split('\n').map((line, i) => {
+    if (line.startsWith('## ')) return <h2 key={i} style={{ fontFamily: 'var(--serif)', fontSize: '1.22em', fontWeight: 400, margin: '1.8em 0 0.4em', color: 'var(--text-primary)', lineHeight: 1.4 }}>{parseInline(line.slice(3))}</h2>
+    if (line.startsWith('# '))  return <h1 key={i} style={{ fontFamily: 'var(--serif)', fontSize: '1.5em',  fontWeight: 400, margin: '2em 0 0.5em',   color: 'var(--text-primary)', lineHeight: 1.3 }}>{parseInline(line.slice(2))}</h1>
+    if (line === '---') return <hr key={i} style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.1)', margin: '2em 0' }} />
+    if (line.startsWith('> '))  return <blockquote key={i} style={{ borderLeft: '3px solid var(--accent)', paddingLeft: 16, margin: '0.6em 0', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.9 }}>{parseInline(line.slice(2))}</blockquote>
+    if (line.startsWith('- '))  return <div key={i} style={{ display: 'flex', gap: 10, margin: '0.2em 0', lineHeight: 2 }}><span style={{ color: 'var(--accent)', flexShrink: 0 }}>·</span><span>{parseInline(line.slice(2))}</span></div>
+    const imgM = line.match(/^!\[(.*?)\]\((.*?)\)$/)
+    if (imgM) return <img key={i} src={imgM[2]} alt={imgM[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block' }} />
+    const stkM = line.match(/^\[sticker:([a-z]+)\]$/)
+    if (stkM) { const C = STICKER_MAP[stkM[1]]; return C ? <div key={i} style={{ margin: '6px 0' }}><C /></div> : null }
+    const bkmM = line.match(/^\[bookmark:(https?:\/\/.+)\]$/)
+    if (bkmM) return <BookmarkCard key={i} url={bkmM[1]} />
+    if (/^https?:\/\/\S+$/.test(line.trim())) return <BookmarkCard key={i} url={line.trim()} />
+    if (line === '') return <div key={i} style={{ height: '0.6em' }} />
+    return <p key={i} style={{ margin: 0, lineHeight: 2 }}>{parseInline(line)}</p>
+  })
+}
+
+/* ─── Editor helpers ─── */
+const applyFormat = (el, type, value, setValue) => {
+  const s = el.selectionStart, e = el.selectionEnd
+  const sel = value.slice(s, e)
+  const pre = value.slice(0, s), post = value.slice(e)
+  const lineStart = pre.lastIndexOf('\n') + 1
+  const linePre = value.slice(0, lineStart)
+
+  const wrap = (open, close) => {
+    const txt = sel || '텍스트'
+    setValue(pre + open + txt + close + post)
+    requestAnimationFrame(() => { el.selectionStart = s + open.length; el.selectionEnd = s + open.length + txt.length; el.focus() })
+  }
+  const prefix = (str) => {
+    setValue(linePre + str + value.slice(lineStart))
+    requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = lineStart + str.length + (s - lineStart); el.focus() })
+  }
+  const ins = (str) => {
+    setValue(pre + str + post)
+    requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = s + str.length; el.focus() })
+  }
+  if (type === 'bold')   return wrap('**', '**')
+  if (type === 'italic') return wrap('*', '*')
+  if (type === 'h1')     return prefix('# ')
+  if (type === 'h2')     return prefix('## ')
+  if (type === 'list')   return prefix('- ')
+  if (type === 'quote')  return prefix('> ')
+  if (type === 'hr')     return ins('\n---\n')
+}
+
+const EditorToolbar = ({ textareaRef, content, setContent }) => {
+  const T = (type, label, title) => (
+    <button key={type} type="button" title={title} onClick={() => textareaRef.current && applyFormat(textareaRef.current, type, content, setContent)}
+      style={{ padding: '4px 10px', background: 'none', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 5, fontFamily: 'var(--sans)', fontSize: 12, cursor: 'pointer', color: 'var(--text-muted)', transition: 'all 0.15s', lineHeight: 1.4 }}
+      onMouseEnter={e => { e.currentTarget.style.background = 'rgba(126,168,196,0.1)'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; e.currentTarget.style.color = 'var(--text-muted)' }}>
+      {label}
+    </button>
+  )
+  const Sep = () => <div style={{ width: 1, background: 'rgba(0,0,0,0.1)', margin: '0 2px', alignSelf: 'stretch' }} />
+  return (
+    <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center', padding: '8px 12px', background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.08)', borderBottom: 'none', borderRadius: '8px 8px 0 0' }}>
+      {T('bold',   <b>B</b>,     '굵게 (**text**)')}
+      {T('italic', <i>I</i>,     '기울임 (*text*)')}
+      <Sep />
+      {T('h1',    'H1',          '큰 제목 (# )')}
+      {T('h2',    'H2',          '중간 제목 (## )')}
+      <Sep />
+      {T('list',  '· 목록',      '목록 (- )')}
+      {T('quote', '" 인용',      '인용 (> )')}
+      {T('hr',    '— 구분선',    '가로선 (---)')}
+    </div>
+  )
 }
 
 /* ─── Admin ─── */
 const Admin = () => {
-  const [auth, setAuth] = useState(false)
+  const [auth, setAuth] = useState(!!sessionStorage.getItem('admin_token'))
   const [pw, setPw] = useState('')
   const [tab, setTab] = useState('write')
   const [form, setForm] = useState({ title: '', slug: '', tag: '', excerpt: '', content: '' })
   const [msg, setMsg] = useState('')
   const [posts, setPosts] = useState([])
-  const login = e => { e.preventDefault(); if (pw === 'star6768@@') setAuth(true); else setMsg('비밀번호가 틀렸습니다.') }
+  const [editSlug, setEditSlug] = useState(null)
+  const imgBankRef = useRef([])
+  const getToken = () => `Bearer ${sessionStorage.getItem('admin_token')}`
+  const handle401 = () => { sessionStorage.removeItem('admin_token'); setAuth(false); setMsg('세션이 만료됐습니다. 다시 로그인하세요.') }
+
+  const resolveImgs = (content) =>
+    content.replace(/\[이미지 (\d+)\]/g, (_, n) => {
+      const b = imgBankRef.current[parseInt(n) - 1]
+      return b ? `![image](${b})` : ''
+    })
+  const extractImgs = (content) => {
+    imgBankRef.current = []
+    let n = 0
+    return content.replace(/!\[image\]\(data:[^)]{10,}\)/g, (match) => {
+      imgBankRef.current.push(match.slice('![image]('.length, -1))
+      n++
+      return `[이미지 ${n}]`
+    })
+  }
+
+  const login = async e => {
+    e.preventDefault(); setMsg('확인 중...')
+    const res = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) })
+    const data = await res.json()
+    if (data.token) { sessionStorage.setItem('admin_token', data.token); setAuth(true); setMsg('') }
+    else setMsg(data.error || '비밀번호가 틀렸습니다.')
+  }
   const loadPosts = () => fetch('/api/posts').then(r => r.json()).then(setPosts)
   useEffect(() => { if (auth && tab === 'manage') loadPosts() }, [auth, tab])
   const submit = async e => {
     e.preventDefault(); setMsg('저장 중...')
-    const res = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer star6768@@' }, body: JSON.stringify(form) })
+    const resolved = { ...form, content: resolveImgs(form.content) }
+    const res = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': getToken() }, body: JSON.stringify(resolved) })
+    if (res.status === 401) return handle401()
     const data = await res.json()
-    if (data.ok) { setMsg('글이 저장됐습니다.'); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }) }
+    if (data.ok) { setMsg('글이 저장됐습니다.'); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); imgBankRef.current = [] }
     else setMsg(data.error || '오류가 발생했습니다.')
+  }
+  const submitEdit = async e => {
+    e.preventDefault(); setMsg('수정 중...')
+    const resolved = { ...form, content: resolveImgs(form.content) }
+    const res = await fetch(`/api/posts/${encodeURIComponent(editSlug)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': getToken() }, body: JSON.stringify(resolved) })
+    if (res.status === 401) return handle401()
+    const data = await res.json()
+    if (data.ok) { setMsg('수정됐습니다.'); setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); imgBankRef.current = []; loadPosts() }
+    else setMsg(data.error || '오류가 발생했습니다.')
+  }
+  const startEdit = async post => {
+    setMsg('불러오는 중...')
+    setTab('edit')
+    const full = await fetch(`/api/posts/${encodeURIComponent(post.slug)}`).then(r => r.json())
+    setEditSlug(post.slug)
+    const cleanContent = extractImgs(full.content || '')
+    setForm({ title: full.title || post.title, slug: post.slug, tag: full.tag || '', excerpt: full.excerpt || '', content: cleanContent })
+    setMsg('')
   }
   const deletePost = async slug => {
     if (!confirm(`"${slug}" 글을 삭제할까요?`)) return
-    await fetch(`/api/posts/${slug}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer star6768@@' } })
+    const r = await fetch(`/api/posts/${encodeURIComponent(slug)}`, { method: 'DELETE', headers: { 'Authorization': getToken() } })
+    if (r.status === 401) return handle401()
     loadPosts()
   }
+  const adminContentRef = useRef(null)
   const inp = { width: '100%', padding: '12px 16px', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }
   if (!auth) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
@@ -743,9 +1073,10 @@ const Admin = () => {
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(100px, 12vw, 140px) clamp(24px, 8vw, 80px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
       <div style={{ display: 'flex', gap: 24, marginBottom: 40 }}>
-        {['write', 'manage'].map(t => (
-          <button key={t} onClick={() => setTab(t)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 14, letterSpacing: '0.06em', color: tab === t ? 'var(--text-primary)' : 'var(--text-muted)', borderBottom: tab === t ? '1px solid var(--text-primary)' : '1px solid transparent', paddingBottom: 4 }}>
-            {t === 'write' ? '새 글 쓰기' : '글 관리'}
+        {[['write', '새 글 쓰기'], ['manage', '글 관리'], ...(editSlug ? [['edit', `수정 중: ${editSlug}`]] : [])].map(([t, label]) => (
+          <button key={t} onClick={() => { if (t !== 'edit') { setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); setMsg('') } setTab(t) }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 14, letterSpacing: '0.06em', color: tab === t ? 'var(--text-primary)' : 'var(--text-muted)', borderBottom: tab === t ? '1px solid var(--text-primary)' : '1px solid transparent', paddingBottom: 4 }}>
+            {label}
           </button>
         ))}
       </div>
@@ -755,25 +1086,118 @@ const Admin = () => {
           <input placeholder="슬러그" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} style={inp} required />
           <input placeholder="태그" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} style={inp} />
           <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={inp} />
-          <textarea
-            placeholder="본문... (이미지는 Ctrl+V로 붙여넣기)"
-            value={form.content}
-            onChange={e => setForm({ ...form, content: e.target.value })}
-            onPaste={async e => {
-              const item = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
-              if (!item) return
-              e.preventDefault()
-              const b64 = await compressImage(item.getAsFile())
-              const cursor = e.target.selectionStart
-              const next = form.content.slice(0, cursor) + `![image](${b64})` + form.content.slice(cursor)
-              setForm(f => ({ ...f, content: next }))
-            }}
-            rows={18}
-            style={{ ...inp, resize: 'vertical', lineHeight: 1.8 }}
-            required
-          />
+          <div>
+            <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} />
+            <textarea
+              ref={adminContentRef}
+              placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
+              value={form.content}
+              onChange={e => setForm({ ...form, content: e.target.value })}
+              onPaste={async e => {
+                const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
+                if (imgItem) {
+                  e.preventDefault()
+                  const b64 = await compressImage(imgItem.getAsFile())
+                  imgBankRef.current.push(b64)
+                  const n = imgBankRef.current.length
+                  const cursor = e.target.selectionStart
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
+                  return
+                }
+                const text = e.clipboardData.getData('text').trim()
+                if (/^https?:\/\/\S+$/.test(text)) {
+                  e.preventDefault()
+                  const cursor = e.target.selectionStart
+                  const ins = `\n[bookmark:${text}]\n`
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + ins + f.content.slice(cursor) }))
+                }
+              }}
+              rows={18}
+              style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
+              required
+            />
+            <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
+              <EmojiPicker onSelect={em => {
+                const el = adminContentRef.current
+                const s = el?.selectionStart ?? form.content.length
+                const next = form.content.slice(0, s) + em + form.content.slice(s)
+                setForm(f => ({ ...f, content: next }))
+                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+              }} />
+              <StickerPicker onSelect={name => {
+                const tag = `[sticker:${name}]`
+                const el = adminContentRef.current
+                const s = el?.selectionStart ?? form.content.length
+                const next = form.content.slice(0, s) + tag + form.content.slice(s)
+                setForm(f => ({ ...f, content: next }))
+                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+              }} />
+            </div>
+          </div>
           {msg && <p style={{ fontSize: 13, color: msg.includes('저장됐') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
           <button type="submit" style={{ padding: 14, background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', letterSpacing: '0.06em' }}>발행하기</button>
+        </form>
+      )}
+      {tab === 'edit' && editSlug && (
+        <form onSubmit={submitEdit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <input placeholder="제목" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} style={inp} required />
+          <input value={form.slug} style={{ ...inp, opacity: 0.5 }} disabled title="슬러그는 수정할 수 없습니다" />
+          <input placeholder="태그" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} style={inp} />
+          <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={inp} />
+          <div>
+            <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} />
+            <textarea
+              ref={adminContentRef}
+              placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
+              value={form.content}
+              onChange={e => setForm({ ...form, content: e.target.value })}
+              onPaste={async e => {
+                const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
+                if (imgItem) {
+                  e.preventDefault()
+                  const b64 = await compressImage(imgItem.getAsFile())
+                  imgBankRef.current.push(b64)
+                  const n = imgBankRef.current.length
+                  const cursor = e.target.selectionStart
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
+                  return
+                }
+                const text = e.clipboardData.getData('text').trim()
+                if (/^https?:\/\/\S+$/.test(text)) {
+                  e.preventDefault()
+                  const cursor = e.target.selectionStart
+                  const ins = `\n[bookmark:${text}]\n`
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + ins + f.content.slice(cursor) }))
+                }
+              }}
+              rows={18}
+              style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
+              required
+            />
+            <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
+              <EmojiPicker onSelect={em => {
+                const el = adminContentRef.current
+                const s = el?.selectionStart ?? form.content.length
+                const next = form.content.slice(0, s) + em + form.content.slice(s)
+                setForm(f => ({ ...f, content: next }))
+                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+              }} />
+              <StickerPicker onSelect={name => {
+                const tag = `[sticker:${name}]`
+                const el = adminContentRef.current
+                const s = el?.selectionStart ?? form.content.length
+                const next = form.content.slice(0, s) + tag + form.content.slice(s)
+                setForm(f => ({ ...f, content: next }))
+                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+              }} />
+            </div>
+          </div>
+          {msg && <p style={{ fontSize: 13, color: msg.includes('수정됐') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button type="submit" style={{ flex: 1, padding: 14, background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', letterSpacing: '0.06em' }}>수정 저장</button>
+            <button type="button" onClick={() => { setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); setMsg(''); setTab('manage') }}
+              style={{ padding: '14px 20px', background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', color: 'var(--text-muted)' }}>취소</button>
+          </div>
         </form>
       )}
       {tab === 'manage' && (
@@ -785,7 +1209,10 @@ const Admin = () => {
                 <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-primary)', marginBottom: 4 }}>{post.title}</p>
                 <p style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-light)' }}>{post.created_at} · {post.tag}</p>
               </div>
-              <button onClick={() => deletePost(post.slug)} style={{ background: 'none', border: '1px solid rgba(192,57,43,0.3)', borderRadius: 6, padding: '6px 14px', fontFamily: 'var(--sans)', fontSize: 12, color: '#c0392b', cursor: 'pointer' }}>삭제</button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button onClick={() => startEdit(post)} style={{ background: 'none', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 6, padding: '6px 14px', fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)', cursor: 'pointer' }}>수정</button>
+                <button onClick={() => deletePost(post.slug)} style={{ background: 'none', border: '1px solid rgba(192,57,43,0.3)', borderRadius: 6, padding: '6px 14px', fontFamily: 'var(--sans)', fontSize: 12, color: '#c0392b', cursor: 'pointer' }}>삭제</button>
+              </div>
             </div>
           ))}
         </div>
@@ -807,7 +1234,9 @@ export default function App() {
   const init = getPageFromPath(window.location.pathname)
   const [page, setPage] = useState(init.page)
   const [postSlug, setPostSlug] = useState(init.slug)
-  const [intro, setIntro] = useState(true)
+  const [intro, setIntro] = useState(() => {
+    try { return !localStorage.getItem('klru_visited') } catch { return true }
+  })
   const [fadeIn, setFadeIn] = useState(true)
 
   useReveal()
@@ -829,7 +1258,10 @@ export default function App() {
 
   const onPost = slug => { window.history.pushState({}, '', `/blog/${slug}`); setPostSlug(slug); setPage('post'); window.scrollTo(0, 0) }
   const onBack = () => { window.history.pushState({}, '', '/blog'); setPage('blog'); window.scrollTo(0, 0) }
-  const onIntroDone = () => { setIntro(false); setTimeout(() => setFadeIn(false), 800) }
+  const onIntroDone = () => {
+    try { localStorage.setItem('klru_visited', '1') } catch {}
+    setIntro(false); setTimeout(() => setFadeIn(false), 800)
+  }
 
   if (page === 'admin') return <Admin />
 
