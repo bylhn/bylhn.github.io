@@ -212,6 +212,9 @@
         <span class="section-label">Categories</span>
         <h2 class="section-title">주제별 기록</h2>
       </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button id="expandAll" onclick="toggleAll()" style="font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--accent);background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;cursor:pointer;transition:border-color .2s;">전체 펼치기</button>
+      </div>
       <div class="cat-grid" id="catGrid">
         <div class="state-msg">불러오는 중...</div>
       </div>
@@ -371,6 +374,13 @@
         `;
         tl.appendChild(block);
       });
+    }
+
+    let allOpen = false;
+    function toggleAll() {
+      allOpen = !allOpen;
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.toggle('open', allOpen));
+      document.getElementById('expandAll').textContent = allOpen ? '전체 접기' : '전체 펼치기';
     }
 
     load();
