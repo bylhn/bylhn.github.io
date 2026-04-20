@@ -1,9 +1,10 @@
 const ADMIN_PASSWORD = 'star6768@@'
 
 export async function onRequestGet({ params, env }) {
+  const slug = decodeURIComponent(params.slug)
   const post = await env.DB.prepare(
     'SELECT * FROM posts WHERE slug = ? AND published = 1'
-  ).bind(params.slug).first()
+  ).bind(slug).first()
 
   if (!post) {
     return Response.json({ error: 'Not found' }, { status: 404 })
@@ -17,6 +18,6 @@ export async function onRequestDelete({ params, request, env }) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  await env.DB.prepare('DELETE FROM posts WHERE slug = ?').bind(params.slug).run()
+  await env.DB.prepare('DELETE FROM posts WHERE slug = ?').bind(decodeURIComponent(params.slug)).run()
   return Response.json({ ok: true })
 }
