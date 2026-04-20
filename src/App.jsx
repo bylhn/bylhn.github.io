@@ -1237,7 +1237,9 @@ export default function App() {
   const [intro, setIntro] = useState(() => {
     try { return !localStorage.getItem('klru_visited') } catch { return true }
   })
-  const [fadeIn, setFadeIn] = useState(true)
+  const [fadeIn, setFadeIn] = useState(() => {
+    try { return !localStorage.getItem('klru_visited') } catch { return true }
+  })
 
   useReveal()
 
