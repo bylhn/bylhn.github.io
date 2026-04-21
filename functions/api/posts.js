@@ -7,7 +7,7 @@ export async function onRequestGet({ env }) {
 
 export async function onRequestPost({ request, env }) {
   const auth = request.headers.get('Authorization')
-  const adminPassword = env.ADMIN_PASSWORD
+  const adminPassword = env.ADMIN_SECRET
   if (!adminPassword || auth !== `Bearer ${adminPassword}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
