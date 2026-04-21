@@ -1330,7 +1330,7 @@ const Admin = () => {
 
 /* ─── Router ─── */
 const getPageFromPath = path => {
-  if (path === '/admin') return { page: 'admin', slug: '' }
+  if (path === '/bylhn') return { page: 'admin', slug: '' }
   if (path === '/blog') return { page: 'blog', slug: '' }
   if (path.startsWith('/blog/')) return { page: 'post', slug: path.replace('/blog/', '') }
   return { page: 'home', slug: '' }
