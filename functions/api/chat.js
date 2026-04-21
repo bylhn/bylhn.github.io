@@ -1,6 +1,17 @@
 export async function onRequestPost({ request, env }) {
+  // Origin 체크 - bylhn.com에서 온 요청만 허용
+  const origin = request.headers.get('Origin') || ''
+  if (!origin.includes('bylhn.com') && !origin.includes('localhost')) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   const { message, history = [] } = await request.json()
   if (!message) return Response.json({ error: 'message required' }, { status: 400 })
+
+  // 메시지 길이 제한 (뉴런 낭비 방지)
+  if (message.length > 300) {
+    return Response.json({ error: '메시지는 300자 이하로 입력해주세요.' }, { status: 400 })
+  }
 
   // 블로그 글 가져오기
   const { results: posts } = await env.DB.prepare(
@@ -20,14 +31,14 @@ export async function onRequestPost({ request, env }) {
 ${postContext}`
 
   const messages = [
-    ...history.slice(-6).map(h => ({ role: h.role, content: h.content })),
+    ...history.slice(-4).map(h => ({ role: h.role, content: h.content })),
     { role: 'user', content: message }
   ]
 
   const response = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
     system: systemPrompt,
     messages,
-    max_tokens: 300,
+    max_tokens: 200,
   })
 
   const reply = response.response || '잠깐, 생각 중이에요...'
