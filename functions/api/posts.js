@@ -1,5 +1,3 @@
-const ADMIN_PASSWORD = 'star6768@@'
-
 export async function onRequestGet({ env }) {
   const { results } = await env.DB.prepare(
     'SELECT id, slug, title, excerpt, tag, created_at FROM posts WHERE published = 1 ORDER BY id DESC'
@@ -9,7 +7,8 @@ export async function onRequestGet({ env }) {
 
 export async function onRequestPost({ request, env }) {
   const auth = request.headers.get('Authorization')
-  if (auth !== `Bearer ${ADMIN_PASSWORD}`) {
+  const adminPassword = env.ADMIN_PASSWORD
+  if (!adminPassword || auth !== `Bearer ${adminPassword}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
