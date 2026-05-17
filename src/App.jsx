@@ -1380,13 +1380,13 @@ export default function App() {
       {!intro && <Chatbot />}
       {intro && <IntroOverlay onDone={onIntroDone} />}
       {!intro && page === 'home' && <MainPage onNav={onNav} />}
-      {!intro && page !== 'home' && (
+      {!intro && page === 'admin' && <Admin />}
+      {!intro && page !== 'home' && page !== 'admin' && (
         <div style={{ transition: 'opacity 1s ease', opacity: fadeIn ? 0 : 1 }}>
           <Nav onNav={onNav} />
           <main>
             {page === 'blog' && <><div style={{ paddingTop: 80 }} /><BlogList onPost={onPost} /></>}
             {page === 'post' && <BlogPost slug={postSlug} onBack={onBack} />}
-            {page === 'admin' && <Admin />}
           </main>
         </div>
       )}
