@@ -9,3 +9,7 @@ database_id = "da15b40c-4d47-45e4-a5cf-51c2f554029a"
 
 [ai]
 binding = "AI"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "bylhn-images"
