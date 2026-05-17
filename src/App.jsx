@@ -1386,6 +1386,7 @@ export default function App() {
           <main>
             {page === 'blog' && <><div style={{ paddingTop: 80 }} /><BlogList onPost={onPost} /></>}
             {page === 'post' && <BlogPost slug={postSlug} onBack={onBack} />}
+            {page === 'admin' && <Admin />}
           </main>
         </div>
       )}
