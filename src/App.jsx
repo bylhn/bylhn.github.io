@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { marked } from 'marked'
 
 /* ─── Pixel Cat Float (chat emotions) ─── */
 // 감정별 눈/입 픽셀 (row 4,5 = 눈, row 7,8 = 입)
@@ -987,6 +988,30 @@ const compressImage = (file) => new Promise(resolve => {
   img.src = url
 })
 
+/* ─── R2 image upload ─── */
+const uploadImageToR2 = async (file, token) => {
+  const compressed = await compressImage(file)
+  const blob = await fetch(compressed).then(r => r.blob())
+  const ext = blob.type.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg'
+  const fd = new FormData()
+  fd.append('file', new File([blob], `image.${ext}`, { type: blob.type }))
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` },
+    body: fd,
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || '업로드 실패')
+  return data.url
+}
+
+/* ─── Markdown renderer (marked + raw HTML for Notion compatibility) ─── */
+const renderMarkdown = (text) => {
+  if (!text) return ''
+  const result = marked.parse(text)
+  return typeof result === 'string' ? result : ''
+}
+
 /* ─── Content renderer (markdown + images + stickers) ─── */
 const BookmarkCard = ({ url }) => {
   const [meta, setMeta] = useState(null)
@@ -1100,13 +1125,49 @@ const Admin = () => {
   const [auth, setAuth] = useState(!!sessionStorage.getItem('admin_token'))
   const [pw, setPw] = useState('')
   const [tab, setTab] = useState('write')
-  const [form, setForm] = useState({ title: '', slug: '', tag: '', excerpt: '', content: '' })
+  const [form, setForm] = useState({ title: '', slug: '', tag: '', thumbnail: '', excerpt: '', content: '' })
   const [msg, setMsg] = useState('')
   const [posts, setPosts] = useState([])
   const [editSlug, setEditSlug] = useState(null)
+  const [wide, setWide] = useState(window.innerWidth >= 900)
+  useEffect(() => {
+    const onResize = () => setWide(window.innerWidth >= 900)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
   const imgBankRef = useRef([])
   const getToken = () => `Bearer ${sessionStorage.getItem('admin_token')}`
   const handle401 = () => { sessionStorage.removeItem('admin_token'); setAuth(false); setMsg('세션이 만료됐습니다. 다시 로그인하세요.') }
+
+  const handleImageUpload = async (file) => {
+    const pid = `[uploading-${Date.now()}]`
+    setForm(f => ({ ...f, content: f.content + '\n' + pid }))
+    setMsg('이미지 업로드 중...')
+    try {
+      const url = await uploadImageToR2(file, sessionStorage.getItem('admin_token'))
+      setForm(f => ({ ...f, content: f.content.replace(pid, `![image](${url})`) }))
+      setMsg('')
+    } catch (err) {
+      setForm(f => ({ ...f, content: f.content.replace(pid, '') }))
+      setMsg('이미지 업로드 실패: ' + err.message)
+    }
+  }
+
+  const [excerptLoading, setExcerptLoading] = useState(false)
+  const autoExcerpt = async () => {
+    if (!form.content) return setMsg('본문을 먼저 입력해주세요.')
+    setExcerptLoading(true); setMsg('')
+    try {
+      const res = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': getToken() },
+        body: JSON.stringify({ title: form.title, content: form.content }),
+      })
+      if (res.status === 401) return handle401()
+      const data = await res.json()
+      if (data.excerpt) setForm(f => ({ ...f, excerpt: data.excerpt }))
+    } finally { setExcerptLoading(false) }
+  }
 
   const resolveImgs = (content) =>
     content.replace(/\[이미지 (\d+)\]/g, (_, n) => {
@@ -1138,7 +1199,7 @@ const Admin = () => {
     const res = await fetch('/api/posts', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': getToken() }, body: JSON.stringify(resolved) })
     if (res.status === 401) return handle401()
     const data = await res.json()
-    if (data.ok) { setMsg('글이 저장됐습니다.'); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); imgBankRef.current = [] }
+    if (data.ok) { setMsg('글이 저장됐습니다.'); setForm({ title: '', slug: '', tag: '', thumbnail: '', excerpt: '', content: '' }); imgBankRef.current = [] }
     else setMsg(data.error || '오류가 발생했습니다.')
   }
   const submitEdit = async e => {
@@ -1147,7 +1208,7 @@ const Admin = () => {
     const res = await fetch(`/api/posts/${encodeURIComponent(editSlug)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': getToken() }, body: JSON.stringify(resolved) })
     if (res.status === 401) return handle401()
     const data = await res.json()
-    if (data.ok) { setMsg('수정됐습니다.'); setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); imgBankRef.current = []; loadPosts() }
+    if (data.ok) { setMsg('수정됐습니다.'); setEditSlug(null); setForm({ title: '', slug: '', tag: '', thumbnail: '', excerpt: '', content: '' }); imgBankRef.current = []; loadPosts() }
     else setMsg(data.error || '오류가 발생했습니다.')
   }
   const startEdit = async post => {
@@ -1156,7 +1217,7 @@ const Admin = () => {
     const full = await fetch(`/api/posts/${encodeURIComponent(post.slug)}`).then(r => r.json())
     setEditSlug(post.slug)
     const cleanContent = extractImgs(full.content || '')
-    setForm({ title: full.title || post.title, slug: post.slug, tag: full.tag || '', excerpt: full.excerpt || '', content: cleanContent })
+    setForm({ title: full.title || post.title, slug: post.slug, tag: full.tag || '', thumbnail: full.thumbnail || '', excerpt: full.excerpt || '', content: cleanContent })
     setMsg('')
   }
   const deletePost = async slug => {
@@ -1178,10 +1239,10 @@ const Admin = () => {
     </div>
   )
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(100px, 12vw, 140px) clamp(24px, 8vw, 80px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'clamp(100px, 12vw, 140px) clamp(24px, 4vw, 60px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
       <div style={{ display: 'flex', gap: 24, marginBottom: 40 }}>
         {[['write', '새 글 쓰기'], ['manage', '글 관리'], ...(editSlug ? [['edit', `수정 중: ${editSlug}`]] : [])].map(([t, label]) => (
-          <button key={t} onClick={() => { if (t !== 'edit') { setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); setMsg('') } setTab(t) }}
+          <button key={t} onClick={() => { if (t !== 'edit') { setEditSlug(null); setForm({ title: '', slug: '', tag: '', thumbnail: '', excerpt: '', content: '' }); setMsg('') } setTab(t) }}
             style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 14, letterSpacing: '0.06em', color: tab === t ? 'var(--text-primary)' : 'var(--text-muted)', borderBottom: tab === t ? '1px solid var(--text-primary)' : '1px solid transparent', paddingBottom: 4 }}>
             {label}
           </button>
@@ -1192,53 +1253,78 @@ const Admin = () => {
           <input placeholder="제목" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} style={inp} required />
           <input placeholder="슬러그" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} style={inp} required />
           <input placeholder="태그" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} style={inp} />
-          <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={inp} />
-          <div>
-            <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} />
-            <textarea
-              ref={adminContentRef}
-              placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
-              value={form.content}
-              onChange={e => setForm({ ...form, content: e.target.value })}
-              onPaste={async e => {
-                const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
-                if (imgItem) {
-                  e.preventDefault()
-                  const b64 = await compressImage(imgItem.getAsFile())
-                  imgBankRef.current.push(b64)
-                  const n = imgBankRef.current.length
-                  const cursor = e.target.selectionStart
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
-                  return
+          <input placeholder="썸네일 URL (예: https://...jpg)" value={form.thumbnail || ''} onChange={e => setForm({ ...form, thumbnail: e.target.value })} style={inp} />
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={{ ...inp, flex: 1 }} />
+            <button type="button" onClick={autoExcerpt} disabled={excerptLoading}
+              style={{ padding: '12px 16px', background: excerptLoading ? 'rgba(126,168,196,0.4)' : 'rgba(126,168,196,0.15)', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--accent)', cursor: excerptLoading ? 'default' : 'pointer', whiteSpace: 'nowrap', transition: 'all 0.2s' }}>
+              {excerptLoading ? '생성 중...' : '✨ 자동생성'}
+            </button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: 20, alignItems: 'start' }}>
+            <div>
+              <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} onImageUpload={handleImageUpload} />
+              <textarea
+                ref={adminContentRef}
+                placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
+                value={form.content}
+                onChange={e => setForm({ ...form, content: e.target.value })}
+                onPaste={async e => {
+                  const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
+                  if (imgItem) {
+                    e.preventDefault()
+                    const file = imgItem.getAsFile()
+                    const pid = `[uploading-${Date.now()}]`
+                    const pos = e.target.selectionStart
+                    setForm(f => ({ ...f, content: f.content.slice(0, pos) + pid + f.content.slice(pos) }))
+                    setMsg('이미지 업로드 중...')
+                    try {
+                      const url = await uploadImageToR2(file, sessionStorage.getItem('admin_token'))
+                      setForm(f => ({ ...f, content: f.content.replace(pid, `![image](${url})`) }))
+                      setMsg('')
+                    } catch (err) {
+                      setForm(f => ({ ...f, content: f.content.replace(pid, '') }))
+                      setMsg('이미지 업로드 실패: ' + err.message)
+                    }
+                    return
+                  }
+                  const text = e.clipboardData.getData('text').trim()
+                  if (/^https?:\/\/\S+$/.test(text)) {
+                    e.preventDefault()
+                    const cursor = e.target.selectionStart
+                    setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `\n[bookmark:${text}]\n` + f.content.slice(cursor) }))
+                  }
+                }}
+                rows={18}
+                style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
+                required
+              />
+              <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
+                <EmojiPicker onSelect={em => {
+                  const el = adminContentRef.current
+                  const s = el?.selectionStart ?? form.content.length
+                  const next = form.content.slice(0, s) + em + form.content.slice(s)
+                  setForm(f => ({ ...f, content: next }))
+                  requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+                }} />
+                <StickerPicker onSelect={name => {
+                  const tag = `[sticker:${name}]`
+                  const el = adminContentRef.current
+                  const s = el?.selectionStart ?? form.content.length
+                  const next = form.content.slice(0, s) + tag + form.content.slice(s)
+                  setForm(f => ({ ...f, content: next }))
+                  requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+                }} />
+              </div>
+            </div>
+            <div style={{ border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, overflow: 'hidden', minHeight: 400, background: 'var(--bg)' }}>
+              <div style={{ padding: '8px 16px', background: 'rgba(0,0,0,0.02)', borderBottom: '1px solid rgba(0,0,0,0.08)', fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-light)', letterSpacing: '0.08em' }}>미리보기</div>
+              <div style={{ padding: '20px 24px', fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--text-primary)', lineHeight: 2, wordBreak: 'keep-all' }}>
+                {form.content
+                  ? <div className="md-content" dangerouslySetInnerHTML={{ __html: renderMarkdown(resolveImgs(form.content)) }} />
+                  : <span style={{ color: 'var(--text-light)', fontSize: 13 }}>내용을 입력하면 미리보기가 표시됩니다.</span>
                 }
-                const text = e.clipboardData.getData('text').trim()
-                if (/^https?:\/\/\S+$/.test(text)) {
-                  e.preventDefault()
-                  const cursor = e.target.selectionStart
-                  const ins = `\n[bookmark:${text}]\n`
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + ins + f.content.slice(cursor) }))
-                }
-              }}
-              rows={18}
-              style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
-              required
-            />
-            <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-              <EmojiPicker onSelect={em => {
-                const el = adminContentRef.current
-                const s = el?.selectionStart ?? form.content.length
-                const next = form.content.slice(0, s) + em + form.content.slice(s)
-                setForm(f => ({ ...f, content: next }))
-                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
-              }} />
-              <StickerPicker onSelect={name => {
-                const tag = `[sticker:${name}]`
-                const el = adminContentRef.current
-                const s = el?.selectionStart ?? form.content.length
-                const next = form.content.slice(0, s) + tag + form.content.slice(s)
-                setForm(f => ({ ...f, content: next }))
-                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
-              }} />
+              </div>
             </div>
           </div>
           {msg && <p style={{ fontSize: 13, color: msg.includes('저장됐') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
@@ -1250,59 +1336,84 @@ const Admin = () => {
           <input placeholder="제목" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} style={inp} required />
           <input value={form.slug} style={{ ...inp, opacity: 0.5 }} disabled title="슬러그는 수정할 수 없습니다" />
           <input placeholder="태그" value={form.tag} onChange={e => setForm({ ...form, tag: e.target.value })} style={inp} />
-          <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={inp} />
-          <div>
-            <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} />
-            <textarea
-              ref={adminContentRef}
-              placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
-              value={form.content}
-              onChange={e => setForm({ ...form, content: e.target.value })}
-              onPaste={async e => {
-                const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
-                if (imgItem) {
-                  e.preventDefault()
-                  const b64 = await compressImage(imgItem.getAsFile())
-                  imgBankRef.current.push(b64)
-                  const n = imgBankRef.current.length
-                  const cursor = e.target.selectionStart
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
-                  return
+          <input placeholder="썸네일 URL (예: https://...jpg)" value={form.thumbnail || ''} onChange={e => setForm({ ...form, thumbnail: e.target.value })} style={inp} />
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <input placeholder="요약" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} style={{ ...inp, flex: 1 }} />
+            <button type="button" onClick={autoExcerpt} disabled={excerptLoading}
+              style={{ padding: '12px 16px', background: excerptLoading ? 'rgba(126,168,196,0.4)' : 'rgba(126,168,196,0.15)', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--accent)', cursor: excerptLoading ? 'default' : 'pointer', whiteSpace: 'nowrap', transition: 'all 0.2s' }}>
+              {excerptLoading ? '생성 중...' : '✨ 자동생성'}
+            </button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: wide ? '1fr 1fr' : '1fr', gap: 20, alignItems: 'start' }}>
+            <div>
+              <EditorToolbar textareaRef={adminContentRef} content={form.content} setContent={v => setForm(f => ({ ...f, content: v }))} onImageUpload={handleImageUpload} />
+              <textarea
+                ref={adminContentRef}
+                placeholder="본문을 입력하세요... (이미지 Ctrl+V)"
+                value={form.content}
+                onChange={e => setForm({ ...form, content: e.target.value })}
+                onPaste={async e => {
+                  const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
+                  if (imgItem) {
+                    e.preventDefault()
+                    const file = imgItem.getAsFile()
+                    const pid = `[uploading-${Date.now()}]`
+                    const pos = e.target.selectionStart
+                    setForm(f => ({ ...f, content: f.content.slice(0, pos) + pid + f.content.slice(pos) }))
+                    setMsg('이미지 업로드 중...')
+                    try {
+                      const url = await uploadImageToR2(file, sessionStorage.getItem('admin_token'))
+                      setForm(f => ({ ...f, content: f.content.replace(pid, `![image](${url})`) }))
+                      setMsg('')
+                    } catch (err) {
+                      setForm(f => ({ ...f, content: f.content.replace(pid, '') }))
+                      setMsg('이미지 업로드 실패: ' + err.message)
+                    }
+                    return
+                  }
+                  const text = e.clipboardData.getData('text').trim()
+                  if (/^https?:\/\/\S+$/.test(text)) {
+                    e.preventDefault()
+                    const cursor = e.target.selectionStart
+                    setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `\n[bookmark:${text}]\n` + f.content.slice(cursor) }))
+                  }
+                }}
+                rows={18}
+                style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
+                required
+              />
+              <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
+                <EmojiPicker onSelect={em => {
+                  const el = adminContentRef.current
+                  const s = el?.selectionStart ?? form.content.length
+                  const next = form.content.slice(0, s) + em + form.content.slice(s)
+                  setForm(f => ({ ...f, content: next }))
+                  requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+                }} />
+                <StickerPicker onSelect={name => {
+                  const tag = `[sticker:${name}]`
+                  const el = adminContentRef.current
+                  const s = el?.selectionStart ?? form.content.length
+                  const next = form.content.slice(0, s) + tag + form.content.slice(s)
+                  setForm(f => ({ ...f, content: next }))
+                  requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+                }} />
+              </div>
+            </div>
+            <div style={{ border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, overflow: 'hidden', minHeight: 400, background: 'var(--bg)' }}>
+              <div style={{ padding: '8px 16px', background: 'rgba(0,0,0,0.02)', borderBottom: '1px solid rgba(0,0,0,0.08)', fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-light)', letterSpacing: '0.08em' }}>미리보기</div>
+              <div style={{ padding: '20px 24px', fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--text-primary)', lineHeight: 2, wordBreak: 'keep-all' }}>
+                {form.content
+                  ? <div className="md-content" dangerouslySetInnerHTML={{ __html: renderMarkdown(resolveImgs(form.content)) }} />
+                  : <span style={{ color: 'var(--text-light)', fontSize: 13 }}>내용을 입력하면 미리보기가 표시됩니다.</span>
                 }
-                const text = e.clipboardData.getData('text').trim()
-                if (/^https?:\/\/\S+$/.test(text)) {
-                  e.preventDefault()
-                  const cursor = e.target.selectionStart
-                  const ins = `\n[bookmark:${text}]\n`
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + ins + f.content.slice(cursor) }))
-                }
-              }}
-              rows={18}
-              style={{ ...inp, resize: 'vertical', lineHeight: 1.8, borderRadius: '0 0 8px 8px', borderTop: 'none' }}
-              required
-            />
-            <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-              <EmojiPicker onSelect={em => {
-                const el = adminContentRef.current
-                const s = el?.selectionStart ?? form.content.length
-                const next = form.content.slice(0, s) + em + form.content.slice(s)
-                setForm(f => ({ ...f, content: next }))
-                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
-              }} />
-              <StickerPicker onSelect={name => {
-                const tag = `[sticker:${name}]`
-                const el = adminContentRef.current
-                const s = el?.selectionStart ?? form.content.length
-                const next = form.content.slice(0, s) + tag + form.content.slice(s)
-                setForm(f => ({ ...f, content: next }))
-                requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
-              }} />
+              </div>
             </div>
           </div>
           {msg && <p style={{ fontSize: 13, color: msg.includes('수정됐') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
           <div style={{ display: 'flex', gap: 12 }}>
             <button type="submit" style={{ flex: 1, padding: 14, background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', letterSpacing: '0.06em' }}>수정 저장</button>
-            <button type="button" onClick={() => { setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); setMsg(''); setTab('manage') }}
+            <button type="button" onClick={() => { setEditSlug(null); setForm({ title: '', slug: '', tag: '', thumbnail: '', excerpt: '', content: '' }); setMsg(''); setTab('manage') }}
               style={{ padding: '14px 20px', background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 14, cursor: 'pointer', color: 'var(--text-muted)' }}>취소</button>
           </div>
         </form>
@@ -1327,6 +1438,58 @@ const Admin = () => {
     </div>
   )
 }
+
+/* ─── Contact (Restored) ─── */
+const Contact = () => {
+  return (
+    <div style={{ 
+      minHeight: '100vh', background: '#0a0a0f', color: '#eef3ff',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      padding: '80px 24px', position: 'relative', overflow: 'hidden'
+    }}>
+      {/* Scanlines effect for dark theme */}
+      <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,.15) 3px, rgba(0,0,0,.15) 4px)', pointerEvents: 'none' }} />
+      
+      <div style={{ zIndex: 1, textAlign: 'center' }}>
+        <div style={{ marginBottom: 32 }}>
+          <CatChibiFloat emotion="happy" />
+        </div>
+        <h1 style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '2.5rem', letterSpacing: '0.2em', marginBottom: 16, color: '#3a8aff' }}>CONTACT</h1>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--text-light)', marginBottom: 48, opacity: 0.8 }}> traces recorded reveal truth </p>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'center' }}>
+          <a href="mailto:contact@bylhn.com" style={{ 
+            fontFamily: 'Share Tech Mono, monospace', fontSize: '1.2rem', color: '#eef3ff', 
+            textDecoration: 'none', padding: '12px 24px', border: '1px solid rgba(58,138,255,0.3)',
+            borderRadius: 8, transition: 'all 0.3s'
+          }} onMouseEnter={e => { e.target.style.background='rgba(58,138,255,0.1)'; e.target.style.borderColor='#3a8aff' }}
+             onMouseLeave={e => { e.target.style.background='none'; e.target.style.borderColor='rgba(58,138,255,0.3)' }}>
+            contact@bylhn.com
+          </a>
+          <a href="https://github.com/bylhn" target="_blank" rel="noreferrer" style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-light)', textDecoration: 'none', opacity: 0.6 }}>GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Portfolio (Restored Container) ─── */
+const Portfolio = () => {
+  return (
+    <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: '120px 24px 80px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+        <h1 style={{ fontFamily: 'var(--serif)', fontSize: '2.8rem', fontWeight: 300, color: 'var(--text-primary)', marginBottom: 12 }}>Portfolio</h1>
+        <div style={{ width: 40, height: 2, background: 'var(--accent)', marginBottom: 48 }} />
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-muted)', lineHeight: 1.8 }}>
+          디지털 포렌식 전문가로서 기록해온 흔적들을 정리 중입니다.
+        </p>
+        {/* 기존에 Portfolio 내부에 있던 카드들은 Activities 섹션에 구현되어 있으므로, 
+            사용자님이 원하셨던 전용 페이지 구성을 여기에 추가하겠습니다. */}
+      </div>
+    </div>
+  )
+}
+
 
 /* ─── Router ─── */
 const getPageFromPath = path => {
