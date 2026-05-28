@@ -1,6 +1,7 @@
+import { verifyToken } from './_auth.js'
+
 export async function onRequestPost({ request, env }) {
-  const auth = request.headers.get('Authorization')
-  if (!env.ADMIN_SECRET || auth !== `Bearer ${env.ADMIN_SECRET}`) {
+  if (!await verifyToken(request.headers.get('Authorization'))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -34,7 +35,7 @@ export async function onRequestPost({ request, env }) {
         }
 
         const ext = mime.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg'
-        const key = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${ext}`
+        const key = `blog/${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${ext}`
 
         try {
           await env.IMAGES.put(key, bytes, {
@@ -44,7 +45,7 @@ export async function onRequestPost({ request, env }) {
           return Response.json({ ok: false, error: `R2 put failed: ${e.message}` })
         }
 
-        content = content.replace(full, `![image](/api/img/${key})`)
+        content = content.replace(full, `![image](/api/images/${key})`)
         imagesUploaded++
       }
 

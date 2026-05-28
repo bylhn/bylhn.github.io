@@ -1,17 +1,23 @@
+import { verifyToken } from './_auth.js'
+
 export async function onRequestPost({ request, env }) {
-  const auth = request.headers.get('Authorization')
-  if (!env.ADMIN_SECRET || auth !== `Bearer ${env.ADMIN_SECRET}`) {
+  if (!await verifyToken(request.headers.get('Authorization'))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const formData = await request.formData()
   const file = formData.get('file')
-  if (!file) return Response.json({ error: 'No file' }, { status: 400 })
 
-  const key = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}.jpg`
-  await env.IMAGES.put(key, file.stream(), {
-    httpMetadata: { contentType: file.type || 'image/jpeg' },
+  if (!file || !file.type?.startsWith('image/')) {
+    return Response.json({ error: 'Image file required' }, { status: 400 })
+  }
+
+  const ext = file.type.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg'
+  const key = `blog/${Date.now()}-${crypto.randomUUID().slice(0, 8)}.${ext}`
+
+  await env.IMAGES.put(key, await file.arrayBuffer(), {
+    httpMetadata: { contentType: file.type },
   })
 
-  return Response.json({ url: `/api/img/${key}` })
+  return Response.json({ url: `/api/images/${key}` })
 }

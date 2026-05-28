@@ -1,3 +1,5 @@
+import { verifyToken } from '../_auth.js'
+
 export async function onRequestGet({ params, env }) {
   const slug = decodeURIComponent(params.slug)
   const post = await env.DB.prepare(
@@ -11,9 +13,7 @@ export async function onRequestGet({ params, env }) {
 }
 
 export async function onRequestDelete({ params, request, env }) {
-  const auth = request.headers.get('Authorization')
-  const adminPassword = env.ADMIN_SECRET
-  if (!adminPassword || auth !== `Bearer ${adminPassword}`) {
+  if (!await verifyToken(request.headers.get('Authorization'))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -22,9 +22,7 @@ export async function onRequestDelete({ params, request, env }) {
 }
 
 export async function onRequestPut({ params, request, env }) {
-  const auth = request.headers.get('Authorization')
-  const adminPassword = env.ADMIN_SECRET
-  if (!adminPassword || auth !== `Bearer ${adminPassword}`) {
+  if (!await verifyToken(request.headers.get('Authorization'))) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
