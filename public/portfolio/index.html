@@ -593,6 +593,53 @@
     .klru-send:hover { background: #5a8aa3; }
     .klru-send:disabled { opacity: .5; cursor: default; }
 
+    /* ── FLIPBOOK ── */
+    .fb-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: rgba(8,8,8,.92);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 16px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .fb-overlay.open { opacity: 1; pointer-events: all; }
+    .fb-wrap { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .fb-close {
+      position: absolute; top: -44px; right: 0;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px; color: rgba(255,255,255,.8);
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      letter-spacing: .06em; padding: 6px 16px; cursor: pointer;
+      transition: background .2s;
+    }
+    .fb-close:hover { background: rgba(255,255,255,.2); }
+    #fb-el { box-shadow: 0 32px 80px rgba(0,0,0,.7); }
+    .fb-controls { display: flex; align-items: center; gap: 16px; }
+    .fb-btn {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px; color: rgba(255,255,255,.85);
+      width: 40px; height: 36px; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .fb-btn:hover { background: rgba(255,255,255,.2); }
+    .fb-info {
+      font-family: var(--sans); font-size: 11px; color: rgba(255,255,255,.45);
+      letter-spacing: .08em; min-width: 56px; text-align: center;
+    }
+    .view-report-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: rgba(110,155,181,.1); border: 1px solid rgba(110,155,181,.3);
+      border-radius: 8px; color: var(--accent);
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .view-report-btn:hover { background: rgba(110,155,181,.2); border-color: var(--accent); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 660px) {
       .container { padding: 0 24px; }
@@ -650,6 +697,7 @@
       <div class="about-text">
         <p>글쓰기에서 시작했다. 언어로 사실을 기록하고, 기록으로 맥락을 복원하는 일이 좋았다. 그 관심은 자연스럽게 디지털 포렌식으로 이어졌다—삭제된 파일, 남겨진 로그, 보이지 않는 행동의 흔적.</p>
         <p>데이터는 거짓말하지 않는다고 믿는다. 지금은 시스템 안에서 사람의 행동을 관찰하고, 그 패턴으로부터 진실에 가까운 그림을 그리는 연습을 하고 있다. 분석은 도구지만, 목적은 언제나 사람이다.</p>
+        <p>포렌식 전문가는 사무실이 아닌 현장에서 일하는 직군이기도 하다. 언제 어디서 응급 상황이 발생할지 모른다는 생각에, 주변 사람을 도울 수 있는 사람이 되고 싶어 간호조무사 자격증도 취득했다.</p>
         <a class="about-link" href="/blog">블로그에서 더 읽기 ↗</a>
       </div>
     </div>
@@ -709,6 +757,26 @@
             <span class="role-tag">Community Operations · 비공개</span>
             <h3>온라인 커뮤니티 리더 (비공개)</h3>
             <p>온라인 플랫폼 내 커뮤니티를 운영하며 멤버 관리, 분쟁 예방 및 중재, 일상적 소통을 담당했다. 타 커뮤니티와 연합을 체결하고 공동 이벤트를 기획하는 등 대외 관계를 직접 이끌었다. 리더로서 모범을 보이는 방식으로 집단의 평판을 관리했으며, 구성원들이 어떤 상황에서도 당당히 행동할 수 있는 기반을 만드는 데 주력했다.</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;margin-top:40px;">Certifications</p>
+      <div class="activities-list">
+        <div class="role-card">
+          <div class="role-icon">📜</div>
+          <div>
+            <span class="role-tag">National Certification · 필기 합격 · 실기 준비중</span>
+            <h3>디지털포렌식전문가 2급</h3>
+            <p>한국인터넷진흥원(KISA) 주관 디지털 포렌식 분야 국가공인 자격증. 필기 시험 합격 후 실기 시험을 준비 중이다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🏥</div>
+          <div>
+            <span class="role-tag">National Certification · 취득</span>
+            <h3>간호조무사</h3>
+            <p>포렌식 전문가는 현장에서 일하는 직군이다. 언제 응급 상황이 발생할지 모른다는 생각에, 현장에서 주변 사람을 직접 도울 수 있는 사람이 되고 싶어 취득했다.</p>
           </div>
         </div>
       </div>
@@ -783,6 +851,7 @@
             <p class="card-type">Research Paper · Cybersecurity Law · 백석대학교 컴퓨터공학부</p>
             <h3 class="card-title">화이트해커의 법적 지위 확립을 위한 인증 및 윤리 관리 제도 연구</h3>
             <p class="card-desc">화이트해커의 법적 공백 문제를 분석하고, 인증·평가·서약·교육 4단계 제도를 제안한 학술 연구. (공동저자: 김한별, 이근호)</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('whitehacker')">📖 원본 보고서 보기</button>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
@@ -804,82 +873,13 @@
           </div>
         </div>
 
-        <!-- Scenario 01 -->
-        <div class="project-card" onclick="openModal(this)">
-          <div class="card-top">
-            <p class="card-type">실습 시나리오 01 · File System Forensics</p>
-            <h3 class="card-title">파일 삭제 흔적 분석</h3>
-            <p class="card-desc">가상의 내부 조사 시나리오를 설정하고, NTFS 아티팩트를 활용해 삭제된 파일의 흔적과 사용자 행동을 복원하는 과정을 직접 수행했다.</p>
-          </div>
-          <div class="card-toggle">
-            <span class="t-icon">▶</span>
-            <span class="toggle-label">풀이 보기</span>
-          </div>
-          <div class="card-detail">
-            <div class="detail-row">
-              <div class="detail-label">Situation</div>
-              <div class="detail-text">특정 시점 이후 사용자가 주요 문서를 삭제했다는 의혹이 제기된 시나리오. 공식 저장소에는 해당 파일이 존재하지 않는 상태에서 분석 시작.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Evidence</div>
-              <div class="detail-text">$MFT 잔존 엔트리, $LogFile 트랜잭션 로그, 쉘 링크(.lnk) 파일, 레지스트리 RecentDocs 키.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Analysis</div>
-              <div class="detail-text">MFT 분석으로 삭제 파일의 이름·크기·타임스탬프 복원. $LogFile에서 삭제 연산 순서 역추적. LNK 파일 접근 시각과 교차 검증.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Reconstruction</div>
-              <div class="detail-text">의혹 시점 4분 전 명시적 삭제. 삭제 직전 12초간 해당 파일이 열려 있었음을 타임라인으로 확인.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Conclusion</div>
-              <div class="conclusion">삭제 행위는 우발적이 아닌 의도적 조작으로 판단. 복원된 타임라인은 이후 조사의 핵심 근거로 활용될 수 있음을 확인.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Scenario 02 -->
-        <div class="project-card" onclick="openModal(this)">
-          <div class="card-top">
-            <p class="card-type">실습 시나리오 02 · Log Analysis</p>
-            <h3 class="card-title">사용자 행동 로그 분석</h3>
-            <p class="card-desc">세션 하이재킹 침해 시나리오를 설정하고, 시스템 로그로부터 행동 흐름을 역추적해 전체 경위를 재구성하는 분석을 수행했다.</p>
-          </div>
-          <div class="card-toggle">
-            <span class="t-icon">▶</span>
-            <span class="toggle-label">풀이 보기</span>
-          </div>
-          <div class="card-detail">
-            <div class="detail-row">
-              <div class="detail-label">Situation</div>
-              <div class="detail-text">특정 계정에서 비정상적인 접근 패턴이 감지된 시나리오. 피해 발생 경위가 불명확한 상태에서 분석 시작.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Evidence</div>
-              <div class="detail-text">웹 서버 액세스 로그(Apache), 세션 토큰 발급 기록, 사용자 에이전트 문자열, IP 지오로케이션 데이터.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Analysis</div>
-              <div class="detail-text">로그 정규화 후 시계열 정렬. 동일 세션 내 물리적으로 불가능한 이중 접속 위치 확인. 자동화 요청 패턴(간격 균일성) 탐지.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Reconstruction</div>
-              <div class="detail-text">세션 하이재킹 이후 봇 기반 자동화 스크립트가 17분간 작동. 행동 흐름을 6단계 타임라인으로 재구성.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Conclusion</div>
-              <div class="conclusion">외부 침입자에 의한 세션 탈취로 결론. 복원된 행동 로그는 계정 피해 범위 산정의 기준이 될 수 있음을 확인.</div>
-            </div>
-          </div>
-        </div>
-
         <!-- Card 4 -->
         <div class="project-card card-full" onclick="openModal(this)">
           <div class="card-top">
             <p class="card-type">Assignment · 2026.04</p>
             <h3 class="card-title">윈도우 파일 행위에 따른 MAC Time 변화 분석</h3>
             <p class="card-desc">파일 생성·복사·수정·액세스 각 행위가 NTFS 타임스탬프에 미치는 영향을 실측하고, 레지스트리 및 시스템 시간 조작 시나리오까지 검증한 실습 보고서.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('r1')">📖 원본 보고서 보기</button>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
@@ -901,12 +901,41 @@
           </div>
         </div>
 
+        <!-- Report 2 -->
+        <div class="project-card card-full" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">Assignment · 2026.05 · Application Artifacts</p>
+            <h3 class="card-title">윈도우 응용 프로그램 사용 흔적 조사</h3>
+            <p class="card-desc">HWP·HCell·Chrome·KakaoTalk 4개 앱의 실행 및 사용 흔적을 Prefetch, 레지스트리 MRU, Jump List, SQLite DB 등 다중 아티팩트로 교차 분석한 실습 보고서.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('r2')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">보고서 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Scope</div>
+              <div class="detail-text">HWP (Run Counter 408), HCell (Run Counter 22), Chrome (Run Counter 1,204 · 다운로드 310건 · 쿠키 4,852개 · 로그인 사이트 23개), KakaoTalk (Run Counter 1,205 · EDB 채팅 파일). 분석 도구: WinPrefetchView v1.37, JumpListsView v1.16, RegEdit, UserAssistView v1.02, DB Browser for SQLite v3.13.1.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Key Findings</div>
+              <div class="detail-text">① Prefetch Run Counter로 각 앱의 실행 빈도·마지막 실행 시각 확인. ② 레지스트리 MRU + Jump List 교차 분석으로 최근 열람 문서 목록 복원. ③ Chrome SQLite DB(History·Login Data·Cookies)에서 방문 기록·계정 정보·쿠키 4,852개 추출. ④ KakaoTalk EDB 채팅 파일 복호화는 키 미확보로 실패 — 한계로 명시.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">단일 아티팩트 의존 분석의 한계를 실증하고, Prefetch·레지스트리·DB 다중 소스 교차 검증이 행동 재구성의 신뢰도를 높임을 확인. 복호화 실패 사례를 통해 암호화된 아티팩트에 대한 키 관리 및 법적 접근 방법의 중요성을 인식.</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Card 5 -->
         <div class="project-card" onclick="openModal(this)">
           <div class="card-top">
             <p class="card-type">CTF · HUB 정보보안 동아리</p>
             <h3 class="card-title">이미지 메타데이터 내 은닉 플래그 추출</h3>
             <p class="card-desc">육안으로 이상이 없는 JPEG 파일에서 ExifTool을 활용해 숨겨진 데이터를 식별한 CTF 문제 풀이.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('exiftool')">📖 원본 보고서 보기</button>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
@@ -934,6 +963,7 @@
             <p class="card-type">CTF · HUB 정보보안 동아리</p>
             <h3 class="card-title">PPTX 내부 비가시 이미지 리소스 식별</h3>
             <p class="card-desc">PPTX 파일에 숨겨진 이미지를 파일 포맷 구조 분석으로 추출하고, 손상된 PNG 헤더를 확인한 CTF 풀이.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('pptx')">📖 원본 보고서 보기</button>
           </div>
           <div class="card-toggle">
             <span class="t-icon">▶</span>
@@ -955,33 +985,6 @@
           </div>
         </div>
 
-        <!-- Card 7 -->
-        <div class="project-card card-full" onclick="openModal(this)">
-          <div class="card-top">
-            <p class="card-type">Dev · C Language · HUB 정보보안 동아리</p>
-            <h3 class="card-title">로그 기반 인증 실패 행위 분석 도구 직접 구현</h3>
-            <p class="card-desc">보안 로그 분석 개념을 이해하기 위해 C언어로 인증 실패 탐지 프로그램을 직접 설계·구현. 로그인 시스템, 포렌식 분석 메뉴, 보안 로그 파일까지 처음부터 작성.</p>
-          </div>
-          <div class="card-toggle">
-            <span class="t-icon">▶</span>
-            <span class="toggle-label">상세 보기</span>
-          </div>
-          <div class="card-detail">
-            <div class="detail-row">
-              <div class="detail-label">구현 내용</div>
-              <div class="detail-text">① 계정 시스템 (회원가입·로그인·계정 찾기·삭제). ② 포렌식 메뉴 진입 — 인증된 사용자만 접근 가능하도록 설계. ③ Security Log Analysis — EVENT_ID 기반 인증 실패(4625)·성공(4624)·로그오프(4634) 탐지. ④ Forensic Concepts Guide 내장. ⑤ 보안 로그 파일(security.log) 직접 작성 및 파싱.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">사용 기술</div>
-              <div class="detail-text">C언어 (Visual Studio), 파일 I/O, 문자열 파싱, 콘솔 UI 설계.</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Conclusion</div>
-              <div class="conclusion">분석 도구를 직접 만들며 보안 로그의 구조와 인증 이벤트 흐름을 체득. 코드로 구현하는 과정이 개념 이해를 분석 역량으로 전환하는 데 가장 효과적임을 확인.</div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -997,6 +1000,19 @@
         <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
       </div>
       <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- FLIPBOOK -->
+  <div class="fb-overlay" id="fb-overlay">
+    <div class="fb-wrap">
+      <button class="fb-close" onclick="closeFlipbook()">✕ 닫기</button>
+      <div id="fb-el"></div>
+      <div class="fb-controls">
+        <button class="fb-btn" id="fb-prev">◀</button>
+        <span class="fb-info" id="fb-info">1 / 1</span>
+        <button class="fb-btn" id="fb-next">▶</button>
+      </div>
     </div>
   </div>
 
@@ -1168,7 +1184,82 @@
 
     klruSend.addEventListener('click', sendMessage);
     klruInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    /* ── Flipbook ── */
+    let fbInstance = null;
+    let fbTotalPages = 0;
+    const REPORTS = {
+      r1: { pages: 21, dir: '/portfolio/reports/r1/' },
+      r2: { pages: 34, dir: '/portfolio/reports/r2/' },
+      exiftool: { pages: 5, dir: '/portfolio/reports/exiftool/' },
+      pptx: { pages: 4, dir: '/portfolio/reports/pptx/' },
+      whitehacker: { pages: 3, dir: '/portfolio/reports/화이트해커/' }
+    };
+
+    function openFlipbook(key) {
+      const rpt = REPORTS[key];
+      const imgs = Array.from({ length: rpt.pages }, (_, i) =>
+        rpt.dir + String(i + 1).padStart(2, '0') + '.jpg'
+      );
+      fbTotalPages = rpt.pages;
+
+      const overlay = document.getElementById('fb-overlay');
+      const el = document.getElementById('fb-el');
+      el.innerHTML = '';
+      if (fbInstance) { try { fbInstance.destroy(); } catch(e){} fbInstance = null; }
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const portrait = vw < 720;
+      const maxH = vh - 110;
+      const maxW = portrait
+        ? Math.min(vw - 32, 500)
+        : Math.min(Math.floor((vw - 64) / 2), 610);
+      const pgW = Math.min(maxW, Math.round(maxH / 1.414));
+      const pgH = Math.round(pgW * 1.414);
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      fbInstance = new St.PageFlip(el, {
+        width: pgW, height: pgH,
+        size: 'fixed',
+        showCover: false,
+        usePortrait: portrait,
+        mobileScrollSupport: false,
+        maxShadowOpacity: 0.45,
+        flippingTime: 650,
+        startPage: 0,
+      });
+      fbInstance.loadFromImages(imgs);
+      fbInstance.on('flip', updateFbInfo);
+      updateFbInfo();
+    }
+
+    function updateFbInfo() {
+      if (!fbInstance) return;
+      document.getElementById('fb-info').textContent =
+        (fbInstance.getCurrentPageIndex() + 1) + ' / ' + fbTotalPages;
+    }
+
+    function closeFlipbook() {
+      document.getElementById('fb-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('fb-prev').addEventListener('click', () => { if (fbInstance) fbInstance.flipPrev(); });
+    document.getElementById('fb-next').addEventListener('click', () => { if (fbInstance) fbInstance.flipNext(); });
+    document.getElementById('fb-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('fb-overlay')) closeFlipbook();
+    });
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('fb-overlay').classList.contains('open')) return;
+      if (e.key === 'Escape')     closeFlipbook();
+      if (e.key === 'ArrowLeft')  { if (fbInstance) fbInstance.flipPrev(); }
+      if (e.key === 'ArrowRight') { if (fbInstance) fbInstance.flipNext(); }
+    });
   </script>
+  <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.js"></script>
 
 </body>
 </html>

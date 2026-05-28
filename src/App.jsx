@@ -506,6 +506,11 @@ const CursorDot = () => {
       if (!dotRef.current) return
       dotRef.current.style.left = e.clientX + 'px'
       dotRef.current.style.top = e.clientY + 'px'
+      const t = e.target
+      const clickable = t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('a') || t.closest('button')
+      dotRef.current.style.width = clickable ? '20px' : '6px'
+      dotRef.current.style.height = clickable ? '20px' : '6px'
+      dotRef.current.style.opacity = clickable ? '0.35' : '1'
     }
     window.addEventListener('mousemove', move)
     return () => window.removeEventListener('mousemove', move)
@@ -514,8 +519,114 @@ const CursorDot = () => {
     <div ref={dotRef} style={{
       position: 'fixed', width: 6, height: 6, borderRadius: '50%',
       background: 'rgba(126,168,196,0.6)', pointerEvents: 'none', zIndex: 9999,
-      transform: 'translate(-50%,-50%)', transition: 'left 0.12s ease, top 0.12s ease',
+      transform: 'translate(-50%,-50%)',
+      transition: 'left 0.08s ease, top 0.08s ease, width 0.18s ease, height 0.18s ease, opacity 0.18s ease',
     }} />
+  )
+}
+
+/* ─── Particle Canvas ─── */
+const ParticleCanvas = () => {
+  const canvasRef = useRef(null)
+  const mouseRef = useRef({ x: -9999, y: -9999 })
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    let animId
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
+    resize()
+    window.addEventListener('resize', resize)
+    const onMouse = e => { mouseRef.current = { x: e.clientX, y: e.clientY } }
+    window.addEventListener('mousemove', onMouse)
+    const N = 58
+    const pts = Array.from({ length: N }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      r: Math.random() * 1.1 + 0.4,
+    }))
+    const CONN = 135, REPEL = 85
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const { x: mx, y: my } = mouseRef.current
+      pts.forEach(p => {
+        const dx = p.x - mx, dy = p.y - my, d = Math.hypot(dx, dy)
+        if (d < REPEL && d > 0) {
+          const f = (REPEL - d) / REPEL * 0.32
+          p.vx += dx / d * f; p.vy += dy / d * f
+        }
+        p.vx *= 0.985; p.vy *= 0.985
+        const spd = Math.hypot(p.vx, p.vy)
+        if (spd > 0.9) { p.vx = p.vx / spd * 0.9; p.vy = p.vy / spd * 0.9 }
+        p.x = (p.x + p.vx + canvas.width) % canvas.width
+        p.y = (p.y + p.vy + canvas.height) % canvas.height
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(126,168,196,0.28)'; ctx.fill()
+      })
+      for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, d = Math.hypot(dx, dy)
+        if (d < CONN) {
+          ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y)
+          ctx.strokeStyle = `rgba(126,168,196,${(1 - d / CONN) * 0.1})`
+          ctx.lineWidth = 0.6; ctx.stroke()
+        }
+      }
+      animId = requestAnimationFrame(tick)
+    }
+    tick()
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', onMouse)
+    }
+  }, [])
+  return <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 99 }} />
+}
+
+/* ─── Reading Progress ─── */
+const ReadingProgress = () => {
+  const [pct, setPct] = useState(0)
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement
+      const v = el.scrollTop / (el.scrollHeight - el.clientHeight)
+      setPct(isNaN(v) ? 0 : v * 100)
+    }
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 2, zIndex: 201, background: 'rgba(0,0,0,0.04)' }}>
+      <div style={{ height: '100%', width: `${pct}%`, background: 'var(--accent)', transition: 'width 0.08s linear' }} />
+    </div>
+  )
+}
+
+/* ─── Scroll Top Button ─── */
+const ScrollTopBtn = () => {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 500)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  if (!show) return null
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      style={{
+        position: 'fixed', bottom: 28, left: 28, zIndex: 500,
+        width: 38, height: 38, borderRadius: '50%',
+        background: 'var(--bg)', border: '1px solid rgba(0,0,0,0.1)',
+        boxShadow: '0 2px 14px rgba(0,0,0,0.09)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: 'pointer', fontSize: 15, color: 'var(--text-muted)',
+        transition: 'all 0.2s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'; e.currentTarget.style.color = 'var(--text-muted)' }}
+    >↑</button>
   )
 }
 
@@ -798,9 +909,9 @@ const BlogList = ({ onPost }) => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {filtered.map((post, i) => (
           <a key={post.id} href={`/blog/${post.slug}`} onClick={e => { e.preventDefault(); onPost(post.slug) }}
-            style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '0 40px', alignItems: 'start', padding: '36px 0', borderBottom: '1px solid rgba(0,0,0,0.07)', textDecoration: 'none', color: 'inherit', transition: 'opacity 0.2s' }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+            style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '0 40px', alignItems: 'start', padding: '36px 0', borderBottom: '1px solid rgba(0,0,0,0.07)', textDecoration: 'none', color: 'inherit', transition: 'opacity 0.22s, transform 0.28s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.72'; e.currentTarget.style.transform = 'translateX(7px)' }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateX(0)' }}>
             <div style={{ paddingTop: 4 }}>
               <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.06em', marginBottom: 6 }}>{post.created_at}</p>
               <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--accent)', letterSpacing: '0.1em', padding: '3px 8px', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 100 }}>{post.tag || 'Note'}</span>
@@ -951,21 +1062,24 @@ const BlogPost = ({ slug, onBack }) => {
     </div>
   )
   return (
-    <article style={{ maxWidth: 680, margin: '0 auto', padding: 'clamp(100px, 14vw, 160px) clamp(24px, 8vw, 80px) 80px' }}>
-      <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)', letterSpacing: '0.06em', marginBottom: 48, padding: 0, display: 'flex', alignItems: 'center', gap: 8 }}>← Blog</button>
-      <div style={{ marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{post.created_at}</span>
-        {post.tag && <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--accent)', padding: '3px 8px', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 100 }}>{post.tag}</span>}
-      </div>
-      <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 20, wordBreak: 'keep-all' }}>{post.title}</h1>
-      <hr style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.12)', marginBottom: 48 }} />
-      <div
-        style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all', userSelect: 'none', WebkitUserSelect: 'none' }}
-        onCopy={e => e.preventDefault()}
-        onContextMenu={e => e.preventDefault()}
-      >{renderContent(post.content)}</div>
-      <Comments slug={slug} />
-    </article>
+    <>
+      <ReadingProgress />
+      <article style={{ maxWidth: 680, margin: '0 auto', padding: 'clamp(100px, 14vw, 160px) clamp(24px, 8vw, 80px) 80px' }}>
+        <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)', letterSpacing: '0.06em', marginBottom: 48, padding: 0, display: 'flex', alignItems: 'center', gap: 8 }}>← Blog</button>
+        <div style={{ marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{post.created_at}</span>
+          {post.tag && <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--accent)', padding: '3px 8px', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 100 }}>{post.tag}</span>}
+        </div>
+        <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 300, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 20, wordBreak: 'keep-all' }}>{post.title}</h1>
+        <hr style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.12)', marginBottom: 48 }} />
+        <div
+          style={{ fontFamily: 'var(--sans)', fontSize: 16, color: 'var(--text-primary)', lineHeight: 2, letterSpacing: '0.01em', wordBreak: 'keep-all', userSelect: 'none', WebkitUserSelect: 'none' }}
+          onCopy={e => e.preventDefault()}
+          onContextMenu={e => e.preventDefault()}
+        >{renderContent(post.content)}</div>
+        <Comments slug={slug} />
+      </article>
+    </>
   )
 }
 
@@ -982,10 +1096,22 @@ const compressImage = (file) => new Promise(resolve => {
     canvas.width = w; canvas.height = h
     canvas.getContext('2d').drawImage(img, 0, 0, w, h)
     URL.revokeObjectURL(url)
-    resolve(canvas.toDataURL('image/jpeg', 0.75))
+    canvas.toBlob(resolve, 'image/jpeg', 0.75)
   }
   img.src = url
 })
+
+const uploadImage = async (blob, token) => {
+  const fd = new FormData()
+  fd.append('file', blob, 'image.jpg')
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Authorization': token },
+    body: fd,
+  })
+  const data = await res.json()
+  return data.url
+}
 
 /* ─── Content renderer (markdown + images + stickers) ─── */
 const BookmarkCard = ({ url }) => {
@@ -1095,6 +1221,55 @@ const EditorToolbar = ({ textareaRef, content, setContent }) => {
   )
 }
 
+/* ─── Migrate Tab ─── */
+const MigrateTab = ({ getToken }) => {
+  const [status, setStatus] = useState('idle')
+  const [result, setResult] = useState(null)
+
+  const run = async () => {
+    setStatus('running')
+    setResult(null)
+    try {
+      const res = await fetch('/api/migrate', {
+        method: 'POST',
+        headers: { 'Authorization': getToken() },
+      })
+      const data = await res.json()
+      setResult(data)
+      setStatus('done')
+    } catch (e) {
+      setResult({ error: e.message })
+      setStatus('error')
+    }
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8 }}>
+        DB에 저장된 base64 이미지를 R2로 이전하고 URL로 교체합니다.<br />
+        R2 버킷이 연결된 상태에서 한 번만 실행하면 됩니다.
+      </p>
+      <button
+        onClick={run}
+        disabled={status === 'running'}
+        style={{ alignSelf: 'flex-start', padding: '12px 28px', background: status === 'running' ? 'var(--text-light)' : 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontFamily: 'var(--sans)', fontSize: 14, cursor: status === 'running' ? 'not-allowed' : 'pointer' }}
+      >
+        {status === 'running' ? '마이그레이션 중...' : '마이그레이션 실행'}
+      </button>
+      {status === 'done' && result?.ok && (
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--accent)' }}>
+          완료 — 글 {result.postsUpdated}개, 이미지 {result.imagesUploaded}개 이전됨
+        </p>
+      )}
+      {(status === 'error' || (status === 'done' && !result?.ok)) && (
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: '#c0392b' }}>
+          오류: {result?.error || '알 수 없는 오류'}
+        </p>
+      )}
+    </div>
+  )
+}
+
 /* ─── Admin ─── */
 const Admin = () => {
   const [auth, setAuth] = useState(!!sessionStorage.getItem('admin_token'))
@@ -1180,7 +1355,7 @@ const Admin = () => {
   return (
     <div style={{ maxWidth: 720, margin: '0 auto', padding: 'clamp(100px, 12vw, 140px) clamp(24px, 8vw, 80px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
       <div style={{ display: 'flex', gap: 24, marginBottom: 40 }}>
-        {[['write', '새 글 쓰기'], ['manage', '글 관리'], ...(editSlug ? [['edit', `수정 중: ${editSlug}`]] : [])].map(([t, label]) => (
+        {[['write', '새 글 쓰기'], ['manage', '글 관리'], ['migrate', '이미지 마이그레이션'], ...(editSlug ? [['edit', `수정 중: ${editSlug}`]] : [])].map(([t, label]) => (
           <button key={t} onClick={() => { if (t !== 'edit') { setEditSlug(null); setForm({ title: '', slug: '', tag: '', excerpt: '', content: '' }); setMsg('') } setTab(t) }}
             style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 14, letterSpacing: '0.06em', color: tab === t ? 'var(--text-primary)' : 'var(--text-muted)', borderBottom: tab === t ? '1px solid var(--text-primary)' : '1px solid transparent', paddingBottom: 4 }}>
             {label}
@@ -1204,11 +1379,12 @@ const Admin = () => {
                 const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
                 if (imgItem) {
                   e.preventDefault()
-                  const b64 = await compressImage(imgItem.getAsFile())
-                  imgBankRef.current.push(b64)
-                  const n = imgBankRef.current.length
+                  setMsg('이미지 업로드 중...')
+                  const blob = await compressImage(imgItem.getAsFile())
+                  const url = await uploadImage(blob, getToken())
+                  setMsg('')
                   const cursor = e.target.selectionStart
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `![image](${url})` + f.content.slice(cursor) }))
                   return
                 }
                 const text = e.clipboardData.getData('text').trim()
@@ -1262,11 +1438,12 @@ const Admin = () => {
                 const imgItem = Array.from(e.clipboardData.items).find(i => i.type.startsWith('image/'))
                 if (imgItem) {
                   e.preventDefault()
-                  const b64 = await compressImage(imgItem.getAsFile())
-                  imgBankRef.current.push(b64)
-                  const n = imgBankRef.current.length
+                  setMsg('이미지 업로드 중...')
+                  const blob = await compressImage(imgItem.getAsFile())
+                  const url = await uploadImage(blob, getToken())
+                  setMsg('')
                   const cursor = e.target.selectionStart
-                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `[이미지 ${n}]` + f.content.slice(cursor) }))
+                  setForm(f => ({ ...f, content: f.content.slice(0, cursor) + `![image](${url})` + f.content.slice(cursor) }))
                   return
                 }
                 const text = e.clipboardData.getData('text').trim()
@@ -1307,6 +1484,9 @@ const Admin = () => {
           </div>
         </form>
       )}
+      {tab === 'migrate' && (
+        <MigrateTab getToken={getToken} />
+      )}
       {tab === 'manage' && (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {posts.length === 0 && <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-muted)' }}>작성된 글이 없습니다.</p>}
@@ -1330,7 +1510,7 @@ const Admin = () => {
 
 /* ─── Router ─── */
 const getPageFromPath = path => {
-  if (path === '/bylhn') return { page: 'admin', slug: '' }
+  if (path.toLowerCase() === '/bylhn') return { page: 'admin', slug: '' }
   if (path === '/blog') return { page: 'blog', slug: '' }
   if (path.startsWith('/blog/')) return { page: 'post', slug: path.replace('/blog/', '') }
   return { page: 'home', slug: '' }
@@ -1381,13 +1561,17 @@ export default function App() {
       {intro && <IntroOverlay onDone={onIntroDone} />}
       {!intro && page === 'home' && <MainPage onNav={onNav} />}
       {!intro && page !== 'home' && (
-        <div style={{ transition: 'opacity 1s ease', opacity: fadeIn ? 0 : 1 }}>
-          <Nav onNav={onNav} />
-          <main>
-            {page === 'blog' && <><div style={{ paddingTop: 80 }} /><BlogList onPost={onPost} /></>}
-            {page === 'post' && <BlogPost slug={postSlug} onBack={onBack} />}
-          </main>
-        </div>
+        <>
+          <ParticleCanvas />
+          <ScrollTopBtn />
+          <div style={{ transition: 'opacity 1s ease', opacity: fadeIn ? 0 : 1 }}>
+            <Nav onNav={onNav} />
+            <main>
+              {page === 'blog' && <><div style={{ paddingTop: 80 }} /><BlogList onPost={onPost} /></>}
+              {page === 'post' && <BlogPost slug={postSlug} onBack={onBack} />}
+            </main>
+          </div>
+        </>
       )}
     </>
   )

@@ -7,5 +7,9 @@ binding = "DB"
 database_name = "bylhn-blog"
 database_id = "da15b40c-4d47-45e4-a5cf-51c2f554029a"
 
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "bylhn-images"
+
 [ai]
 binding = "AI"
