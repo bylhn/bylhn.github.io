@@ -4,6 +4,6 @@
   "title": "SQL, MySQL 개요",
   "tag": "Database",
   "excerpt": "SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프...",
-  "content": "# SQL이란?\n\nSQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프로그래밍 언어입니다.\n\n# SQL의 6가지 특징\n\n- DBMS 제작 회사와 독립적\n- 다른 시스템으로 이식성이 좋음\n- 표준이 계속 발전됨\n- 대화식 언어 (즉시 질의 결과 획득)\n- 분산형 클라이언트/서버 구조\n- 회사마다 방언(변형)이 존재함\n\n# MySQL이란?\n\nOracle사에서 제공하는 오픈소스 DBMS 소프트웨어입니다.\n\n- GPL 라이선스\n- 최신 GA버전: 8.4.6\n- 무료 사용 가능\n- 소스코드 수정 및 배포 가능\n\n# MySQL 에디션\n\n## 이중 라이선스 에디션 (유료)\nStandard → Enterprise → Cluster CGE (기능 순으로 향상)\n\n## Community 에디션 (무료)\n비상업적 및 교육 목적에 적합합니다.",
+  "content": "## SQL이란?\n\nSQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 **데이터 관리를 위해 설계된 특수 목적 프로그래밍 언어**입니다.\n\n## SQL의 6가지 특징\n\n- DBMS 제작 회사와 독립적\n- 다른 시스템으로 이식성이 좋음\n- 표준이 계속 발전됨\n- 대화식 언어 (즉시 질의 결과 획득)\n- 분산형 클라이언트/서버 구조\n- 구현에 내재적 변동성 존재 (회사마다 방언)\n\n## MySQL이란?\n\nOracle사에서 제공하는 **오픈소스 RDBMS 소프트웨어**입니다.\n\n- GPL(General Public License) 하에 라이선스\n- 최신 GA버전: 8.4.6\n- 소스코드 수정 및 배포 가능\n- 개발 시작: 1994년\n\n## MySQL 에디션\n\n**상용판**: Standard < Enterprise < Cluster CGE (비용/기능 증가)\n\n**Community Edition**: 비상업적 및 교육 목적에 적합. 거의 Enterprise와 동일한 기능.",
   "created_at": "2025-10-16"
 }

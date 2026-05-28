@@ -3,7 +3,7 @@
   "slug": "8",
   "title": "최신 DBMS / DB 기술 트렌드",
   "tag": "Database",
-  "excerpt": "DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어로, \"은행 관리 시스템 혹은 비서\"로 비...",
-  "content": "# DBMS란?\n\nDBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어로, \"은행 관리 시스템 혹은 비서\"로 비유할 수 있습니다. DBMS 모델은 관계형, 문서형, 그래프형으로 나뉩니다.\n\n# 최신 DBMS 기술 트렌드\n\n- **클라우드 데이터베이스**: 인터넷 서버에서 데이터를 관리. 접근성, 확장성, 가성비의 장점\n- **NOSQL + 데이터**: 대규모 데이터 처리에 강함\n- **AI/ML 통합 & 자동화**\n- **클라우드 네이티브 & 서버리스 DB**\n- **에지 컴퓨팅(Edge DB) & 분산DB**\n- **멀티모델 데이터베이스**: 여러 데이터 모델을 동시에 관리\n\n# 주목할 DBMS 5가지\n\n- **Oracle**: 전세계 1위 데이터베이스\n- **PostgreSQL**: 벡터 데이터 기능과 증분 백업 기능이 추가된 오픈소스 DB\n- **DuckDB**: 복잡 분석 쿼리에 강하며 온라인 분석 처리(OLAP)에 최적화\n- **Microsoft SQL Server 2025**\n- **Gauss DB**: 분산형으로 대규모 산업 서비스에 주로 사용",
+  "excerpt": "DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어입니다. \"은행 관리 시스템 혹은 비서\"로...",
+  "content": "## DBMS란?\n\nDBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어입니다. \"은행 관리 시스템 혹은 비서\"로 비유할 수 있습니다.\n\nDBMS 모델은 **관계형, 문서형, 그래프형** 세 가지로 나뉩니다.\n\n## 최신 DBMS 기술 트렌드\n\n- **클라우드 데이터베이스**: 접근성, 확장성, 가성비 장점\n- **NOSQL + 데이터**: 대규모 데이터 처리에 강함\n- **AI/ML 통합 & 자동화**\n- **클라우드 네이티브 & 서버리스 DB**\n- **에지 컴퓨팅(Edge DB) & 분산DB**\n- **멀티모델 데이터베이스**: 여러 데이터 모델을 동시에 관리\n- **Chimera**: 그래프 DB 구조 활용. \"압도적으로 빠른 성능\"으로 주목\n\n## 주목할 DBMS 5가지\n\n- **Oracle**: 전세계 1위 데이터베이스\n- **PostgreSQL**: 벡터 데이터 기능과 증분 백업 기능이 추가된 오픈소스 DB\n- **DuckDB**: 복잡 분석 쿼리에 강하며 온라인 분석 처리(OLAP)에 최적화\n- **Microsoft SQL Server 2025**\n- **Gauss DB**: 분산형으로 대규모 산업 서비스에 주로 사용",
   "created_at": "2025-10-16"
 }

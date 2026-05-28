@@ -3,7 +3,7 @@
   "slug": "18",
   "title": "데이터베이스 for Beginner ch02 연습문제",
   "tag": "Database",
-  "excerpt": "데이터베이스 for Beginner 2장 연습문제 풀이입니다....",
-  "content": "데이터베이스 for Beginner 2장 연습문제 풀이입니다.\n\n> 개인 학습 자료로, 오답이 있을 수 있습니다. 어려운 문제는 ChatGPT를 참고했습니다.\n\n# 주요 학습 내용\n\n## DDL 연산 구분\n- DROP: 테이블 자체를 삭제\n- DELETE: 테이블의 데이터(행)를 삭제\n\n## 실행 계획 (Execution Plan)\nDBMS가 쿼리를 처리하는 방법을 분석한 정보. 성능 최적화에 활용합니다.\n\n## 저장 프로시저 (Stored Procedure)\n여러 SQL 문을 하나의 실행 단위로 묶은 것입니다.\n\n기본 구조:\nDELIMITER //\nCREATE PROCEDURE 프로시저명()\nBEGIN\n  -- SQL 문\nEND //\nDELIMITER ;\n\n## 트리거 (Trigger)\n특정 DML 동작 시 자동으로 실행되는 명령문입니다.\nFOR EACH ROW 구문을 사용합니다.\n\n# MySQL Workbench 기능\n- ER 다이어그램 설계\n- 쿼리 작성 및 실행\n- 데이터 관리\n- 성능 분석",
+  "excerpt": "Database for Beginner 2장 연습문제 풀이입니다....",
+  "content": "Database for Beginner 2장 연습문제 풀이입니다.\n\n> 개인 학습 자료이며 최종 답변이 아닐 수 있습니다. 어려운 문제는 ChatGPT를 참고했습니다.\n\n## 다루어진 주요 주제\n\n**데이터베이스 구축 과정**: 데이터베이스 생성 → 테이블 생성 → 데이터 입력 → 데이터 쿼리\n\n**MySQL 기초**: 기본 포트 번호는 3306\n\n**MySQL Workbench 기능**:\n- Administration 탭 — 서버 관리\n- Schemas 탭 — 데이터베이스 작업\n\n**DDL 연산 구분**:\n- DROP — 테이블 자체를 삭제\n- DELETE — 테이블의 데이터(행)를 삭제\n\n**저장 프로시저 구문**:\n\n> DELIMITER //\n> CREATE PROCEDURE 프로시저명()\n> BEGIN\n>   -- SQL 문\n> END //\n> DELIMITER ;\n\n**트리거**: DML 이벤트 시 자동 실행. `FOR EACH ROW` 구문 사용.\n\n**인덱스**: 책 인덱스와 유사. 데이터 검색 속도 향상. 명명 규칙은 필수 아님.",
   "created_at": "2025-10-20"
 }

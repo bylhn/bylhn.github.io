@@ -9,851 +9,968 @@ mkdirSync(dataDir, { recursive: true })
 const posts = [
   {
     id: 48, slug: '48', title: '면접에서 말한 내용은 어떻게 평가될까', tag: '잡지식', created_at: '2026-02-10',
-    content: `본 자료는 면접 컨설팅 이후 개인 정리 기록입니다.
+    content: `![면접](https://blog.kakaocdn.net/dna/43HP8/dJMcaa5gRDw/AAAAAAAAAAAAAAAAAAAAAKL4LLS4gIta8xvC8a-0q90v3OcagOdbJvP5Ezyox36l/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=2q%2FxYsfcALjRhaD7n%2Bc0NYNqnhM%3D)
 
-면접관은 지원자의 발언을 크게 세 가지 기준으로 평가합니다.
+본 자료는 면접 컨설팅 이후 개인 정리 기록입니다.
 
-# 평가 기준
+면접 컨설팅을 통해 얻은 인사이트를 개인적으로 정리한 자료이며, 특정 기관이나 개인의 공식 입장을 대변하지 않습니다.
 
-## 1. 논리성
-말의 흐름이 자연스럽고 이유가 명확한지를 봅니다. "~했습니다. 왜냐하면 ~이기 때문입니다" 구조가 기본입니다.
+본 자료는 공유 허락을 받은 범위 내에서 **개인 기록 및 정보 공유 목적**으로 게시합니다.
 
-## 2. 진정성
-경험담에 구체적인 상황과 감정이 담겨 있는지를 봅니다. 외운 답변처럼 들리면 감점 요인이 됩니다.
+## 강사 정보
 
-## 3. 직무 적합성
-지원 직무와 본인의 경험·강점이 연결되는지를 봅니다.
+해당 관점을 접하게 된 강사님 정보:
 
-> 면접 컨설턴트 김진희의 조언을 바탕으로 정리한 개인 기록입니다.`
+- **강사명**: 김진희
+- **전문 분야**: 입시 면접 컨설팅
+- 백석대, 중부대 외 다수 대학 면접 특강
+- 70여 개 고등학교 면접 입시 생기부 특강 전문
+
+> Instagram: @jin_terview
+
+---
+
+#면접 #면접컨설팅 #김진희고수님`
   },
   {
     id: 47, slug: '47', title: "내일인데 '명일'? | 날짜 관련 회사 언어 이해하기", tag: '잡지식', created_at: '2026-02-04',
-    content: `회사에서 자주 쓰이는 날짜 관련 공식 표현, 일자 지시어를 정리합니다.
+    content: `인턴 활동 중 메일 작성법을 공부하면서 반복되는 일자 관련 용어들을 정리했습니다.
 
-# 일자 지시어 정리
+## 일자 지시어란?
 
-## 금일 (今日)
-오늘을 뜻하는 공식 표현. 공지사항, 안내문에서 자주 쓰입니다.
+회사에서 자주 사용되는 **익일, 차일, 금일, 당일, 명일, 작일**을 "일자 지시어"라고 합니다.
 
-## 익일 / 명일 (翌日 / 明日)
-둘 다 내일을 의미합니다. 명일은 더 격식체로 공문서에서 사용됩니다.
+## 각 용어별 설명
 
-## 당일 (當日)
-'그날'을 강조할 때 씁니다. 문맥에 따라 오늘 또는 지정된 날짜를 의미합니다.
+### 익일 vs 명일
+- **익일**: 다음날(내일)을 의미. 택배, 행정 처리 등에 사용
+- **명일**: 익일과 동의어이나 공문, 비즈니스 문서에 격식 있게 사용
 
-## 작일 (昨日)
-어제를 뜻하는 문어체 표현. 뉴스 기사나 공식 보고서에 주로 등장합니다.
+### 금일
+오늘, 당일과 동의어인 격식체 표현. 공지, 안내문, 공식 서류 등에서 자주 등장합니다.
 
-## 차일 (次日)
-다음 날을 의미하나, 실무에서는 익일보다 드물게 사용됩니다.
+### 당일
+오늘을 의미하지만, **지정된 날짜가 있으면** 그 특정 날짜를 강조합니다.
+- 예시: "당일 배송" vs "행사 당일에 뵙죠"
 
-> 이 표현들은 일상 대화보다 공문서, 이메일, 공지사항에서 주로 등장합니다.
-> 더 정확한 정보가 있으면 공유해 주세요!`
+### 작일
+어제(하루 전날)를 의미. 신문 기사, 보고서, 공문, 연설문 등에서 사건을 객관적으로 서술할 때 사용합니다.
+
+### 차일
+명확한 정의가 불명확하며 추가 자료가 필요합니다.
+
+---
+
+본 글은 회사 업무에서 적절한 일자 표현 사용을 돕기 위한 참고 자료입니다.`
   },
   {
     id: 46, slug: '46', title: 'Iotgoat 환경 다운받기', tag: '기타', created_at: '2026-01-11',
-    content: `IoTGoat은 의도적으로 취약하게 설계된 펌웨어 프로젝트로, IoT 보안 취약점을 안전한 가상 환경에서 실습할 수 있게 해줍니다.
+    content: `## IoTGoat 환경이란?
 
-# IoTGoat이란?
+> "IoTGoat 환경은 의도적으로 취약하게 설계된 펌웨어 프로젝트로, IoT 기기 보안 취약점을 학습하고 테스트하는 데 사용됩니다."
 
-IoTGoat 환경에서는 다음과 같은 시나리오를 연습할 수 있습니다.
+주로 다음을 수행할 수 있습니다:
+- 펌웨어 분석 및 비밀번호 추출
+- 운영체제 및 서비스 레벨 공격
+- 웹 관리 페이지 공략
+- 포스트 익스플로잇
 
-- 펌웨어 분석
-- 패스워드 추출
-- OS 레벨 공격
-- 웹 어드민 페이지 취약점 공격
-- 포스트 익스플로잇 기법
+## 1단계: 공식 저장소에서 다운로드
 
-# 설치 방법
+공식 GitHub 저장소: https://github.com/owasp/iotgoat/releases
 
-## 1. 다운로드
-공식 GitHub 릴리즈 페이지에서 IoTGoat-x86.vmdk 파일을 다운받습니다.
+IoTGoat-x86.vmdk 파일을 다운로드합니다.
 
-## 2. VMware에서 새 VM 생성
-- "나중에 운영체제를 설치하겠습니다" 선택
-- VM 이름 지정 및 디스크 15GB 할당
+![다운로드된 실행파일](https://blog.kakaocdn.net/dna/mSJhM/dJMcacaKtFe/AAAAAAAAAAAAAAAAAAAAADis5zhlLJIirU0oshxGWnTcqEnnEAMgoEvsupHkdFj2/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=dyOUXLMJ1J23fnfaau3%2B%2BMl6D70%3D)
 
-## 3. 디스크 설정
-- 기본 하드 디스크 제거
-- 다운로드한 .vmdk 파일 추가
+## 2단계: VMware 열기
 
-## 4. 실행
-VM을 시작하면 IoTGoat 환경이 구동됩니다.
+![VMware 시작화면](https://blog.kakaocdn.net/dna/3Dq91/dJMcac2QZfW/AAAAAAAAAAAAAAAAAAAAALFusn5XKEmtR1m_i8-wpXFdyYI_PUomTXTHYreZ-xRR/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=6nTMTQU1gqAsxglOE94mVKMyvy4%3D)
 
-> Ctrl+Alt로 마우스를 VM 창에서 해제할 수 있습니다.`
+## 3단계: 새 가상 머신 생성
+
+Home에서 **Create a New Virtual Machine** 클릭
+
+![새 가상머신 생성](https://blog.kakaocdn.net/dna/nMSTw/dJMcabpmLk0/AAAAAAAAAAAAAAAAAAAAAI6QGeHeYBpMNwhAtVHXgxulLea2jMYvcT_QE9rnpv0n/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=1iVSj06o4JzRqmrTrkvu6n72fsk%3D)
+
+![구성 옵션](https://blog.kakaocdn.net/dna/0DFmw/dJMb99LQIsc/AAAAAAAAAAAAAAAAAAAAABnSvdyoDxXm0mSX9usbgpSknUIkEiBNckbjuQ_tsYM0/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=jjUGyFiegk6Sd3JnYddhCyUk%2Fg4%3D)
+
+"I will install" 옵션 선택 (이미 만들어진 디스크 이미지 사용 목적)
+
+## 4단계: 머신 이름 설정
+
+![머신 이름 지정](https://blog.kakaocdn.net/dna/P5vYO/dJMcagRKE60/AAAAAAAAAAAAAAAAAAAAANZo9-JMmopRM05VnJP0UQk2TdhzFLh4RMd4HbHq8H5B/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=9C0nF90pGIGUNszQCwI6wZR6PH8%3D)
+
+Virtual machine name을 입력합니다.
+
+## 5단계: 디스크 용량 설정
+
+![디스크 용량](https://blog.kakaocdn.net/dna/bF3Unf/dJMcad1J4iJ/AAAAAAAAAAAAAAAAAAAAALy8Cjqv-r363MGDJXYDaqGn2qjynB8O0jGzm31QkJqp/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=VBeclogk7wL1UBkrFzfzdScSrg4%3D)
+
+용량을 15GB로 설정합니다.
+
+## 6단계: 하드 디스크 교체
+
+![머신 설정](https://blog.kakaocdn.net/dna/dQieQb/dJMcaiaXZOY/AAAAAAAAAAAAAAAAAAAAACsfv3yNjMsqwJS6eiBVfs-SNTacYXLN91LPnILntE6A/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=vdJezHvxlnLvIdmC2qvxJSTMiyw%3D)
+
+생성한 머신 선택 → **Edit virtual machine settings** → Hard Disk 선택 → Remove 클릭
+
+## 7단계: 새 하드 디스크 추가
+
+Add → Hard Disk → Next
+
+![SCSI 선택](https://blog.kakaocdn.net/dna/bOJapo/dJMcaiILuUM/AAAAAAAAAAAAAAAAAAAAAP3LOjeFhbKf2ewOVhcq9MVH6nxJrxItCYzm2AE5l8ai/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=G0kc1HWy9s%2F5Kw3F5nPhNcvWQ1g%3D)
+
+SCSI 선택 유지 → Next
+
+## 8단계: 기존 디스크 이미지 지정
+
+![디스크 선택](https://blog.kakaocdn.net/dna/c8spBC/dJMcaiWiQKW/AAAAAAAAAAAAAAAAAAAAAPbWCp2TkrIuFjRLulNuFHXVeTaWYEgbYuobKOTdsYq-/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=Pxsx9OlxKCZm4JYuZrVIUC%2Fr9jM%3D)
+
+**Use an existing disk** 옵션 선택 → Next
+
+![파일 경로 선택](https://blog.kakaocdn.net/dna/J5LCW/dJMcafSRkCU/AAAAAAAAAAAAAAAAAAAAAA_qpG1I6TMatEYUI7Q_3GqSvRtvYadmRO0YWdYv0WYi/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=%2F2vlNBWPhvSZBskLtFaIQNh2bmA%3D)
+
+다운로드된 IoTGoat 파일 위치 지정 → 열기 → Finish
+
+![설정 완료](https://blog.kakaocdn.net/dna/JEIod/dJMcacIBcwV/AAAAAAAAAAAAAAAAAAAAALJ6Z8OlaPbTFrr-ivYdjKla9qA2dK-LFcMCb7ocG6gJ/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=26cWXUDhYpS%2BOEyt8eDJWM8RLJQ%3D)
+
+## 9단계: 가상 머신 시작
+
+![머신 목록](https://blog.kakaocdn.net/dna/MT6jD/dJMcafFjCzZ/AAAAAAAAAAAAAAAAAAAAANkrqWOAzCbzrywqOKwg0oGG0buS6rV3adomd9_C4q4p/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=kxibgjKbckMtMcQ9CVEkF06ksvc%3D)
+
+생성한 IoTGoat 머신 더블클릭 → 시작
+
+## 10단계: 부팅 확인
+
+![부팅화면1](https://blog.kakaocdn.net/dna/b5XBxc/dJMcabiCn0y/AAAAAAAAAAAAAAAAAAAAAEUOpX7zoJzl9CNPlXxWWvVR1RoQsqd96-GYHsc2fTmb/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=OgIKBFVNiaxYKI%2BVxNK2VmaZCG0%3D)
+
+![부팅화면2](https://blog.kakaocdn.net/dna/VHSZ5/dJMcacIBcAF/AAAAAAAAAAAAAAAAAAAAADIhz0F45klMMPeD7ZM4VfM43rzyLa-D3tOswfGeXnQT/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=ZfnXcNmHKq8XZewgjpt5o%3D)
+
+![최종 완료](https://blog.kakaocdn.net/dna/dfKqSv/dJMcacV647h/AAAAAAAAAAAAAAAAAAAAAJGffJS1pfhwfyz0A55gWSuX360mYCebTELVkM5cDcNH/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=IP5ZiZSD4kRE%2FMEFHIxezrZf8Lg%3D)
+
+설치 완료!
+
+> 마우스 해제: Ctrl + Alt 조합`
   },
   {
     id: 45, slug: '45', title: 'CNN 기초 이해하기!', tag: 'Python', created_at: '2025-11-23',
-    content: `CNN(Convolutional Neural Networks)을 이해하기 전에 컴퓨터가 이미지를 어떻게 인식하는지 먼저 알아야 합니다.
+    content: `CNN이란 무엇인가를 본격적으로 이해하기 전에, 우선 도입부를 이해해보자.
 
-# 컴퓨터는 이미지를 어떻게 볼까?
+컴퓨터의 세상은 0과 1로 이루어진다. 여기서 0과 1은 처음부터 컴퓨터 언어였던 것이 아니다. 이는 인간이 만든 규칙이었을 뿐인데 컴퓨터가 쓰는 방식인 High, Low는 번잡스러울 것 같아 0, 1로 대체한 것이다.
 
-컴퓨터는 이진수(0과 1)로 동작합니다. 이미지 역시 숫자의 집합입니다.
+그렇다면 컴퓨터 안의 데이터는 무엇을 의미하는 것일까.
 
-## 픽셀이란?
-이미지는 픽셀(pixel)이라는 작은 색상 정사각형들의 집합입니다. 이미지를 크게 확대하면 개별 픽셀이 보입니다. 각 픽셀은 숫자값으로 표현됩니다.
+데이터는 바로 **숫자**를 의미한다. 컴퓨터는 단순 기계이기에 우리가 가르쳐주지 않는 한 글자, 사진 등을 그대로 이해하지 못한다.
 
-## 픽셀이 정사각형인 이유
-초기 컴퓨터 그래픽 개발자들이 암묵적으로 정한 표준이 지금까지 이어진 것입니다.
+## 이미지는 무엇으로 구성되었을까?
 
-# CNN이란?
+흔히들 이미지는 그림으로 구성되었을 거라 생각한다. 그러나 이는 틀렸다.
 
-CNN은 이미지에서 유용한 특징을 자동으로 추출하는 딥러닝 기법입니다.
+이미지 또한 **숫자**로 이루어진 것이다. 이미지는 수많은 '픽셀'로 이루어진 점의 모습으로, 여기서 픽셀은 색깔을 숫자로 표현한 것을 말한다. 실제로 이미지를 확대하면 작은 네모들이 수백만 개가 모인 것을 볼 수 있다.
 
-- 사람이 특징을 직접 정의할 필요 없음
-- 여러 레이어를 거치며 점점 고수준의 특징을 학습
-- 이미지 분류, 객체 탐지 등에 활용
+![뉴진스 단체 사진](https://blog.kakaocdn.net/dna/oALmm/dJMcafrtPNo/AAAAAAAAAAAAAAAAAAAAADk_hhaGE5mFFsqZ-LAxigxNyrqEPZjhp6VkODbr12K2/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=sP0BIXvMEYkIAXSUUg3Cbf3TZfM%3D)
 
-> 픽셀 단위의 숫자를 이해하는 것이 CNN 이해의 첫걸음입니다.`
+본 사진을 보면 전체적으로 매끄러움을 느낄 수 있다. 이제 확대해보면:
+
+![픽셀 확대 이미지](https://blog.kakaocdn.net/dna/v506p/dJMcag4ZJ6G/AAAAAAAAAAAAAAAAAAAAAFdkBrXUOwhXDcOFmo0wSzfH6B-hXBAng3D3M1LOEWSl/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=zxWmfuqDZ1kPL8LOm1xS6G5bdAY%3D)
+
+작은 알갱이들이 보이는가! 저것이 바로 픽셀이다. 픽셀은 확대하면 보이는 색깔 네모 한 칸이다.
+
+> 초창기 컴퓨터 그래픽 개발자들이 '정사각형 배열' 기준을 만들었기 때문에 암묵적인 룰이 되었다.
+
+## CNN이란?
+
+CNN은 딥러닝으로 이미지를 보고 알아서 **유용한 특징을 자동 추출**하는 것이다. 이런 픽셀 기반의 내용들이 기반이 되어야 완전히 이해할 수 있다.
+
+Tags: CNN, python`
   },
   {
     id: 44, slug: '44', title: '우분투/리눅스에서 한글 쓰는 법', tag: 'Unix', created_at: '2025-11-19',
-    content: `우분투에서 한글 입력이 안 될 때 해결 방법을 정리합니다.
+    content: `우분투에서 한글 입력이 안 될 때 해결 방법입니다.
 
-# 문제 원인
+## 문제 원인
+
 기본 세션이 Wayland로 실행되어 ibus-hangul이 정상적으로 동작하지 않는 문제입니다.
 
-# 해결 방법
+## 해결 과정
 
-## 1. Xorg로 전환
-로그인 화면에서 세션을 **Ubuntu on Xorg**로 변경 후 재로그인합니다.
+- 기본 세션이 Wayland로 실행되어 ibus-hangul이 정상적으로 동작하지 않는 문제 확인
+- 로그인 화면에서 **Ubuntu on Xorg** 로 변경 후 재로그인
+- 입력 소스에 Korean(Hangul) 추가 및 ibus 설정 확인
+- /etc/default/keyboard 파일에서 XKBLAYOUT="kr,us" 로 수정
+- ibus restart, setxkbmap -query 등을 통해 적용 여부 확인
+- 현재 GUI 전체에서 한글 입력이 정상적으로 작동
 
-## 2. 입력 소스 추가
-설정 → 지역 및 언어 → 입력 소스에서 **Korean (Hangul)** 추가 후 ibus 설정 확인합니다.
-
-## 3. 키보드 레이아웃 수정
-\`/etc/default/keyboard\` 파일에서 다음과 같이 수정합니다.
-
-\`XKBLAYOUT="kr,us"\`
-
-## 4. 적용 확인
-\`ibus restart\` 및 \`setxkbmap -query\`로 적용 여부를 확인합니다.
-
-> 위 과정 이후 GUI 전체에서 한글 입력이 정상 작동합니다.`
+Tags: 리눅스, 우분투, 한글변환`
   },
   {
     id: 43, slug: '43', title: '변수와 연산자', tag: 'C언어', created_at: '2025-11-15',
-    content: `# 변수 (Variable)
+    content: `## 변수란?
 
-변수란 "값을 저장할 수 있는 메모리 공간에 붙여진 이름"입니다. 컴퓨터 메모리에 데이터를 저장하고 참조하기 위한 레이블입니다.
+변수란, 값을 저장할 수 있는 메모리 공간에 붙여진 이름을 말한다. 즉, 컴퓨터 안에 만들어진 '작은 상자'에 내가 원하는 값을 넣어두고, 그 상자를 부를 때 사용할 이름을 정하는 것이다.
 
-선언과 동시에 초기화하는 방법:
+코딩으로 나타내면 다음과 같다.
 
-int num = 20;
+> #include <stdio.h>
+> int main(){
+>     int num = 20;
+>     printf("%d", num);
+>     return 0;
+> }
 
-선언과 할당을 분리하는 방법:
+\`int num = 20;\` 이라는 것으로, 숫자 20을 num이라고 지어준 변수에 넣는다는 것을 의미한다.
 
-int num;
-num = 20;
+원래는 아래와 같이 선언과 할당을 분리해야 한다.
 
-printf로 출력: printf("%d", num);
+> int main(void){
+>     int num;
+>     num = 20;
+>     printf("%d", num);
+>     return 0;
+> }
 
-# 연산자 (Operator)
+## 연산자
 
-기본 연산자 5가지:
+C 언어에서 기본 연산자는 다음과 같다.
 
-- \`+\` 덧셈
-- \`-\` 뺄셈
-- \`*\` 곱셈
-- \`/\` 나눗셈
-- \`%\` 나머지
+- \`+\` (더하기)
+- \`-\` (빼기)
+- \`*\` (곱하기)
+- \`/\` (나누기)
+- \`%\` (나머지)
 
-> 처음에는 기본 연산자에 익숙해진 뒤 점진적으로 확장해 나가는 것을 권장합니다.`
+이 다섯 가지 연산자만 알아도, 변수들을 이용한 간단한 계산식은 충분히 만들 수 있다.
+
+예: a + b, a * b, (a + b) * c
+
+처음부터 전부 외우려고 하지 말고, 기본 연산자에 익숙해진 뒤 하나씩 확장해 나가는 걸 추천한다.
+
+![변수와 연산자 예시](https://blog.kakaocdn.net/dna/bIo4ES/dJMcagw6dSm/AAAAAAAAAAAAAAAAAAAAAA_UXiF1EtsfJ1D-efUzT8xhdQs6_GgR4WD7s9ILzKuP/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=XhGohW0heD%2BZ%2F0oRUBR7HgQvXAg%3D)`
   },
   {
     id: 42, slug: '42', title: 'c언어의 매우 기초 부분 (printf)', tag: 'C언어', created_at: '2025-11-14',
-    content: `# C언어 기본 구조
+    content: `## #include <stdio.h>
 
-\`#include <stdio.h>\`는 printf와 scanf 함수가 들어있는 필수 기본 헤더 파일입니다.
+필수 기본 헤더 파일이다. C에서는 printf, scanf 같은 기능이 stdio.h 안에 들어 있기 때문에 규칙처럼 항상 넣는다.
 
-# 주요 키워드
+## 주요 키워드 설명
 
-- **int**: 정수형 데이터 타입
-- **main**: 프로그램 실행 시 가장 먼저 호출되는 함수
-- **( )**: 파라미터 입력 위치
-- **{ }**: 코드 실행 영역
-- **return 0;**: 프로그램의 정상 종료
+- **int** — 정수형 자료형
+- **main** — 프로그램이 실행될 때 맨 처음 불리는 함수 이름
+- **( )** — 함수의 입력(매개변수)이 들어가는 자리
+- **{ }** — 함수가 실제로 실행되는 코드 영역
+- **return 0;** — 프로그램을 정상적으로 종료한다는 의미
 
-# printf 함수
+## 핵심 포인트
 
-printf는 "print formatted"의 줄임말로, 화면에 출력할 때 반드시 사용해야 합니다.
+C 언어를 처음 시작할 때는 \`#include <stdio.h>\`부터 \`int main() { }\`까지가 거의 기본 틀이다.
 
-예시 프로그램 (디지털 포렌식 연습 출력):
+화면에 글자를 출력하고 싶을 때는 printf를 써야 한다. (printf = "print formatted"의 줄임말)
 
-#include <stdio.h>
-int main(){
-    printf("================\\n");
-    printf("  디 지 털 포 렌 식 연 습  \\n");
-    printf("================\\n");
-    return 0;
-}
+## 예시 코드
 
-> 초보자는 #include <stdio.h>부터 int main() { }까지를 기본 틀로 암기하는 것이 좋습니다.`
+> #include <stdio.h>
+> int main() {
+>     printf("------------------------------------------\\n");
+>     printf("\\n");
+>     printf("        디 지 털 포 렌 식 연 습           \\n");
+>     printf("\\n");
+>     printf("------------------------------------------\\n");
+>     return 0;
+> }
+
+![출력 결과](https://blog.kakaocdn.net/dna/7RgAW/dJMcaaDEiWu/AAAAAAAAAAAAAAAAAAAAAO-ylpPz0bK8Wom949EIIu8nzG9YPrjcb6FLfamcJkRv/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=HmapxzRKrhswZBP%2BW3y3Uw0VxY0%3D)`
   },
   {
     id: 41, slug: '41', title: '프로그램의 기본 구성', tag: 'C언어', created_at: '2025-11-07',
-    content: `# 함수(Function)란?
+    content: `## 함수(Function)란?
 
-함수는 **입력(input) + 출력(output) + 기능(function)**으로 구성됩니다.
+함수 = **input(입력) + output(출력) + function(기능)**
 
-# 기본 프로그램 구조
+## 기본 프로그램 구조
 
-int main(void){
-    printf("Hello world \\n");
-    return 0;
-}
+> #include <stdio.h>
+>
+> int main(void){
+>     printf("Hello world \\n");
+>     return 0;
+> }
 
-# 주요 용어
+## 주요 요소 설명
 
-- **int**: 출력 형식 (정수)
-- **main**: 함수 이름
-- **void**: 입력 형식 (없음)
-- **;**: 문장의 끝을 나타내는 세미콜론
-- **return 0;**: 함수 실행 종료
-- **\\n**: 줄바꿈 이스케이프 시퀀스
-
-> 주석(Comment)을 활용하면 코드 설명을 덧붙일 수 있어 가독성이 높아집니다.`
+- **int** — 출력 형태 (정수)
+- **main** — 함수 이름
+- **void** — 입력 형태 (없음)
+- **세미콜론(;)** — 문장의 끝 표시
+- **return 0;** — 현재 실행 중인 함수의 종료
+- **주석** — 코드에 대한 설명을 달 수 있는 메모장 역할
+- **\\n** — 줄을 바꾸는 이스케이프 시퀀스 (Enter 개념)`
   },
   {
     id: 40, slug: '40', title: 'c언어 프롤로그', tag: 'C언어', created_at: '2025-11-06',
-    content: `# C언어란?
+    content: `C언어는 **모든 프로그래밍 언어의 기초**가 되는 언어입니다.
 
-C는 가장 기본적인 언어로, 모든 프로그래밍 언어의 기초가 되는 언어입니다.
+## C언어의 3요소
 
-# 프로그래밍의 3요소
+- **프로그래밍 언어** — 사람과 컴파일러 간의 통신을 가능하게 하는 표준화된 형태
+- **컴파일러** — 인간의 명령어를 기계가 읽을 수 있는 형태로 변환하는 번역기
+- **기계 언어** — 컴퓨터가 실제로 실행하는 이진 코드(0과 1)
 
-- **프로그래밍 언어**: 인간과 컴파일러 사이의 다리 역할
-- **컴파일러(Compiler)**: 인간의 명령을 기계가 읽을 수 있는 코드로 번역
-- **기계어(Machine Language)**: 0과 1로 이루어진 이진 코드
+## 프로그램 개발 순환
 
-# 컴파일 과정
+> 코드 작성 → 컴파일 → 에러 감지 → 코드 수정 → 재컴파일
 
-프로그램 완성 사이클:
+> "에러가 발생하지 않을 때까지 '에러 발생 > 프로그램 수정 > 컴파일' 과정을 무한 반복해야 한다."
 
-에러 발견 → 프로그램 수정 → 재컴파일
-
-에러가 없을 때까지 이 사이클을 반복합니다.
-
-> Visual Studio 설치 방법은 검색을 통해 쉽게 찾을 수 있으므로 생략합니다.`
+> Visual Studio 설치 방법은 온라인에서 쉽게 찾을 수 있으므로 생략합니다.`
   },
   {
     id: 39, slug: '39', title: 'vi editor', tag: 'Unix', created_at: '2025-10-27',
-    content: `vi는 Bill Joy가 UC Berkeley에서 개발한 Unix의 기본 텍스트 에디터입니다.
+    content: `vi는 Bill Joy가 UC Berkeley에서 개발한 Unix 기본 텍스트 에디터입니다.
 
-# 실행 방법
+## 실행 방법
 
-기본: vi [파일명]
-특정 줄로 이동: vi +줄번호 파일명
-검색어로 이동: vi +/검색어 파일명
-읽기 전용: vi -R 파일명 또는 view 파일명
+> $ vi [filename]
+> $ vi +줄번호 filename
+> $ vi +/검색어 filename
+> $ vi -R filename  (읽기 전용)
+> $ view filename   (읽기 전용)
 
-# 모드 전환
+## 모드 전환
 
-- **명령 모드 → 입력 모드**: a, i, o 키
-- **입력 모드 → 명령 모드**: ESC 키
+- **명령 모드 → 삽입 모드**: i, a, o, O 키
+- **삽입 모드 → 명령 모드**: ESC 키
 
-# 커서 이동
+## 커서 이동
 
-- h: 왼쪽
-- j: 아래
-- k: 위
-- l: 오른쪽
+- h: 왼쪽 / j: 아래 / k: 위 / l: 오른쪽
+- w: 다음 단어 / b: 이전 단어
 - 방향키도 사용 가능
 
-# 저장 및 종료
+## 저장 및 종료
 
 - :wq — 저장 후 종료
+- :x — 저장 후 종료 (변경 있을 때만)
 - :q! — 저장 없이 강제 종료
-- :w 파일명 — 다른 이름으로 저장
+- :w filename — 다른 이름으로 저장
 
-# 설정
+## 설정
 
 - :set nu — 줄 번호 표시
 - :set ts=n — 탭 크기 설정
 
-> vi는 마우스 미지원과 이중 모드 방식으로 처음엔 어렵지만, 익숙해지면 강력한 도구입니다.`
+> vi는 마우스를 지원하지 않고 명령/삽입 이중 모드로 처음엔 어렵지만 강력한 도구입니다.`
   },
   {
-    id: 38, slug: '38', title: '사용자 관리 명령어 (프로세스)', tag: 'Unix', created_at: '2025-10-27',
-    content: `# 프로세스(Process)란?
+    id: 38, slug: '38', title: '사용자 관리 명령어 — 프로세스', tag: 'Unix', created_at: '2025-10-27',
+    content: `## 프로세스(Process)란?
 
-프로세스는 컴퓨터가 지금 실행 중인 작업을 의미합니다. UNIX는 멀티태스킹을 지원하므로 여러 프로세스가 동시에 실행됩니다.
+> "프로세스는 컴퓨터가 지금 실행중인 작업을 의미한다."
 
-# PID (Process ID)
+UNIX 시스템은 커널 스케줄링을 통해 멀티태스킹을 지원합니다. 각 프로세스는 고유한 PID(Process ID)를 가집니다. 프로세스 종료 권한은 root 또는 프로세스 소유자로 제한됩니다.
 
-각 프로세스는 고유한 PID를 가집니다. root 또는 프로세스 소유자만 프로세스를 종료할 수 있습니다.
+## ps 명령어
 
-# ps 명령어
+현재 실행 중인 프로세스 정보를 표시합니다.
 
-현재 실행 중인 프로세스 정보를 보여주는 명령어입니다.
+> $ ps [ -option ]
+> $ pstree
 
-ps -u: 사용자명과 시작 시간 표시
-ps -l: 상세 정보 표시
+## 주요 옵션
 
-# pstree
+- \`-u\` — 사용자 이름과 프로세스 시작 시간 표시
+- \`-l\` — 상세 정보 표시
 
-프로세스 계층 구조(트리 형태)로 보여주는 명령어입니다.
+## pstree
 
-> 프로세스 관리는 시스템 관리의 핵심입니다.`
+프로세스 계층 구조를 트리 형태로 보여줍니다.`
   },
   {
     id: 37, slug: '37', title: '사용자 통신 명령어', tag: 'Unix', created_at: '2025-10-27',
-    content: `Unix에서 사용자 간 통신을 위한 명령어들을 정리합니다.
+    content: `Unix에서 사용자 간 통신을 위한 명령어들입니다.
 
-# 로그인된 사용자 확인
+## 1. 로그인한 사용자 확인
 
-- users: 현재 접속 중인 사용자 목록
-- who: 사용자 정보 상세 표시
-- w: 사용자 활동 정보 표시
-- finger: 사용자 상세 정보
+- users — 현재 접속 중인 사용자 목록
+- who — 사용자 정보 상세 표시 (가장 일반적)
+- w — 사용자 활동 정보 표시
+- finger — 사용자 상세 정보 (별도 설치 필요)
 
-# 사용자 정보 수정
+## 2. 사용자 공개 정보 변경 (chfn)
 
-chfn 명령어로 공개 사용자 정보를 변경합니다.
-- -f: 전체 이름
-- -o: 사무실
-- -p: 전화번호
-- -h: 집 전화번호
+> $ chfn [-f 성명] [-o 사무실] [-p 전화] [-h 집전화] [사용자명]
 
-# 실시간 대화
+## 3. Talk 명령어
 
-talk [사용자명]: 양쪽 모두 명령어를 실행해야 연결됩니다.
+> $ talk [user_id][terminal_name]
 
-# 메시지 전송
+양쪽 모두 명령어를 실행해야 2방향 대화가 성립됩니다.
 
-write [사용자명]: 특정 사용자에게 메시지 전송 (Ctrl+D로 종료)
+## 4. Write 명령어
 
-# 메시지 수신 제어
+> $ write [사용자명]
 
-mesg y: 메시지 수신 허용
-mesg n: 메시지 수신 거부
+특정 사용자에게 메시지 전송. Ctrl+D로 종료합니다.
 
-# 전체 공지
+## 5. 메시지 수신 제어 (mesg)
 
-wall: 시스템 전체 사용자에게 메시지 전송 (관리자 권장, Ctrl+D로 종료)`
+> $ mesg y   — 메시지 수신 허용
+> $ mesg n   — 메시지 수신 거부
+
+## 6. Wall 명령어
+
+> $ wall
+
+시스템 전체 사용자에게 메시지 전송. 관리자 사용 권장. Ctrl+D로 종료합니다.`
   },
   {
     id: 36, slug: '36', title: '사용자 관리 명령어', tag: 'Unix', created_at: '2025-10-26',
-    content: `Linux/Unix 환경에서 사용자 및 그룹을 관리하는 기본 명령어를 정리합니다.
+    content: `Linux/Unix에서 사용자 계정 및 그룹을 관리하는 명령어들입니다.
 
-# useradd
-새 사용자 계정을 생성합니다 (root 권한 필요).
-/etc/passwd와 /etc/shadow에 사용자 정보를 추가하고 홈 디렉터리를 생성합니다.
+## useradd — 사용자 계정 생성
 
-주요 옵션:
-- -d: 홈 디렉터리 지정
-- -m: 로그인 후 이동
-- -g: 그룹 지정
-- -u: UID 지정
+> $ useradd [옵션] 사용자명
 
-# adduser
-useradd와 동일 기능이나 대화형 방식으로 더 편리합니다.
+- \`-d\` — 홈 디렉터리 지정
+- \`-m\` — 홈 디렉터리 생성
+- \`-g\` — 그룹 지정
+- \`-u\` — UID 지정
+- \`-e\` — 만료 날짜 지정
 
-# passwd
-사용자 패스워드를 (재)지정합니다.
-현재 비밀번호 입력 후 새 비밀번호를 설정합니다.
+사용자 정보는 /etc/passwd 및 /etc/shadow에 저장됩니다.
 
-# usermod
-이미 만들어진 계정을 수정할 때 사용합니다.
-옵션은 useradd와 유사합니다.
+## adduser
 
-# userdel
-사용자 계정을 삭제합니다.
--r 옵션: 홈 디렉터리도 함께 삭제합니다.
+useradd와 동일 기능이나 **대화형 방식**으로 더 편리합니다.
 
-# groupadd
-새 그룹을 추가합니다.
--g 옵션으로 GID를 지정할 수 있습니다.
+## passwd — 패스워드 설정
 
-# groupdel
-그룹을 삭제합니다.`
+> $ passwd [사용자명]
+
+현재 비밀번호 입력 후 새 비밀번호를 설정합니다. root는 다른 계정 비밀번호도 변경 가능합니다.
+
+## usermod — 계정 수정
+
+> $ usermod [옵션] 사용자명
+
+useradd와 유사한 옵션을 사용합니다. 기존 계정 설정을 수정합니다.
+
+## userdel — 계정 삭제
+
+> $ userdel [-r] 사용자명
+
+\`-r\` 옵션: 홈 디렉터리도 함께 삭제합니다.
+
+## groupadd — 그룹 생성
+
+> $ groupadd [-g GID] 그룹명
+
+## groupdel — 그룹 삭제
+
+> $ groupdel 그룹명`
   },
   {
     id: 35, slug: '35', title: '쉘(Shell)', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 쉘(Shell)이란?
+    content: `## 쉘(Shell)이란?
 
-쉘은 명령어 해석기로, 커널에 사용자의 명령을 전달하는 인터페이스이자 프로그램입니다.
+> 쉘은 "명령어 해석기로, 커널에 사용자의 명령을 전달하는 인터페이스이자 프로그램"입니다.
 
-# 주요 쉘 종류
+## 주요 쉘 4종류
 
-- **Bourne Shell (sh)**: 가장 오래된 Unix 쉘
-- **C Shell (csh)**: C 언어와 유사한 문법
-- **Korn Shell (ksh)**: sh와 csh의 장점 결합
-- **Bash**: Linux의 표준 쉘 (Bourne Again Shell)
+- **Bourne Shell (sh)** — 1979년 Stephen Bourne 개발. UNIX 첫 표준 쉘. 프롬프트: $
+- **C Shell (csh)** — Bill Joy 개발. C 언어 구문 기반. 프롬프트: %. 히스토리 기능 포함
+- **Korn Shell (ksh)** — David Korn 개발. Bourne 쉘을 C 쉘 기능으로 확장. 프롬프트: %
+- **Bash (bash)** — GNU 프로젝트. "Bourne Again Shell". Linux 표준 쉘. 프롬프트: $
 
-# 쉘의 주요 기능
+## 쉘의 3가지 주요 기능
 
-- **명령어 처리**: 사용자 입력을 해석하고 실행
-- **입출력 리다이렉션**: >, <, >> 등을 이용한 입출력 방향 변경
-- **파이프(Pipe)**: 명령어 결과를 다른 명령어의 입력으로 연결
+- **명령 처리** — 입력 읽기, 파싱, 프로그램 실행
+- **입출력 리다이렉션** — 표준 입출력을 파일로 리다이렉트
+- **파이프** — 한 명령어의 출력을 다른 명령어의 입력으로 연결
 
-# 로그인 과정
+## 로그인 프로세스
 
-1. /etc/passwd 파일에서 사용자 정보 확인
-2. /etc/shadow 파일에서 패스워드 검증
-3. 환경 설정 로드
-4. 쉘 프로그램 실행
+/etc/passwd 확인 → /etc/shadow 암호 검증 → 환경 설정 구성 → 쉘 실행
 
-# /etc/passwd 파일 구조
+## /etc/passwd 파일 구조
 
-사용자명:패스워드:UID:GID:코멘트:홈디렉터리:쉘
+> 사용자명:패스워드:UID:GID:주석:홈디렉터리:쉘
 
-# /etc/shadow 파일
+## /etc/shadow 파일
 
-암호화된 패스워드와 패스워드 만료 정보를 저장합니다.`
+암호화된 패스워드 파일 (root 전용 접근). 비밀번호 에이징 정보 포함.`
   },
   {
     id: 34, slug: '34', title: '파일 응용 명령어', tag: 'Unix', created_at: '2025-10-26',
-    content: `Unix 파일 응용 명령어를 정리합니다.
+    content: `## wc (Word Count)
 
-# wc
-파일의 줄, 단어, 바이트 수를 셉니다.
-- -c: 바이트 수
-- -m: 문자 수
-- -l: 줄 수
-- -w: 단어 수
+지정한 파일의 라인 수, 단어 수, 문자 수를 카운트합니다.
 
-# cut
+> $ wc [-c|-m|-l|-w] 파일명
+
+- \`-c\` — 바이트 수 / \`-m\` — 문자 수 / \`-l\` — 라인 수 / \`-w\` — 단어 수
+
+## cut
+
 파일에서 특정 부분을 추출합니다.
-- -c: 바이트 단위
-- -f: 필드 단위
-- -d: 구분자 지정
 
-# paste
-여러 파일의 데이터를 합칩니다.
-- -s: 줄을 연결
-- -d: 구분자 지정
+> $ cut [-c|-f|-d] 파일명
 
-# sort
+## paste
+
+여러 파일의 데이터를 병합합니다.
+
+## tr (Translate)
+
+문자를 치환하거나 삭제합니다.
+
+- \`-d\` — 문자 삭제 / \`-s\` — 반복 문자 압축
+
+## sort
+
 내용을 정렬합니다.
-- -n: 숫자 정렬
-- -r: 역순 정렬
-- -u: 중복 제거
-- -k: 키 필드 지정
 
-# grep
-패턴을 검색합니다.
-- -c: 매치 횟수
-- -i: 대소문자 무시
-- -v: 패턴 미포함 줄
-- -n: 줄 번호 표시
-- -l: 파일명만 출력
+- \`-n\` — 숫자 정렬 / \`-r\` — 역순 / \`-u\` — 중복 제거 / \`-k\` — 키 필드
 
-# find
-파일을 검색합니다.
-- -name: 파일명으로 검색
-- -type: 파일 유형으로 검색
-- -size: 파일 크기로 검색
-- -exec: 검색 결과에 명령 실행
+## split
 
-# diff
-두 파일의 차이를 보여줍니다.
+파일을 더 작은 조각으로 나눕니다.
 
-# tr
-문자를 변환하거나 삭제합니다.
-- -d: 문자 삭제
-- -s: 반복 문자 압축`
+## uniq
+
+인접한 중복 라인을 처리합니다.
+
+## cmp / comm / diff
+
+파일 비교 도구:
+- cmp — 바이트 단위 비교
+- comm — 공유/고유 라인 식별
+- diff — 자세한 차이점 표시
+
+## grep
+
+파일 내에서 패턴이나 문자열을 검색합니다.
+
+> $ grep [옵션] 패턴 파일명
+
+- \`-i\` — 대소문자 미구분 / \`-n\` — 라인 번호 / \`-v\` — 패턴 미포함 줄
+
+## find
+
+시스템 전체에서 파일을 검색합니다.
+
+> $ find 경로 [-name|-type|-size|-exec]`
   },
   {
     id: 33, slug: '33', title: '파일 관리 명령어', tag: 'Unix', created_at: '2025-10-26',
-    content: `Unix 기본 파일 관리 명령어를 정리합니다.
+    content: `## mv (Move) — 이동/이름 변경
 
-# mv (Move)
-파일을 이동하거나 이름을 바꿉니다.
-mv 원본 대상
+> $ mv [-i] 원본 대상
 
-# cp (Copy)
-파일을 복사합니다. 원본은 그대로 남고 복사본이 생성됩니다.
-cp 원본 대상
+원본을 대상으로 이동하거나 이름을 변경합니다. \`-i\` 옵션: 덮어쓰기 전 확인.
 
-# rm (Remove)
-파일을 영구 삭제합니다. 휴지통 없이 바로 삭제됩니다.
-rm 파일명
+## cp (Copy) — 복사
 
-# alias
-자주 사용하는 명령어에 단축어를 지정합니다.
-alias 단축어='명령어'
+> $ cp [-ir] 원본 대상
 
-# ln (Link)
-파일의 링크(바로가기)를 생성합니다.
-- -s: 심볼릭 링크 생성
+원본을 보존하면서 복사본을 생성합니다. \`-r\` 옵션: 디렉터리 복사.
 
-# chmod
-파일과 디렉터리의 접근 권한을 변경합니다.
-숫자 표기법(0-7)과 문자 표기법(rwx)을 사용합니다.
+## rm (Remove) — 삭제
 
-# chown / chgrp
-파일 소유자와 그룹을 변경합니다 (root 전용).
+> $ rm [-fir] 파일명
 
-# touch
-파일의 타임스탬프를 수정하거나 빈 파일을 생성합니다.
+복구 옵션 없이 파일을 영구 삭제합니다. \`-f\` 강제 / \`-r\` 재귀 삭제.
 
-# umask
-새로 생성되는 파일과 디렉터리의 기본 권한을 설정합니다.
+## alias — 단축어
 
-# cat / more / head / tail
-파일 내용을 화면에 표시합니다.
-- head: 앞부분만
-- tail: 뒷부분만
-- more: 한 화면씩 표시`
+> $ alias 단축어='명령어'
+
+자주 사용하는 명령어에 단축키를 만듭니다. (세션 전용)
+
+## ln (Link) — 링크
+
+> $ ln [-s] 원본 대상
+
+\`-s\` 옵션: 심볼릭 링크 생성.
+
+## chmod — 접근 권한 변경
+
+> $ chmod [권한] 파일명
+
+8진 표기법(0-7) 또는 기호 연산자(rwx) 사용.
+
+## chown / chgrp — 소유권 변경
+
+파일 소유자와 그룹을 변경합니다. (root 전용)
+
+## touch — 타임스탬프/빈 파일 생성
+
+> $ touch 파일명
+
+## umask — 기본 권한 설정
+
+새 파일(기본 666) 및 디렉터리(기본 777)의 기본 권한을 정의합니다.
+
+## cat / more / head / tail — 파일 내용 표시
+
+- head: 앞부분 / tail: 뒷부분 / more: 한 화면씩
+- \`tail -f\`: 실시간 업데이트 표시`
   },
   {
     id: 32, slug: '32', title: '디렉터리 관리 명령어 mkdir, rmdir', tag: 'Unix', created_at: '2025-10-26',
-    content: `# mkdir (Make Directory)
+    content: `## mkdir — 디렉터리 생성
 
-새로운 디렉터리를 생성합니다. 생성 시 현재 디렉터리(.)와 상위 디렉터리(..)가 자동으로 생성됩니다.
+Make directory의 약자. 생성 시 현재 디렉터리(.)와 상위 디렉터리(..)가 자동 생성됩니다.
 
-기본 사용법:
-mkdir 디렉터리이름
+> $ mkdir [-m mode] [-p] directory_name
 
-전체 형식:
-mkdir [-m mode] [-p] directory_name
+## 주요 옵션
 
-## 옵션
+- **-m** — 새 디렉터리의 접근 권한을 명시적으로 선언
+- **-p** — 계층적 구조를 갖는 디렉터리를 한꺼번에 생성 (하위 디렉터리까지 한 번에)
 
-- -m: 새로 만들 디렉터리의 접근 권한을 명시적으로 선언
-- -p: 계층적 구조를 갖는 디렉터리를 한꺼번에 생성 (하위 디렉터리까지 한 번에 생성)
+> -m 옵션은 디렉터리 생성 시 자동으로 지정되는 기본 접근권한을 사용자가 임의로 지정할 수 있습니다.
 
-> -m 옵션은 디렉터리 생성 시 자동으로 지정되는 기본값을 사용자가 임의로 지정할 수 있습니다.
+## rmdir — 디렉터리 삭제
 
-# rmdir (Remove Directory)
+Remove directory의 약자. **빈 디렉터리만** 삭제 가능합니다.
 
-디렉터리를 삭제합니다. 비어있는 디렉터리만 삭제할 수 있습니다.
+> $ rmdir [-p] directory_name
 
-기본 사용법:
-rmdir 디렉터리이름
+## 주요 옵션
 
-전체 형식:
-rmdir [-p] directory_name
-
-## 옵션
-
-- -p: 계층적 구조를 갖는 디렉터리를 한꺼번에 삭제`
+- **-p** — 계층적 구조를 갖는 디렉터리를 한꺼번에 삭제`
   },
   {
     id: 31, slug: '31', title: '디렉터리 관리 명령어 ls', tag: 'Unix', created_at: '2025-10-26',
-    content: `# ls 명령어
+    content: `ls는 디렉터리 내용을 나열하는 명령어입니다. (DOS의 dir 명령어와 동등)
 
-ls는 디렉터리 내용을 나열하는 명령어로, DOS의 dir 명령어와 유사합니다.
+## 기본 구문
 
-기본 형식:
-ls [-aliFR] [파일명 | 디렉터리명]
+> $ ls [-aliFR] [파일명 | 디렉터리명]
 
-# 주요 옵션
+## 주요 옵션
 
-- -a: 숨김 파일(.)을 포함한 모든 파일 표시
-- -i: i-node 번호 표시
-- -l: 자세한 목록 형식으로 표시
-- -F: 파일 유형 표시 (/ 디렉터리, * 실행파일, @ 심볼릭 링크)
-- -R: 하위 디렉터리 내용까지 재귀적으로 표시
+- **-a** — 숨겨진 점 파일을 포함한 모든 파일 표시
+- **-i** — i-node 번호 표시
+- **-l** — 상세 정보가 포함된 목록 형식
+- **-F** — 파일 타입 표시 (/ 디렉터리, * 실행파일, @ 심볼릭 링크)
+- **-R** — 재귀적으로 하위 디렉터리 내용 표시
 
-# 사용 예시
+## 사용 예시
 
-모든 파일 자세히 보기: ls -al
-현재 위치부터 전체 보기: ls -R .
+> $ ls -al    (상세 정보가 있는 모든 파일)
+> $ ls -R .   (현재 디렉터리 및 모든 하위 디렉터리)
 
-# ls -l 출력 정보
+## ls -l 출력 정보
 
-파일유형, 접근권한, 하드링크수, 소유자, 그룹, 파일크기, 수정날짜/시간, 파일명 순으로 표시됩니다.`
+파일타입, 접근권한, 하드링크수, 소유자, 그룹, 파일크기, 수정날짜/시간, 파일명
+
+## 파일 타입 표시기
+
+- d — 디렉터리
+- - — 정규 파일
+- l — 심볼릭 링크
+- b — 블록 디바이스
+- c — 문자 디바이스
+- p — 이름이 지정된 파이프
+- s — 소켓`
   },
   {
     id: 30, slug: '30', title: '와일드카드 (*, 에스터리스크)', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 와일드카드(Wildcard)란?
+    content: `파일명의 일부만 알거나, 여러 파일을 한꺼번에 지정할 때 사용하는 특수 문자입니다.
 
-파일명의 일부만 알거나, 여러 파일을 한꺼번에 지정할 때 사용하는 특수 문자입니다.
+## 와일드카드 종류
 
-# 와일드카드 종류
+- **\*** — 길이에 관계없이 0개 이상의 연속 문자와 일치
+- **?** — 정확히 1개의 문자와 일치 (수량이 중요)
+- **[ ]** — 문자 범위를 나타냄. 예: c[2-4].txt → c2.txt, c3.txt, c4.txt
+- **{ }** — 쉼표로 여러 패턴을 분리. 예: {*.txt,*.jpg}
 
-## * (에스터리스크)
-0개 이상의 임의 문자와 매치됩니다.
-예: ls c*.txt → c로 시작하는 모든 txt 파일
+## 사용 예시
 
-## ? (물음표)
-정확히 1개의 문자와 매치됩니다. 개수가 중요합니다.
-예: ls c?.txt → c 다음에 1글자가 오는 txt 파일
+> $ ls c*.txt         (c로 시작하는 모든 txt 파일)
+> $ ls c?.txt         (c 다음에 1글자가 오는 txt 파일)
+> $ ls c[2-4].txt     (c2, c3, c4.txt)
 
-## [ ] (대괄호)
-범위나 문자 집합을 지정합니다.
-예: ls c[2-4].txt → c2.txt, c3.txt, c4.txt
-
-## { } (중괄호)
-콤마로 구분된 여러 패턴을 지정합니다.
-예: ls {*.txt,*.jpg} → txt와 jpg 파일 모두
-
-> 와일드카드는 특정 패턴을 따르는 여러 파일을 효율적으로 다룰 때 매우 유용합니다.`
+> 와일드카드는 단일 명령어를 통해 특정 패턴의 수많은 파일을 지정할 때 매우 유용합니다.`
   },
   {
     id: 29, slug: '29', title: '파일 시스템', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 파일 시스템이란?
+    content: `## 파일 시스템이란?
 
-운영체제가 파티션이나 디스크에 파일을 저장하고 관리하는 방법과 자료구조입니다.
+> "파일 시스템은 운영 체제가 파티션 또는 디스크에 파일을 저장하는 방식과 데이터 구조"입니다.
 
-# Unix 파일 저장 과정
+## Unix 파일 저장 과정
 
-1. 디스크 공간 할당
-2. i-node 구조 생성 (파일 메타데이터 포함)
-3. 데이터 블록에 실제 내용 저장
+- 파일 데이터에 대한 디스크 공간 할당
+- i-node 구조 생성 (메타데이터 포함)
+- 실제 데이터 블록에 내용 저장
 
 ## i-node
-파일의 신분증 역할로, 파일명이 아닌 실제 데이터 위치와 속성 정보를 담습니다.
-포함 정보: 파일 소유자, 접근 권한, 데이터 블록 주소, 파일 크기, 생성/수정 시간 등
 
-# Linux 표준 디렉터리
+파일의 신분증 역할. 파일명이 아닌 실제 데이터 위치와 속성 정보를 담습니다.
 
-- /: 루트 디렉터리
-- /bin: 기본 프로그램
-- /etc: 시스템 설정 파일
-- /home: 사용자 홈 디렉터리
-- /usr: 응용 프로그램
-- /var: 가변 데이터 (로그 등)
+포함 정보: 소유자, 접근 권한, 데이터 블록 주소, 파일 크기, 타임스탬프, 링크 수, 파일 타입
 
-# 경로 표현 방식
+## Linux 표준 디렉터리
 
-- **절대 경로**: 루트(/)부터 시작하는 전체 경로
-- **상대 경로**: 현재 위치(.)와 상위(..)를 기준으로 표현
+- / — 루트 디렉터리
+- /bin — 기본 실행 파일
+- /home — 사용자 홈 디렉터리
+- /etc — 시스템 설정 파일
+- /usr — 응용 프로그램
 
-# 파일 유형
+## 디렉터리 이동 (cd)
 
-일반 파일, 디렉터리 파일, 특수 파일, 소켓, 명명된 파이프, 심볼릭 링크, 하드 링크`
+> $ cd /절대경로
+> $ cd 상대경로
+> $ cd .   (현재 디렉터리)
+> $ cd ..  (상위 디렉터리)
+
+## 파일 유형
+
+정규 파일, 디렉터리, 특수 파일, 소켓, 이름이 지정된 파이프, 심볼릭 링크, 하드 링크`
   },
   {
     id: 28, slug: '28', title: '명령어 일반형식과 매뉴얼', tag: 'Unix', created_at: '2025-10-26',
-    content: `# Unix 명령어 일반 형식
+    content: `## 명령어 인수
 
-명령어 [옵션] [파라미터]
+**옵션**: \`-\` 접두사로 명령의 동작 방식을 변경합니다. 여러 옵션을 그룹화할 수 있습니다.
 
-- **옵션**: - 로 시작하며 명령어의 동작 방식을 변경
-- **파라미터**: 명령어에 전달되는 입력값
+**매개변수**: 명령이 처리하는 값 또는 대상입니다.
 
-# 전경(Foreground) vs 배경(Background) 처리
+## 전경 vs 배경 처리
 
-- **전경 처리**: 사용자가 직접 관찰하고 제어하며 작업 완료까지 기다림
-- **배경 처리**: 명령어 끝에 &를 붙여 백그라운드에서 실행 (동시에 다른 작업 가능)
+- **포그라운드**: 사용자가 직접 관찰/제어. 완료까지 대기
+- **배경 처리**: 명령어 끝에 **&** 기호 추가. 동시에 다른 작업 가능
 
-# man 명령어 (매뉴얼)
+> $ 명령어 &
 
-명령어에 대한 상세 설명을 볼 수 있습니다.
+## man 명령어 (매뉴얼)
 
-man [명령어]
+> $ man [명령어]
 
 ## man 페이지 구성
 
-- Name: 명령어 이름과 간략한 설명
-- Synopsis: 사용 형식
-- Description: 상세 설명
-- Files: 관련 파일
-- See Also: 관련 명령어
-- Diagnostics: 진단 메시지
-- Bugs: 알려진 버그
+- **Name** — 명령어 이름과 간략한 설명
+- **Synopsis** — 사용 형식
+- **Description** — 상세 설명
+- **Files** — 관련 파일
+- **See Also** — 관련 명령어
+- **Diagnostics** — 진단 메시지
+- **Bugs** — 알려진 버그
 
-# 빠른 참조 명령어
+## 네비게이션
 
-- whatis / man -f: 한 줄 요약
-- apropos / man -k: 관련 명령어 검색
+- spacebar — 다음 페이지
+- Enter — 한 줄씩
+- Q — 종료
 
-# clear
+## 빠른 참조
 
-터미널 화면을 지우는 명령어입니다.`
+> $ whatis 명령어     (한 줄 요약)
+> $ man -f 명령어    (한 줄 요약)
+> $ apropos 부분     (관련 명령어 검색)
+> $ man -k 부분      (관련 명령어 검색)
+> $ clear            (화면 지우기)`
   },
   {
     id: 27, slug: '27', title: '리눅스', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 리눅스(Linux)란?
+    content: `## 쉘 프로그램
 
-Linux는 쉘(Shell) 프로그램을 갖춘 명령어 처리기 운영체제입니다. 사용자가 운영체제와 직접 소통할 수 있게 해줍니다.
+쉘 프로그램은 **사용자-시스템 통신을 가능하게 하는 명령 프로세서** 역할을 합니다.
 
-# 로그인 유형
+## 사용자 유형
 
-- **시스템 관리자 (root)**: 모든 권한을 가진 슈퍼유저
-- **일반 사용자**: 제한된 권한으로 자신의 영역만 관리
+- **시스템 관리자 (root)** — 전체 제어 권한
+- **일반 사용자** — 제한된 권한
 
-# 권한 전환
+## 권한 전환
 
-일반 사용자 → root: su root (root 패스워드 필요)
-root → 일반 사용자: su 사용자계정
+> $ su root           (일반 사용자 → root)
+> $ su 사용자계정     (root → 일반 사용자)
+> $ sudo passwd root  (root 패스워드 설정)
 
-root 패스워드 설정: sudo passwd root
-
-# 원격 접속 (SSH)
+## 원격 접속 (SSH)
 
 Telnet보다 SSH가 보안상 안전합니다.
 
-설치: apt-get install openssh-server
-재시작: service ssh restart
-IP 확인: ifconfig 또는 ip a
+> $ apt-get install openssh-server   (SSH 서버 설치)
+> $ service ssh restart               (SSH 서비스 재시작)
+> $ ifconfig                          (IP 확인)
+> $ ip a                              (IP 확인)
 
-# 기본 조작
+## 기본 조작
 
 - 패스워드 변경: passwd
 - 로그아웃: exit 또는 logout
-- Linux는 대소문자를 구분합니다.
+- Linux는 **대소문자를 구분**합니다.
 
-# 특수 키
+## 특수 키
 
-- Ctrl+C: 현재 실행 중인 명령 중단
-- Ctrl+H: 한 글자 지우기
-- Ctrl+U: 현재 줄 전체 지우기
-- Ctrl+D: EOF (파일 끝 신호)`
+- Ctrl+C — 현재 명령 중단
+- Ctrl+H — 한 글자 지우기
+- Ctrl+U — 현재 줄 전체 지우기
+- Ctrl+D — EOF (파일 끝 신호)`
   },
   {
     id: 26, slug: '26', title: '운영체제', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 운영체제(Operating System)란?
+    content: `## 운영체제(Operating System)란?
 
-컴퓨터 사용자와 하드웨어 간의 인터페이스 역할을 담당하는 시스템 프로그램입니다. 한정된 시스템 자원을 효율적으로 사용할 수 있도록 관리하고 운영합니다.
+> 운영체제는 컴퓨터 사용자와 하드웨어 사이의 인터페이스로 작동하며 제한된 시스템 리소스를 효율적으로 관리하는 시스템 프로그램입니다.
 
-> 인간이 하드웨어를 효율적으로 사용할 수 있게 해주는 시스템 소프트웨어의 집합
+즉, **인간이 하드웨어를 효율적으로 사용할 수 있게 해주는 시스템 소프트웨어의 집합**입니다.
 
-# 하드웨어 vs 소프트웨어
+## 하드웨어 vs 소프트웨어
 
 - **하드웨어**: CPU, Memory(RAM, ROM), Hard Disk, I/O(마우스, 키보드)
 - **소프트웨어**: 시스템 SW, 응용 SW
 
-# 운영체제의 4가지 특징
+## 운영체제의 4가지 주요 기능
 
 - 메모리 사용 제어
 - 파일 시스템 관리
 - 작업 스케줄링
 - 계정 관리
 
-# 자원(Resource) 분류
+## 시스템 자원 분류
 
-## 물리적 자원
-CPU, 메모리, HDD, 터미널, 네트워크 등
+**물리적 자원**: CPU, 메모리, HDD, 터미널, 네트워크
 
-## 추상적 자원
-태스크(Task), 세그먼트/페이지, 파일시스템, 프로토콜 등
+**추상적 자원**: 작업(Task), 세그먼트/페이지, 파일시스템, 프로토콜
 
-# 파일시스템 할당 기법
+## 파일시스템 할당 기법
 
-- **연속할당**: 데이터를 연속된 공간에 저장
-- **연결할당**: 연결리스트를 활용해 공간 효율화
-- **색인할당**: 빈 공간에 저장 후 위치 정보를 별도 파일에 기록
+- **연속 할당** — 인접한 블록에 순차 저장
+- **연결 할당** — 연결 리스트로 효율적 공간 활용
+- **색인 할당** — 별도 인덱스 파일에 데이터 위치 저장
 
-# i-node
+## i-node 정보
 
-데이터에 대한 메타 정보(64KB)로, 파일 소유자, 접근 모드, 블록 주소, 크기, 생성/수정 시간, 링크 수, 파일 유형을 포함합니다.`
+64KB 크기. 소유자 ID, 접근 모드, 블록 주소, 파일 크기, 타임스탬프, 링크 수, 파일 타입 포함.`
   },
   {
     id: 25, slug: '25', title: '소프트웨어', tag: 'Unix', created_at: '2025-10-26',
-    content: `# 소프트웨어(Software)란?
+    content: `## 소프트웨어(Software)란?
 
-인간이 컴퓨터 하드웨어를 운용하기 위해 필요한 일련의 명령어 집합입니다.
+> 인간이 컴퓨터 하드웨어를 운용하기 위해 필요한 일련의 명령어 집합입니다.
 
-# 소프트웨어의 종류
+## 소프트웨어의 2가지 종류
 
-## 1. 시스템 소프트웨어 (System SW)
-하드웨어와 응용 소프트웨어의 상호작용을 가능하게 합니다. CPU, 기억장치, 입출력장치 등을 사용자가 편리하게 사용하도록 인터페이스를 제공합니다.
+### 시스템 소프트웨어 (System SW)
+하드웨어와 응용 소프트웨어의 상호 작용을 가능하게 합니다.
+
+CPU, 기억장치, 입출력장치 등을 사용자가 편리하게 사용하도록 **인터페이스**를 제공합니다.
 
 > 인터페이스: 프로그램 사이 혹은 사람과 컴퓨터 간의 연결점
 
 예시: 운영체제(OS), 컴파일러, 드라이버
 
-## 2. 응용 소프트웨어 (Application SW)
+### 응용 소프트웨어 (Application SW)
 특정 업무를 위한 프로그램 또는 애플리케이션입니다.
 
-예시: 워드프로세서, 게임, 웹 브라우저, 그래픽 편집 프로그램`
+예시: 워드프로세서, 게임, 웹 브라우저`
   },
   {
     id: 24, slug: '24', title: 'Alias', tag: 'Database', created_at: '2025-10-26',
-    content: `# Alias(별명)란?
+    content: `## Alias(별명)란?
 
-테이블이나 컬럼에 임시로 붙이는 이름으로, 쿼리 실행 중에만 존재하며 실제 데이터베이스 구조를 변경하지 않습니다.
+Alias는 **쿼리 실행 중에만 존재하는 테이블 또는 열에 할당된 임시 이름**입니다.
+데이터베이스의 실제 구조를 수정하지 않습니다.
 
-# Alias의 특징
+## 핵심 특성
 
-- 쿼리 실행 중에만 존재하는 임시 이름
-- 데이터베이스 구조에 영향 없음
-- 복잡한 표현식의 가독성 향상
-- 결과 집합의 컬럼명 제어 가능
+- 임시 성질: 쿼리 실행 중에만 존재
+- 비파괴성: 원본 데이터베이스 객체 이름 보존
+- 가독성 개선: 복잡한 표현식 단순화
+- 결과 제어: SELECT 문에 표시되는 열 이름 관리
 
-# 사용 예시
+## 사용 예시
 
-SELECT first_name AS 이름, salary AS 급여
-FROM employees;
+> SELECT first_name AS 이름, salary AS 급여
+> FROM employees;
 
-# 모범 사례
+## 모범 사례
 
-- 의미 있는 이름 사용
-- 프로젝트 내 일관성 유지
+- 의미 있고 일관된 레이블로 명명 규칙 따르기
 - 테이블 별명은 2-4자 권장
 - AS 키워드를 명시적으로 사용
-- 이름에 공백 사용 지양
+- Alias 이름에 공백 피하기
 
-> Alias는 별명이라는 의미로, 실제 컬럼/테이블명과는 독립적으로 작동합니다.`
+Tags: ALIAS, 별명`
   },
   {
     id: 23, slug: '23', title: 'SELECT ... FROM문', tag: 'Database', created_at: '2025-10-26',
-    content: `# SQL이란?
+    content: `## SQL 개요
 
-SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프로그래밍 언어입니다. ANSI 표준을 따르는 공통 언어입니다.
+SQL(Structured Query Language)은 **데이터베이스에서 사용되는 공통 언어**입니다. ANSI 표준을 따릅니다.
 
-# SQL 명령어 분류
+## SQL 명령어 분류
 
-- **DDL**: 데이터 정의어 (CREATE, ALTER, DROP)
-- **DML**: 데이터 조작어 (SELECT, INSERT, UPDATE, DELETE)
-- **TCL**: 트랜잭션 제어어 (COMMIT, ROLLBACK)
-- **DCL**: 데이터 제어어 (GRANT, REVOKE)
+- **DDL** (데이터 정의어): CREATE, DROP, ALTER, TRUNCATE
+- **DML** (데이터 조작어): INSERT, UPDATE, DELETE
+- **TCL** (트랜잭션 제어어): COMMIT, ROLLBACK, SAVEPOINT
+- **DQL** (데이터 쿼리어): SELECT
+- **DCL** (데이터 제어어): GRANT, REVOKE
 
-# MySQL 쿼리 처리 순서
+## MySQL SQL 처리 흐름
 
-쿼리 캐시 → 파서 → 전처리기 → 쿼리 옵티마이저 → 실행 엔진 → 스토리지 엔진 → 결과 반환
+쿼리 캐시 → 파서 → 전처리기 → 쿼리 최적화기 → 실행 엔진 → 스토리지 엔진 → 결과 전달
 
-# SELECT ... FROM 문
+## SELECT ... FROM 문
 
-특정 테이블에서 데이터를 열 단위로 검색하는 명령어입니다.
+특정 테이블에서 데이터를 열 단위로 검색합니다.
 
-기본 형식:
-SELECT 열이름
-FROM 테이블이름
-WHERE 조건
+> SELECT 열이름
+> FROM 테이블이름
+> WHERE 조건
 
 전체 열 조회:
-SELECT *
-FROM 테이블이름
 
-> *(에스터리스크)는 "모든 것"을 의미하며 모든 열을 가져옵니다.
+> SELECT *
+> FROM 테이블이름
 
-# USE 문
+## USE 문
 
 사용할 데이터베이스를 선택합니다.
-USE 데이터베이스명;`
+
+> USE 데이터베이스명;
+
+> *(에스터리스크)는 "모든 것"을 의미하며 모든 열을 가져옵니다.`
   },
   {
     id: 22, slug: '22', title: '데이터베이스 for Beginner ch03 연습문제', tag: 'Database', created_at: '2025-10-26',
-    content: `데이터베이스 for Beginner 3장 연습문제 풀이입니다.
+    content: `Database for Beginner 3장 연습문제 풀이입니다.
 
-> 개인 학습 자료로, 오답이 있을 수 있습니다.
+> 개인 학습 노트이며 완전히 정확하지 않을 수 있습니다.
 
-# 주요 개념 정리
+## 주요 문제 해설
 
-## 데이터베이스 모델링 용어
-- 개념적 모델링: 업무 분석 기반의 추상적 구조
-- 논리적 모델링: 데이터의 논리적 구조 설계
-- 물리적 모델링: DBMS에 구현하기 위한 설계
+**Q1.** "데이터 모델링"은 데이터베이스 설계에서 건축 청사진과 유사한 용어입니다.
 
-## 관계(Relationship)
-- 1:1 관계: 한 개체가 다른 한 개체와 연결
-- 1:N 관계: 한 개체가 여러 개체와 연결
-- N:M 관계: 여러 개체가 여러 개체와 연결
+**Q2.** 모델링은 폭포수 모델의 **"비즈니스 분석"** 및 **"시스템 설계"** 단계와 관련됩니다.
 
-## 키(Key)
-- **기본키(PK)**: 각 행을 유일하게 식별하는 컬럼
-- **외래키(FK)**: 다른 테이블의 기본키를 참조하는 컬럼
+**Q3.** "쇼핑몰 입장"은 의미 있는 데이터 지속성이 부족하므로 테이블 변환에 부적절합니다.
 
-## ER 다이어그램
-- Entity(개체), Relationship(관계), Attribute(속성)을 시각적으로 표현
-- 데이터베이스 설계의 청사진 역할
+**Q4.** 모델링의 세 단계: **개념적, 논리적, 물리적**. "분석적 모델링"은 존재하지 않습니다.
 
-# 폭포수 모델과 DB 설계
+**Q5.** 데이터를 여러 테이블로 분리하기 전에 중복 레코드를 제거해야 합니다.
 
-분석 → 설계 → 구현 → 테스트 → 유지보수 단계를 순차적으로 진행합니다.`
+**Q6.** 별도 테이블 간의 연결을 **"관계"**라고 합니다.
+
+**Q7.** "기본 키"와 "외래 키"는 부모 테이블과 자식 테이블 간의 관계를 만듭니다.
+
+**Q8.** 데이터베이스 다이어그램에 대한 5가지 설명 모두 정확해 보이므로 원래 질문에 잠재적 오류가 있을 수 있습니다.`
   },
   {
     id: 21, slug: '21', title: "DBA's Role", tag: 'Database', created_at: '2025-10-25',
-    content: `# DBA(Database Administrator)란?
+    content: `## DBA(Database Administrator)란?
 
-조직의 데이터가 안전하고, 빠르며, 지속적으로 사용 가능하도록 보장하는 전문가입니다.
+조직 데이터가 **안전하고, 빠르며, 지속적으로 사용 가능**하도록 보장하는 전문가입니다.
 
-# DBA의 주요 역할
+## 주요 역할
 
 - 데이터베이스 설계
 - 성능 최적화 (튜닝)
@@ -862,199 +979,199 @@ USE 데이터베이스명;`
 - 장애 대응
 - 운영 자동화
 
-데이터 전체 생명주기를 관리합니다.
+## 직책의 변화
 
-# DBA 직책의 변화
-
-많은 조직에서 "DBA"라는 직책이 다른 명칭으로 대체되고 있습니다.
+많은 조직에서 DBA 직책이 다른 명칭으로 대체되고 있습니다:
 
 - **DBRE** (Database Reliability Engineer)
 - **Data/Platform Engineer**
 - **SRE** (Site Reliability Engineer)
 
-> 직책명은 사라질 수 있지만, 기술적 수요는 계속될 것입니다.`
+> "The title may disappear, but the technical demand continues."
+> 용어는 변경되지만 데이터베이스 전문 지식의 핵심 역량과 시장 수요는 지속됩니다.`
   },
   {
     id: 20, slug: '20', title: '요구 분석과 시스템 설계 그리고 모델링', tag: 'Database', created_at: '2025-10-25',
-    content: `# 정보시스템 구축 절차
+    content: `## 정보시스템 개발 5단계
 
 분석 → 설계 → 구현 → 테스트 → 유지보수
 
-## 분석 단계
-"무엇을(What)" 할 것인지 결정합니다.
-시스템 분석, 요구사항 수집, 사용자 인터뷰, 업무 조사를 포함합니다.
+- **분석 단계**: "무엇을(What)" 할 것인지 결정. 요구사항 수집, 사용자 인터뷰
+- **설계 단계**: "어떻게(How)" 할 것인지 결정. 시스템/프로그램 설계
 
-## 설계 단계
-"어떻게(How)" 할 것인지 결정합니다.
-시스템 설계와 프로그램 설계를 포함합니다.
+## 데이터베이스 11가지 필수 용어
 
-# 데이터베이스 모델링
+- **데이터**: 테이블 내의 개별 정보
+- **테이블**: 표 형식으로 구성된 데이터
+- **데이터베이스**: 테이블 저장 위치
+- **DBMS**: 데이터베이스를 관리하는 소프트웨어
+- **열/필드**: 개별 테이블 열
+- **열 이름**: 각 열의 고유 식별자
+- **데이터 타입**: 열 데이터의 지정된 형식
+- **행/레코드**: 실제 의미 있는 데이터 항목
+- **SQL**: 인간과 DBMS 간의 통신 언어
+- **기본 키 (PK)**: 각 행의 고유 식별자
+- **외래 키 (FK)**: 두 테이블을 연결하는 키
 
-현실의 데이터를 데이터베이스/DBMS 형식으로 어떻게 옮길지 결정하는 과정입니다.
+## 프로젝트란?
 
-예: "고객이 제품을 구매한다" → 고객 테이블 + 제품 테이블 + 구매 테이블
+정의된 제약 조건 내에서 **고유한 제품/서비스를 만드는 임시 노력**입니다. 명확한 시작/끝이 있습니다.
 
-# 핵심 용어 11가지
+## 폭포수 모델
 
-- **데이터**: 테이블에 담긴 단편적 정보
-- **테이블**: 데이터를 담는 표 형태
-- **데이터베이스**: 테이블들의 집합
-- **DBMS**: 데이터베이스 관리 소프트웨어
-- **열(Column)**: 테이블의 세로 방향
-- **행(Row)**: 테이블의 가로 방향
-- **SQL**: DBMS와 소통하기 위한 언어
-- **기본키(PK)**: 각 행을 구분하는 유일한 열
-- **외래키(FK)**: 두 테이블 관계를 맺어주는 키
+> 계획 → 분석 → 설계 → 구현 → 테스트 → 유지보수
 
-# 프로젝트와 폭포수 모델
-
-프로젝트: 고유한 제품/서비스를 만들기 위한 일시적 노력 (명확한 시작/끝)
-
-폭포수 모델: 계획 → 분석 → 설계 → 구현 → 테스트 → 유지보수를 순차적으로 진행하는 전통적 방법론`
+각 단계가 완료되어야 다음 단계로 진행하는 순차적 방법론입니다.`
   },
   {
     id: 19, slug: '19', title: '파일시스템(FS) 장단점', tag: 'Database', created_at: '2025-10-25',
-    content: `# 파일시스템(File System)이란?
+    content: `## 파일시스템(File System)이란?
 
-파일을 저장 장치에 저장하고 사용하기 위한 규칙이나 체계입니다. 파일의 이름을 붙이고 쉽게 접근할 수 있도록 배치하는 등 파일과 관련된 기능을 수행합니다.
+> "저장 장치에서 파일을 저장하고 접근하기 위한 규칙 또는 프레임워크 집합"
 
-# 파일시스템의 특징
+## 핵심 특성
 
-- 파일의 기본 구성요소는 순차적인 레코드(Records)
-- 파일에 접근하는 방식이 응용프로그램 내에 표현됨
-- 데이터 구조나 접근방법이 변경되면 기존 프로그램과 데이터를 함께 변경해야 함
+- 파일은 순차적인 레코드로 구성됩니다
+- 파일 접근 방법이 애플리케이션 프로그램에 내장되어 있어 데이터 종속성이 생깁니다
+- 기본 데이터 접근을 넘어서는 별도의 제어 메커니즘이 없습니다
 
-# 파일시스템의 단점
+## 파일시스템의 단점 10가지
 
-- 데이터 간 불일치 발생
-- 다수 사용자를 위한 동시성 제어 미제공
-- 쉬운 질의어 미제공
-- 보안 기능 미흡
-- 회복 기능 없음
-- 데이터 독립성 부재로 유지보수 비용 증가
-- 데이터 모델링 개념 부족
+- 데이터 불일치 문제
+- 여러 사용자의 동시 접근 제어 부족
+- 쿼리 언어 기능 부재
+- 부적절한 보안 기능
+- 복구 메커니즘 없음
+- 빈약한 데이터 독립성으로 유지보수 비용 증가
+- 불충분한 데이터 모델링 개념
 - 데이터 무결성 유지 어려움
-- 생산성 부족
-- 데이터 공유 미흡
+- 제한된 생산성
+- 제한된 데이터 공유 기능
 
 > 이러한 단점들을 해결하기 위해 DBMS가 등장했습니다.`
   },
   {
     id: 18, slug: '18', title: '데이터베이스 for Beginner ch02 연습문제', tag: 'Database', created_at: '2025-10-20',
-    content: `데이터베이스 for Beginner 2장 연습문제 풀이입니다.
+    content: `Database for Beginner 2장 연습문제 풀이입니다.
 
-> 개인 학습 자료로, 오답이 있을 수 있습니다. 어려운 문제는 ChatGPT를 참고했습니다.
+> 개인 학습 자료이며 최종 답변이 아닐 수 있습니다. 어려운 문제는 ChatGPT를 참고했습니다.
 
-# 주요 학습 내용
+## 다루어진 주요 주제
 
-## DDL 연산 구분
-- DROP: 테이블 자체를 삭제
-- DELETE: 테이블의 데이터(행)를 삭제
+**데이터베이스 구축 과정**: 데이터베이스 생성 → 테이블 생성 → 데이터 입력 → 데이터 쿼리
 
-## 실행 계획 (Execution Plan)
-DBMS가 쿼리를 처리하는 방법을 분석한 정보. 성능 최적화에 활용합니다.
+**MySQL 기초**: 기본 포트 번호는 3306
 
-## 저장 프로시저 (Stored Procedure)
-여러 SQL 문을 하나의 실행 단위로 묶은 것입니다.
+**MySQL Workbench 기능**:
+- Administration 탭 — 서버 관리
+- Schemas 탭 — 데이터베이스 작업
 
-기본 구조:
-DELIMITER //
-CREATE PROCEDURE 프로시저명()
-BEGIN
-  -- SQL 문
-END //
-DELIMITER ;
+**DDL 연산 구분**:
+- DROP — 테이블 자체를 삭제
+- DELETE — 테이블의 데이터(행)를 삭제
 
-## 트리거 (Trigger)
-특정 DML 동작 시 자동으로 실행되는 명령문입니다.
-FOR EACH ROW 구문을 사용합니다.
+**저장 프로시저 구문**:
 
-# MySQL Workbench 기능
-- ER 다이어그램 설계
-- 쿼리 작성 및 실행
-- 데이터 관리
-- 성능 분석`
+> DELIMITER //
+> CREATE PROCEDURE 프로시저명()
+> BEGIN
+>   -- SQL 문
+> END //
+> DELIMITER ;
+
+**트리거**: DML 이벤트 시 자동 실행. \`FOR EACH ROW\` 구문 사용.
+
+**인덱스**: 책 인덱스와 유사. 데이터 검색 속도 향상. 명명 규칙은 필수 아님.`
   },
   {
     id: 17, slug: '17', title: 'DB 개체', tag: 'Database', created_at: '2025-10-20',
     content: `데이터베이스에서 사용되는 주요 개체(Object)들을 정리합니다.
 
-# 01. 스키마 저장 개체
+## 스키마(Schema)
 
-- **스키마(데이터베이스)**: 객체를 담는 네임스페이스. 문자셋/콜레이션 설정 포함
-- **테이블**: 실제 데이터를 저장하는 표. InnoDB 엔진 권장
-- **파티션**: 대용량 테이블/인덱스를 논리적 조각으로 분할하여 성능 향상
+> "객체를 담는 상자(네임스페이스)"
 
-# 02. 인덱스 (Index)
+문자셋/콜레이션 설정을 포함합니다.
 
-검색을 가속화하는 자료구조입니다. "책의 맨 뒤에 있는 색인"과 같은 개념입니다. 데이터 양이 많을수록 효과적이며, 데이터베이스 성능 튜닝의 핵심입니다.
+## 테이블(Table)
 
-# 03. 제약조건 (Constraint)
+실제 데이터를 저장하는 표. InnoDB 엔진 권장.
 
-데이터 무결성을 위한 규칙입니다. 기본키, 외래키, 유니크, 체크 등이 있습니다.
+## 파티션(Partition)
 
-# 04. 뷰 (VIEW)
+대용량 테이블/인덱스를 논리적 조각으로 분할하여 성능을 향상시킵니다.
 
-실제 데이터 복사 없는 가상 테이블입니다. 여러 테이블을 미리 조인 또는 가공해둔 개념입니다.
+## 인덱스(Index)
 
-# 05. 스토어드 프로시저 / 함수
+검색을 가속화하는 자료구조. "책의 맨 뒤 색인"과 같은 개념. 데이터 양이 많을수록 효과적.
+
+## 제약조건(Constraint)
+
+데이터 무결성을 위한 규칙. 기본키, 외래키, 유니크, 체크 등.
+
+## 뷰(VIEW)
+
+> "실제 데이터 복사 없는 가상 테이블"
+
+여러 테이블을 미리 조인 또는 가공해둔 개념.
+
+## 스토어드 프로시저 / 함수
 
 - **스토어드 프로시저**: 여러 SQL을 묶은 실행 단위
 - **스토어드 함수**: 값을 반환하며 SELECT 내에서 호출 가능
 
-# 06. 트리거 (Trigger)
+## 트리거(Trigger)
 
-행 단위로 BEFORE/AFTER DML 시 자동 실행되는 명령문입니다.
+> "행 단위 BEFORE/AFTER DML 시 자동 실행"되는 명령문
 
-# 07. 임시 테이블
+## 임시 테이블
 
-세션 범위의 일시적 테이블로 세션 종료 시 자동 삭제됩니다.
+세션 범위의 일시적 테이블. 세션 종료 시 자동 삭제.
 
-# 08. 사용자/권한/역할
+## 사용자/권한/역할
 
-접근 제어 및 권한 묶음 관리를 담당합니다.
+접근 제어 및 권한 묶음 관리.
 
-# 09. 시스템 스키마
-
-메타 데이터를 담는 관리용 DB입니다.`
+> MySQL에는 시퀀스, 동의어, 물리적 구체화 뷰가 기본 제공되지 않습니다.`
   },
   {
     id: 16, slug: '16', title: '데이터베이스 구축 절차', tag: 'Database', created_at: '2025-10-19',
-    content: `# 데이터베이스 구축 절차
+    content: `## 데이터베이스 구축 절차
 
-## 1단계: DBMS 설치
+### 1단계: DBMS 설치
+
 MySQL, PostgreSQL 등 원하는 DBMS를 설치합니다.
 
-## 2단계: 데이터베이스 구축 프로세스
+### 2단계: 데이터베이스 구축 프로세스
 
-데이터베이스 생성 → 테이블 생성 → 데이터 입력 → 데이터 조회 및 활용
+> 데이터베이스 생성 → 테이블 생성 → 데이터 입력 → 데이터 조회 및 활용
 
-## 3단계: 이후 경로
+### 3단계: 이후 경로
 
-### 경로 A: 데이터베이스 심화 활용
+**경로 A: 데이터베이스 심화 활용**
 - 테이블 외 다양한 데이터베이스 개체 활용
 - 데이터 백업 및 관리
 
-### 경로 B: 응용 프로그램 적용
+**경로 B: 응용 프로그램 적용**
 - 구축된 데이터를 웹 서비스/애플리케이션에 활용
 - 백엔드 개발과 연동`
   },
   {
     id: 15, slug: '15', title: '데이터베이스 모델링', tag: 'Database', created_at: '2025-10-19',
-    content: `# 정보시스템 구축 절차
+    content: `## 정보시스템 구축 절차
 
 분석 → 설계 → 구현 → 테스트 → 유지보수
 
 - **분석**: "무엇을(What)" 할 것인지 결정
 - **설계**: "어떻게(How)" 할 것인지 결정
 
-# 데이터베이스 모델링이란?
+## 데이터베이스 모델링이란?
 
 현실의 데이터를 데이터베이스에 어떻게 옮길지 결정하는 과정입니다.
 
-예: "고객이 제품을 구매한다" → 고객 테이블 + 제품 테이블 + 구매 테이블로 구조화
+예: "고객이 제품을 구매한다" → 고객 테이블 + 제품 테이블 + 구매 테이블
 
-# 기본 용어
+## 기본 용어
 
 - **데이터**: 테이블에 담긴 단편적 정보
 - **테이블**: 데이터를 담는 표 형태
@@ -1062,132 +1179,119 @@ MySQL, PostgreSQL 등 원하는 DBMS를 설치합니다.
 - **외래키(FK)**: 두 테이블 관계를 맺어주는 키
 - **SQL**: 사람과 DBMS 소통을 위한 언어
 
-# 데이터 모델링의 3단계
+## 데이터 모델링 3단계
 
-## 1. 개념적 모델링
-업무 분석을 바탕으로 추상적 구조를 설계합니다.
-
-## 2. 논리적 모델링
-데이터의 논리적 구조를 설계합니다.
-
-## 3. 물리적 모델링
-실제 DBMS에 구현하기 위한 설계를 합니다.`
+- **개념적 모델링** — 업무 분석 기반의 추상적 구조
+- **논리적 모델링** — 데이터의 논리적 구조 설계
+- **물리적 모델링** — 실제 DBMS에 구현하기 위한 설계`
   },
   {
     id: 14, slug: '14', title: '데이터베이스 for Beginner ch01 연습문제', tag: 'Database', created_at: '2025-10-17',
-    content: `데이터베이스 for Beginner 1장 연습문제 풀이입니다.
+    content: `Database for Beginner 1장 연습문제 풀이입니다.
 
-> 개인 학습 자료로, 오답이 있을 수 있습니다.
+> 개인 학습 노트이며 공식 답변이 아닐 수 있습니다.
 
-# 주요 문제 해설
+## 주요 문제 해설
 
-## DBMS/데이터베이스 개념
-- 데이터베이스는 여러 사람이 공유하고 동시에 접근 가능한 데이터 집합
-- "데이터 파일 저장소 변경 시 즉시 응용프로그램 수정 필요" → 틀린 설명 (DBMS의 독립성 특징)
+**Q1.** 5개 옵션 중 "정답 없음"으로 결론. 잠재적 질문 오류 가능성.
 
-## 오픈소스 데이터베이스 구분
-오픈소스가 아닌 것: Oracle, SQL Server, Access
+**Q2.** 오픈소스가 아닌 데이터베이스:
+**Oracle, SQL Server, Access** — 모두 상용 RDBMS 제품.
 
-## DBMS 유형
-실제 DBMS 분류: 계층형, 망형, 관계형, NoSQL
-- "계층형-관계형" 혼합 유형은 존재하지 않습니다.
+**Q3.** 적용되지 않는 DBMS 특성:
+**2번** — 데이터베이스는 애플리케이션으로부터 독립성을 유지함. 저장 위치 변경은 애플리케이션 수정이 필요하지 않습니다.
 
-## SQL의 특징
-틀린 설명:
-- "모든 회사에서 완전히 통일된 문법" → SQL은 회사마다 방언이 존재
-- "중앙 집중식 질의만 가능" → 분산형 환경도 지원
+**Q4.** 비DBMS 유형:
+**4번** — "hierarchical-relational"은 실제 DBMS 카테고리가 아닙니다.
 
-## MySQL 버전 호환성
-MySQL 8.4는 Windows 7에서 실행 불가합니다.
+**Q5.** 적용되지 않는 SQL 특성:
+**3, 4번** — SQL 구문은 공급업체에 따라 다르며, 분산 클라이언트/서버 구조를 지원합니다.
 
-## MySQL 설치 패키지
-MySQL Workbench는 MySQL 8.1 이상의 기본 설치 패키지에 포함되지 않아 별도 설치가 필요합니다.
+**Q6-7.** MySQL 8.4는 Windows 7에서 실행 불가. MySQL Workbench는 기본 설치 패키지에 포함되지 않음.
 
-## Employees 데이터베이스
-MySQL Server에 번들로 포함되지 않으며 별도 다운로드가 필요합니다.`
+**Q8.** Employees 데이터베이스는 MySQL Server에 번들로 포함되지 않아 별도 다운로드가 필요합니다.`
   },
   {
     id: 13, slug: '13', title: 'SQL, MySQL 개요', tag: 'Database', created_at: '2025-10-16',
-    content: `# SQL이란?
+    content: `## SQL이란?
 
-SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프로그래밍 언어입니다.
+SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 **데이터 관리를 위해 설계된 특수 목적 프로그래밍 언어**입니다.
 
-# SQL의 6가지 특징
+## SQL의 6가지 특징
 
 - DBMS 제작 회사와 독립적
 - 다른 시스템으로 이식성이 좋음
 - 표준이 계속 발전됨
 - 대화식 언어 (즉시 질의 결과 획득)
 - 분산형 클라이언트/서버 구조
-- 회사마다 방언(변형)이 존재함
+- 구현에 내재적 변동성 존재 (회사마다 방언)
 
-# MySQL이란?
+## MySQL이란?
 
-Oracle사에서 제공하는 오픈소스 DBMS 소프트웨어입니다.
+Oracle사에서 제공하는 **오픈소스 RDBMS 소프트웨어**입니다.
 
-- GPL 라이선스
+- GPL(General Public License) 하에 라이선스
 - 최신 GA버전: 8.4.6
-- 무료 사용 가능
 - 소스코드 수정 및 배포 가능
+- 개발 시작: 1994년
 
-# MySQL 에디션
+## MySQL 에디션
 
-## 이중 라이선스 에디션 (유료)
-Standard → Enterprise → Cluster CGE (기능 순으로 향상)
+**상용판**: Standard < Enterprise < Cluster CGE (비용/기능 증가)
 
-## Community 에디션 (무료)
-비상업적 및 교육 목적에 적합합니다.`
+**Community Edition**: 비상업적 및 교육 목적에 적합. 거의 Enterprise와 동일한 기능.`
   },
   {
     id: 12, slug: '12', title: 'DB & DBMS 특징', tag: 'Database', created_at: '2025-10-16',
-    content: `# DB와 DBMS의 공통 특징
+    content: `DB와 DBMS의 공통된 5가지 특징입니다.
 
 ## 1. 데이터의 무결성 (Integrity)
-"제약 조건"이라고도 하며, 데이터베이스 안의 데이터에 오류가 없어야 함을 말합니다. 무결성이란 깨지지 않고 온전히 유지되는 성질로, 결함이 없고 본래 상태를 유지해야 합니다.
+
+"제약 조건" — 데이터베이스 안의 데이터에 오류가 없어야 함을 말합니다. 결함이 없고 본래 상태를 유지해야 합니다.
 
 ## 2. 데이터의 독립성 (Independence)
-ANSI-SPARC Architecture에 기반합니다. 데이터베이스 크기 및 파일 저장소 변경으로 기존에 작성된 응용프로그램은 전혀 영향을 받지 않아야 합니다.
+
+ANSI-SPARC Architecture에 기반합니다. 데이터베이스 크기 및 파일 저장소 변경으로 기존 응용프로그램은 **전혀 영향을 받지 않아야** 합니다.
 
 ## 3. 데이터 중복 최소화 (Reduced Redundancy)
+
 동일한 데이터가 여러 개 중복되어 저장되는 것을 방지합니다.
 
 ## 4. 응용프로그램 제작 및 수정 용이
+
 통일된 방식으로 응용프로그램 작성이 가능하며, 유지보수 또한 쉬워집니다.
 
 ## 5. 데이터의 안전성 향상
-대부분의 DBMS가 제공하는 백업과 복원 기능을 이용합니다.`
+
+대부분의 DBMS가 제공하는 **백업과 복원 기능**을 이용합니다.`
   },
   {
     id: 11, slug: '11', title: 'DBMS', tag: 'Database', created_at: '2025-10-16',
-    content: `DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어입니다.
+    content: `DBMS(Database Management System)는 **데이터베이스를 관리하고 운영하는 소프트웨어**입니다.
 
-# DBMS의 역사적 유형
+## DBMS의 역사적 유형
 
-## 1. 계층형 DBMS (Hierarchical)
-부모-자식 관계(1:N)로 구성된 가계도/족보 구조입니다.
+### 계층형 DBMS (Hierarchical)
 
-**장점:**
-- 데이터 검색이 빠름
+1:N 관계를 가진 트리 구조. 가계도/족보와 같은 구조.
 
-**단점:**
-- 구조 변경이 매우 어려움
-- 임의 검색에 취약
+**장점**: 데이터 검색이 빠릅니다.
+**단점**: 구조 변경이 매우 어렵습니다. 임의 검색에 취약합니다.
 
-## 2. 망형 DBMS (Network)
-1:1, 1:N, N:M 관계를 지원합니다. 사람들의 관계망처럼 복잡하게 연결된 구조입니다. 내부 포인터가 복잡하여 프로그래머가 전체 구조를 이해해야 합니다.
+### 망형 DBMS (Network)
 
-## 3. 관계형 DBMS (Relational)
-테이블(Table)이라 불리는 최소 단위로 구성됩니다.
+1:1, 1:N, N:M 관계를 모두 지원합니다. 사람들의 관계망처럼 복잡하게 연결됩니다.
 
-**장점:**
-- 업무 변화에 쉽게 적응
-- 유지보수 편리
-- 대용량 데이터 관리 및 무결성 보장
+복잡한 내부 포인터 사용으로 프로그래머가 전체 구조를 이해해야 합니다.
 
-**단점:**
-- 시스템 자원을 많이 차지하여 전반적으로 느릴 수 있음
+### 관계형 DBMS (Relational)
 
-# DBMS vs 파일 시스템 비교
+테이블(Table) 기반 구조. 엑셀의 표와 유사합니다.
+
+**장점**: 업무 변화에 쉽게 적응. 유지보수 편리. 대용량 데이터 관리 및 무결성 보장.
+**단점**: 시스템 자원을 많이 차지하여 전반적으로 느릴 수 있습니다.
+
+## DBMS vs 파일 시스템 비교
 
 | 구분 | DBMS | 파일 시스템 |
 |------|------|------------|
@@ -1199,69 +1303,76 @@ ANSI-SPARC Architecture에 기반합니다. 데이터베이스 크기 및 파일
   },
   {
     id: 10, slug: '10', title: 'Database', tag: 'Database', created_at: '2025-10-16',
-    content: `# 데이터베이스(Database)란?
+    content: `## 데이터베이스(Database)란?
 
-물리적으로 HDD 하드디스크를 의미하며, 데이터를 담는 그릇으로서 "데이터의 집합, 데이터 저장 공간"을 말합니다. 여러 명의 사용자나 응용 프로그램이 공유하거나 동시에 접근 가능한 데이터 집합입니다.
+물리적으로 HDD를 의미하며, **데이터를 담는 그릇**으로서 "데이터의 집합, 데이터 저장 공간"을 말합니다.
 
-# 데이터베이스의 주요 특징: 통저운공
+여러 명의 사용자나 응용 프로그램이 공유하거나 동시에 접근 가능한 데이터 집합입니다.
+
+## 주요 특징: 통저운공
 
 - **통합된 데이터**: 최소 중복으로 유지
 - **저장된 데이터**: 컴퓨터 접근 가능
 - **운영 데이터**: 기능 수행을 위함
 - **공용 데이터**: 공동 이용
 
-# 세부 특징
+## 세부 특징
 
 - **실시간 접근성**: 비정형적 질의에 실시간 처리 응답
 - **계속적 변화**: 동적 상태 유지
 - **동시공용**: 여러 사용자의 동시 접근
-- **내용에 의한 참조**: 데이터의 값에 따른 참조
+- **내용에 의한 참조**: 물리적 주소 대신 데이터 값으로 참조
 
-# 데이터베이스의 발전
+## 데이터베이스의 발전
 
 - **오프라인 관리**: 종이에 연필로 기록하는 장부 관리
-- **파일시스템 사용**: 컴퓨터 파일 저장(메모장, 엑셀), 데이터량 증가 시 중복으로 인한 불일치 위험 존재
+- **파일시스템 사용**: 컴퓨터 파일 저장 (메모장, 엑셀). 데이터량 증가 시 중복으로 인한 불일치 위험
 - **DBMS 등장**: 중복 최소화, 무결성 보장, 동시 접근 지원`
   },
   {
     id: 9, slug: '9', title: '정보의 진화 단계, DIKW', tag: 'Database', created_at: '2025-10-16',
-    content: `# DIKW란?
+    content: `## DIKW란?
 
-Data-Information-Knowledge-Wisdom의 앞글자를 따온 약자로, 정보의 진화 단계를 나타냅니다.
+Data-Information-Knowledge-Wisdom의 앞글자를 따온 약자로, **정보의 진화 단계**를 나타냅니다.
 
-# 5단계 진화 과정
+## 5단계 진화 과정
 
-## 1단계 - 사실 (Fact)
-객관적 실재를 의미합니다.
+### 1단계 - 사실 (Fact)
+독립적으로 존재하는 객관적 현실입니다.
 
-## 2단계 - 데이터 (Data)
-"서류"로 비유되는 날 것 그 자체입니다. 가공하기 전 순수한 상태의 사실이나 수치들로, 객관적으로 관찰된 raw 데이터입니다.
+### 2단계 - 데이터 (Data)
+"서류"로 비유되는 날 것 그 자체입니다. 가공하기 전 순수한 상태의 사실이나 수치들. **Raw 데이터**입니다.
 
-## 3단계 - 정보 (Information)
-유의미하게 가공된 2차 데이터 형태입니다. 특정 목적을 달성하는 데 필요하도록 처리된 것으로, 데이터에 의미를 더한 형태입니다.
+### 3단계 - 정보 (Information)
+유의미하게 가공된 2차 데이터 형태입니다. 특정 목적을 달성하는 데 필요하도록 처리된 것. 데이터에 의미를 더한 형태입니다.
 
-## 4단계 - 지식 (Knowledge)
-정보 이용에 대한 노하우를 담은 것으로, 동종의 정보가 모여 일반화된 형태로 정리됩니다. **부가가치, 일반화, 의사결정**이 핵심 키워드입니다.
+### 4단계 - 지식 (Knowledge)
+정보 이용에 대한 노하우를 담은 것으로, 동종의 정보가 모여 일반화된 형태로 정리됩니다.
 
-## 5단계 - 지혜 (Wisdom)
-지식을 얻고 이해하고 응용하고 발전해나가는 정신적 능력입니다. 내재화된 능력으로, 창의적 아이디어로 구현됩니다.`
+핵심 키워드: **부가가치, 일반화, 의사결정**
+
+### 5단계 - 지혜 (Wisdom)
+지식을 얻고 이해하고 응용하고 발전해나가는 정신적 능력입니다. 내재화된 능력으로 창의적 아이디어로 구현됩니다.`
   },
   {
     id: 8, slug: '8', title: '최신 DBMS / DB 기술 트렌드', tag: 'Database', created_at: '2025-10-16',
-    content: `# DBMS란?
+    content: `## DBMS란?
 
-DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어로, "은행 관리 시스템 혹은 비서"로 비유할 수 있습니다. DBMS 모델은 관계형, 문서형, 그래프형으로 나뉩니다.
+DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어입니다. "은행 관리 시스템 혹은 비서"로 비유할 수 있습니다.
 
-# 최신 DBMS 기술 트렌드
+DBMS 모델은 **관계형, 문서형, 그래프형** 세 가지로 나뉩니다.
 
-- **클라우드 데이터베이스**: 인터넷 서버에서 데이터를 관리. 접근성, 확장성, 가성비의 장점
+## 최신 DBMS 기술 트렌드
+
+- **클라우드 데이터베이스**: 접근성, 확장성, 가성비 장점
 - **NOSQL + 데이터**: 대규모 데이터 처리에 강함
 - **AI/ML 통합 & 자동화**
 - **클라우드 네이티브 & 서버리스 DB**
 - **에지 컴퓨팅(Edge DB) & 분산DB**
 - **멀티모델 데이터베이스**: 여러 데이터 모델을 동시에 관리
+- **Chimera**: 그래프 DB 구조 활용. "압도적으로 빠른 성능"으로 주목
 
-# 주목할 DBMS 5가지
+## 주목할 DBMS 5가지
 
 - **Oracle**: 전세계 1위 데이터베이스
 - **PostgreSQL**: 벡터 데이터 기능과 증분 백업 기능이 추가된 오픈소스 DB
@@ -1271,70 +1382,81 @@ DBMS(Database Management System)는 데이터베이스를 관리하고 운영하
   },
   {
     id: 7, slug: '7', title: '해킹, 그것은 어디까지 발을 뻗을 수 있는가.', tag: '독서', created_at: '2025-09-21',
-    content: `> "해킹에는 나쁜 부분도 많지만 그만큼 좋은 부분들도 참 많다"
+    content: `> "해킹에는 나쁜 부분도 많지만 그만큼 좋은 부분들도 참 많다."
 
-# 해커의 세 가지 유형
+## 해커의 세 가지 유형
 
-- **화이트 해커 (화이트햇)**: 윤리적 의도의 해커. 보안 취약점을 찾아 개선하는 아군
-- **블랙 해커 (블랙햇)**: 악의적 목표를 가진 해커. 보이스 피싱, 기업 정보 유출, 금전적 문제를 일으킴
-- **그레이 해커 (그레이햇)**: 사전 동의 없이 침입하지만 반드시 악의적이지는 않은 중간 위치의 해커
+- **화이트 해커 (White Hat)**: 윤리적 의도의 해커. 보안을 위해 일합니다.
+- **블랙 해커 (Black Hat)**: 악의적 목표를 가진 해커. 보이스 피싱, 기업 정보 유출, 금전적 문제를 일으킵니다.
+- **그레이 해커 (Gray Hat)**: 사전 동의 없이 침입하지만 반드시 악의적이지 않습니다.
 
-# 해킹과 심리전
+## 해킹과 심리전
 
-블랙 해커들은 기술만이 아닌 인간의 심리를 활용합니다. 이것이 보안이 단순한 기술 문제를 넘어서는 이유입니다.
+블랙 해커들은 기술만이 아닌 **인간의 심리**를 활용합니다. 이것이 보안이 단순한 기술 문제를 넘어서는 이유입니다.
 
-# 실제 사례 분석
+## 실제 사례 분석
 
-## SK텔레콤 유심 정보 유출 (2025년)
+### SK텔레콤 유심 정보 유출 (2025년)
+- 약 2,500만 명의 사용자에게 영향
 - 근본 원인: 관리자 계정의 평문 저장과 백도어 방치
 - 보안 업데이트 지연이 해커들에게 공격 기회를 제공
 
-## Colonial Pipeline 랜섬웨어 (2021년, 미국)
-기업이 해커와 합의를 맺은 사례로, 사이버 보안의 현실적 한계를 보여줍니다.`
+> "정시 업데이트가 그러한 사건을 방지합니다."
+
+### Colonial Pipeline 랜섬웨어 (2021년, 미국)
+암호 화폐로 440만 달러를 지불한 사건. 협상이 진정한 보안을 제공하는지 의문을 제기합니다.
+
+## 주요 논거
+
+반응적 위기 관리보다는 **주도적인 보안 인식**과 정기적인 시스템 유지보수가 중요합니다.`
   },
   {
     id: 6, slug: '6', title: '해킹으로 본 사이버 범죄 #4.', tag: '독서', created_at: '2025-09-21',
     content: `책의 7-8장을 읽고 미래의 해킹 대응과 윤리적 측면에 대해 정리합니다.
 
-# 가장 인상 깊었던 문장
+## 가장 인상 깊었던 문장
 
-> "적을 알고 나를 알면 백전백승"
+> "너의 적을 알고 너 자신을 알아라"
 
 사이버 범죄자의 심리와 동기를 파악함으로써 그들의 행동을 예측하고 더 효과적으로 대응할 수 있습니다. 이순신 장군의 전략에 비유되며, 사이버 보안 전문가도 블랙 해커의 동기와 특성을 먼저 이해하는 것이 중요합니다.
 
-# Script Kiddie
+## Script Kiddie
 
-다른 사람이 만든 스크립트나 프로그램을 사용해 해킹을 시도하는 초보 해커입니다. 이 단계에서 경험을 쌓고 기술을 익히면 숙련된 해커로 성장할 수 있습니다.
+> "다른 사람이 만든 스크립트나 프로그램을 사용해 해킹을 시도하는 초보 해커"
 
-# 마치며
+이 단계에서 경험을 쌓고 기술을 익히면 숙련된 해커로 성장할 수 있습니다.
 
-화이트 해커를 꿈꾸면서 경험을 쌓는 방법을 몰랐던 상황에서 이 책이 큰 도움이 되었습니다. 해킹에 관심 있는 분들에게 내용 자체는 다소 딱딱하지만 매우 실용적인 도서로 추천합니다.`
+## 마치며
+
+화이트 해커를 꿈꾸면서 경험을 쌓는 방법을 몰랐던 상황에서 이 책이 큰 도움이 되었습니다.
+
+해킹에 관심 있는 분들에게 — 내용 자체는 다소 딱딱하지만 매우 실용적인 도서로 추천합니다.`
   },
   {
     id: 5, slug: '5', title: '해킹으로 본 사이버 범죄 #3.', tag: '독서', created_at: '2025-09-21',
     content: `"해킹으로 본 사이버 범죄" 5, 6장 독서 기록입니다.
 
-# 핵심 내용 세 가지
+## 핵심 내용 세 가지
 
-## 1. 보안 업데이트의 중요성
+### 1. 보안 업데이트의 중요성
 
 > "보안이라는 것은 시간이 많이 걸려서, 혹은 파일이 잘못 지워질까 봐라는 사유로 미뤄지기도 하는 법"
 
-하지만 업데이트 지연은 해커에게 공격 기회를 제공하며 더 큰 피해를 초래할 수 있습니다.
+보안 업데이트 지연은 해커에게 공격 기회를 제공하며 더 큰 피해를 초래할 수 있습니다.
 
-## 2. 사이버 보험의 필요성
+### 2. 사이버 보험의 필요성
 
-디지털 시대에 접어들며 사이버 보험이 점점 중요해지고 있습니다. 보장 범위:
-- 데이터 유출
-- 랜섬웨어 피해
-- 비즈니스 손실
-- 법적 책임
+디지털 시대에 사이버 보험이 점점 중요해지고 있습니다. 보장 범위:
+- 데이터 유출 대응 비용
+- 랜섬웨어 대응 비용
+- 사업 중단 손실
+- 법적 책임/규제 벌금
 
-## 3. 미래의 생체 기술
+### 3. 미래의 생체 기술
 
 AI와 빅데이터를 활용하여 생물학적 특징뿐 아니라 행동 패턴, 습관, 감정까지 분석하는 시대가 올 것으로 예상됩니다.
 
-# 소감
+## 소감
 
 똑똑한 기술이 해킹에 악용되는 현실이 우려됩니다. 방어하는 측과 공격하는 측 모두 끊임없이 진화하고 있습니다.`
   },
@@ -1342,45 +1464,57 @@ AI와 빅데이터를 활용하여 생물학적 특징뿐 아니라 행동 패�
     id: 4, slug: '4', title: '해킹으로 본 사이버 범죄 #2.', tag: '독서', created_at: '2025-09-21',
     content: `"해킹으로 본 사이버 범죄" 3, 4장 독서 기록입니다. 사이버 범죄의 대상과 영향, 해킹의 법적 위치에 대해 학습했습니다.
 
-# 스피어 피싱 (Spear Phishing)
+## 스피어 피싱 (Spear Phishing)
 
-가장 친숙한 해킹 기법으로, 특정 기업이나 개인을 겨냥한 맞춤형 공격입니다. 목표 대상의 상세 정보를 이용하여 설득력 있는 이메일로 악성 첨부파일 또는 피싱 사이트 접속을 유도합니다.
+가장 친숙한 해킹 기법으로, **특정 기업이나 개인을 겨냥한 맞춤형 공격**입니다.
 
-# 선거 해킹
+목표 대상의 상세 정보를 이용하여 설득력 있는 이메일로 악성 첨부파일 또는 피싱 사이트 접속을 유도합니다.
 
-가장 충격적이었던 내용입니다. 투표 시스템 공격을 넘어, 소셜 미디어와 온라인 플랫폼을 통해 정보와 여론을 조작하여 유권자의 인식을 왜곡합니다. 이전에 선거 조작 뉴스를 가볍게 넘겼던 자신을 반성하게 되었습니다.
+## 선거 해킹
 
-# 화이트 해커의 법적 지위
+가장 충격적이었던 내용입니다. 투표 시스템 공격을 넘어, **소셜 미디어와 온라인 플랫폼을 통해 정보와 여론을 조작**하여 유권자의 인식을 왜곡합니다.
+
+이전에 선거 조작 뉴스를 가볍게 넘겼던 자신을 반성하게 되었습니다.
+
+## 화이트 해커의 법적 지위
 
 두 가지 주요 쟁점:
 - 허가받지 않은 시스템 접근의 법적 해석
 - 발견된 취약점 처리 방식
 
-내 꿈의 직업이 화이트 해커인 만큼, 윤리적 의도가 항상 법적으로 보장될 수 있는지 의문이 생깁니다. 감시 체계의 실효성과 정보 보안 사이의 딜레마를 더 깊이 생각해봐야 할 것 같습니다.`
+내 꿈의 직업이 화이트 해커인 만큼, 윤리적 의도가 항상 법적으로 보장될 수 있는지 의문이 생깁니다.
+
+감시 체계의 실효성과 정보 보안 사이의 딜레마를 더 깊이 생각해봐야 할 것 같습니다.`
   },
   {
     id: 3, slug: '3', title: '해킹으로 본 사이버 범죄 #1.', tag: '독서', created_at: '2025-09-21',
-    content: `"해킹으로 본 사이버 범죄" ch01, 02 독서 기록입니다. 해킹이 어떻게 변질되어 발생했는지와 해킹 기법 및 공격 유형에 대해 알 수 있었습니다.
+    content: `"해킹으로 본 사이버 범죄" ch01, 02 독서 기록입니다.
 
-# 해커의 본래 의미
+## 해커의 본래 의미
 
-해커의 의미가 원래는 "창의적이고 혁신적인 방식으로 문제를 해결하는 사람"이었다는 것을 처음 알게 되었습니다.
+해커의 의미가 원래는 **"창의적이고 혁신적인 방식으로 문제를 해결하는 사람"**이었다는 것을 처음 알게 되었습니다.
 
-# 해커의 종류
+## 해커의 종류
 
 - **화이트 해커**: 윤리적 해커, 아군
 - **블랙 해커**: 악의적 의도를 가진 해커, 적
-- **그레이 해커**: 화이트와 블랙 사이의 중간 존재. 사전 동의 없이 침입하지만 반드시 악의적이지는 않음
+- **그레이 해커**: 화이트와 블랙 사이의 중간 존재. 사전 동의 없이 침입하지만 반드시 악의적이지 않음
 
-# 주요 해킹 기법
+## 주요 해킹 기법
 
-## 피싱 (Phishing)
-해킹 세계에서 "가장 교묘하고 효과적인 공격 기법 중 하나"로, 인간의 심리적 특성을 교묘히 이용합니다. 주로 사용자의 민감한 정보를 탈취하는 데 사용합니다.
+### 피싱 (Phishing)
 
-## DDoS (분산 서비스 거부 공격)
-해킹 기법 중 가장 강력하고 파괴적인 방법 중 하나입니다. 블랙 해커가 '봇넷'이라는 감염된 컴퓨터 네트워크를 사용하여 수천, 수백만 대의 컴퓨터로 위장해 피해자를 공격합니다.
+> "가장 교묘하고 효과적인 공격 기법 중 하나"
 
-# 인상 깊었던 문구
+인간의 심리적 특성을 교묘히 이용합니다. 주로 사용자의 민감한 정보를 탈취하는 데 사용합니다.
+
+### DDoS (분산 서비스 거부 공격)
+
+> 해킹 기법 중 가장 강력하고 파괴적인 방법 중 하나
+
+블랙 해커가 '봇넷'이라는 감염된 컴퓨터 네트워크를 사용하여 수천, 수백만 대의 컴퓨터로 위장해 피해자를 공격합니다.
+
+## 인상 깊었던 문구
 
 > "해킹은 어디까지 범죄로 볼 것인가?"
 > "정보의 자유로운 흐름과 보안 사이의 균형은 어떻게 맞춰야 하는가?"
@@ -1391,18 +1525,25 @@ AI와 빅데이터를 활용하여 생물학적 특징뿐 아니라 행동 패�
     id: 2, slug: '2', title: 'A하라 죽이기 #2.', tag: '독서', created_at: '2025-09-19',
     content: `"A하라 죽이기" 중후반부 독서 감상문입니다.
 
-# 분노와 현실 비판
+## 분노와 현실 비판
 
 중후반부를 읽으며 강한 분노를 느꼈습니다. 창업주의 아들이라는 신분으로 인해 실수를 외면하고 다른 사람에게 책임을 뒤집어씌우는 회사의 태도를 보며 현대 조직의 민낯을 마주했습니다.
 
-# 디지털 마녀사냥
+## 디지털 마녀사냥
 
 현대 사회가 가십거리를 좋아하는 이유를 고찰하며, 이 책이 디지털 마녀사냥을 정확하게 비판한다는 것을 느꼈습니다. 현실에서 피해를 입는 사람들의 고통을 생각하면 마음이 무거워집니다.
 
-# 인상 깊은 두 가지 인용구
+## 인상 깊은 두 가지 인용구
 
-- **디지털 타투**: 인터넷에 새겨진 지워지지 않는 상흔을 문신에 비유한 표현
-- **말의 힘**: 말이 사람을 살리기도 죽이기도 하는데, 사람들이 이를 너무 가볍게 생각한다는 지적
+**디지털 타투 (p.285)**
+
+> "인터넷에 새겨진 지워지지 않는 상흔을 문신에 비유한 표현"
+
+온라인 평판은 실제 문신과 같은 영구적인 손상을 받습니다.
+
+**말의 힘 (p.465)**
+
+> "말이 사람을 살리기도 죽이기도 하는데, 사람들이 이를 너무 가볍게 생각한다."
 
 더 이상 거짓에 현혹되거나 단순한 재미로 타인을 몰아가는 태도가 없어지기를 바랍니다.`
   },
@@ -1410,15 +1551,17 @@ AI와 빅데이터를 활용하여 생물학적 특징뿐 아니라 행동 패�
     id: 1, slug: '1', title: 'A하라 죽이기 #1.', tag: '독서', created_at: '2025-09-19',
     content: `"A하라 죽이기" 전반부 독서 감상문입니다.
 
-특정 해시태그로 무엇이 진실인지도 모른 채 욕을 하는 사람들의 모습이 참으로 무섭고도 끔찍하다는 생각이 들었습니다.
+특정 해시태그로 무엇이 진실인지도 모른 채 욕을 하는 사람들의 모습이 참으로 무섭고도 끔찍하다는 생각이 들었다.
 
-내가 하는 말이 숨겨진 진실 아래 숨은 이에게 독이 될 수 있다는 걸 알면서도 이를 모른 척하는 사람들의 모습이 잘 드러나 있습니다.
+내가 하는 말이 숨겨진 진실 아래 숨은 이에게 독이 될 수 있다는 걸 알면서도 이를 모른 척하는 사람들의 모습이 잘 드러나 있달까.
 
-왜 세상은 한 가지 말만 믿고 그렇게 못될 수만 있어야 하는지 참 이해가 안 되는 현실입니다. 분명 주인공 에이하라가 잘못한 게 아닌데, 그저 누명을 쓴 것일 뿐인데 왜 세상은 그래야만 하는 것일까요.
+왜 세상은 한 가지 말만 믿고 그렇게 못될 수만 있어야 하는지 참 이해가 안 되는 현실이다. 분명 주인공 에이하라가 잘못한 게 아닌데 그저 누명을 쓴 것일 뿐일 터인데 왜 세상은 그래야만 하는 것일까.
 
-현실 속 악플들도 참 무섭지만 책 속의 세상도 참 무서운 것 같습니다.
+현실 속 악플들도 참 무섭지만 책 속의 세상도 참 무서운 거 같다.
 
-중반부와 후반부에서는 제발 에이하라의 억울함이 풀릴 수 있기를 바라봅니다.`
+중반부와 후반부에서는 제발 에이하라의 억울함이 풀릴 수 있길 바라본다.
+
+Tags: Aylen, A하라죽이기, 전반부, 첫글`
   }
 ]
 
@@ -1426,29 +1569,17 @@ AI와 빅데이터를 활용하여 생물학적 특징뿐 아니라 행동 패�
 const postsMeta = posts
   .sort((a, b) => b.id - a.id)
   .map(({ id, slug, title, tag, created_at, content }) => ({
-    id,
-    slug,
-    title,
-    tag,
-    excerpt: content.replace(/[#>\-*`]/g, '').split('\n').find(l => l.trim().length > 20)?.trim().slice(0, 80) + '...' || '',
+    id, slug, title, tag,
+    excerpt: content.replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#>\-*`\[\]]/g, '').split('\n').find(l => l.trim().length > 20)?.trim().slice(0, 80) + '...' || '',
     created_at,
   }))
 
-writeFileSync(
-  join(__dirname, '../public/data/posts.json'),
-  JSON.stringify(postsMeta, null, 2),
-  'utf8'
-)
+writeFileSync(join(__dirname, '../public/data/posts.json'), JSON.stringify(postsMeta, null, 2), 'utf8')
 
-// 개별 글 JSON
 for (const post of posts) {
   const { id, slug, title, tag, created_at, content } = post
-  const excerpt = content.replace(/[#>\-*`]/g, '').split('\n').find(l => l.trim().length > 20)?.trim().slice(0, 80) + '...' || ''
-  writeFileSync(
-    join(dataDir, `${slug}.json`),
-    JSON.stringify({ id, slug, title, tag, excerpt, content, created_at }, null, 2),
-    'utf8'
-  )
+  const excerpt = content.replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#>\-*`\[\]]/g, '').split('\n').find(l => l.trim().length > 20)?.trim().slice(0, 80) + '...' || ''
+  writeFileSync(join(dataDir, `${slug}.json`), JSON.stringify({ id, slug, title, tag, excerpt, content, created_at }, null, 2), 'utf8')
 }
 
 console.log(`✓ posts.json + ${posts.length}개 글 파일 생성 완료`)

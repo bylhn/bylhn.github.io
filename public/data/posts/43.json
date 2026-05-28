@@ -3,7 +3,7 @@
   "slug": "43",
   "title": "변수와 연산자",
   "tag": "C언어",
-  "excerpt": "변수란 \"값을 저장할 수 있는 메모리 공간에 붙여진 이름\"입니다. 컴퓨터 메모리에 데이터를 저장하고 참조하기 위한 레이블입니다....",
-  "content": "# 변수 (Variable)\n\n변수란 \"값을 저장할 수 있는 메모리 공간에 붙여진 이름\"입니다. 컴퓨터 메모리에 데이터를 저장하고 참조하기 위한 레이블입니다.\n\n선언과 동시에 초기화하는 방법:\n\nint num = 20;\n\n선언과 할당을 분리하는 방법:\n\nint num;\nnum = 20;\n\nprintf로 출력: printf(\"%d\", num);\n\n# 연산자 (Operator)\n\n기본 연산자 5가지:\n\n- `+` 덧셈\n- `-` 뺄셈\n- `*` 곱셈\n- `/` 나눗셈\n- `%` 나머지\n\n> 처음에는 기본 연산자에 익숙해진 뒤 점진적으로 확장해 나가는 것을 권장합니다.",
+  "excerpt": "변수란, 값을 저장할 수 있는 메모리 공간에 붙여진 이름을 말한다. 즉, 컴퓨터 안에 만들어진 '작은 상자'에 내가 원하는 값을 넣어두고, 그 ...",
+  "content": "## 변수란?\n\n변수란, 값을 저장할 수 있는 메모리 공간에 붙여진 이름을 말한다. 즉, 컴퓨터 안에 만들어진 '작은 상자'에 내가 원하는 값을 넣어두고, 그 상자를 부를 때 사용할 이름을 정하는 것이다.\n\n코딩으로 나타내면 다음과 같다.\n\n> #include <stdio.h>\n> int main(){\n>     int num = 20;\n>     printf(\"%d\", num);\n>     return 0;\n> }\n\n`int num = 20;` 이라는 것으로, 숫자 20을 num이라고 지어준 변수에 넣는다는 것을 의미한다.\n\n원래는 아래와 같이 선언과 할당을 분리해야 한다.\n\n> int main(void){\n>     int num;\n>     num = 20;\n>     printf(\"%d\", num);\n>     return 0;\n> }\n\n## 연산자\n\nC 언어에서 기본 연산자는 다음과 같다.\n\n- `+` (더하기)\n- `-` (빼기)\n- `*` (곱하기)\n- `/` (나누기)\n- `%` (나머지)\n\n이 다섯 가지 연산자만 알아도, 변수들을 이용한 간단한 계산식은 충분히 만들 수 있다.\n\n예: a + b, a * b, (a + b) * c\n\n처음부터 전부 외우려고 하지 말고, 기본 연산자에 익숙해진 뒤 하나씩 확장해 나가는 걸 추천한다.\n\n![변수와 연산자 예시](https://blog.kakaocdn.net/dna/bIo4ES/dJMcagw6dSm/AAAAAAAAAAAAAAAAAAAAAA_UXiF1EtsfJ1D-efUzT8xhdQs6_GgR4WD7s9ILzKuP/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1780239599&allow_ip=&allow_referer=&signature=XhGohW0heD%2BZ%2F0oRUBR7HgQvXAg%3D)",
   "created_at": "2025-11-15"
 }
