@@ -1057,8 +1057,215 @@ const renderContent = (text) => {
   })
 }
 
+/* ─── Admin (GitHub API 기반) ─── */
+const OWNER = 'bylhn', REPO = 'bylhn.github.io', BRANCH = 'main'
+
+const ghFetch = async (token, path, method = 'GET', body = null) => {
+  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/${path}`, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    ...(body ? { body: JSON.stringify(body) } : {}),
+  })
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.message || `${res.status}`) }
+  return res.json()
+}
+
+const getRepoFile = async (token, filePath) => {
+  try {
+    const data = await ghFetch(token, `contents/${filePath}`)
+    const text = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))))
+    return { content: JSON.parse(text), sha: data.sha }
+  } catch { return { content: null, sha: null } }
+}
+
+const putRepoFile = async (token, filePath, content, sha, message) => {
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\n')))
+  return ghFetch(token, `contents/${filePath}`, 'PUT', {
+    message, content: encoded, branch: BRANCH, ...(sha ? { sha } : {}),
+  })
+}
+
+const slugify = title => title.trim().toLowerCase()
+  .replace(/[^\w\s가-힣]/g, '').replace(/\s+/g, '-').slice(0, 50) + '-' + Date.now().toString(36)
+
+const Admin = () => {
+  const [token, setToken] = useState(() => { try { return localStorage.getItem('gh_admin_token') || '' } catch { return '' } })
+  const [authed, setAuthed] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [msg, setMsg] = useState('')
+  const [posts, setPosts] = useState([])
+  const [view, setView] = useState('list')
+  const [form, setForm] = useState({ id: null, slug: '', title: '', tag: '', created_at: new Date().toISOString().slice(0, 10), content: '' })
+  const [preview, setPreview] = useState(false)
+  const contentRef = useRef(null)
+
+  const loadPosts = async (tok) => {
+    const { content } = await getRepoFile(tok || token, 'public/data/posts.json')
+    setPosts(content || [])
+  }
+
+  const login = async e => {
+    e.preventDefault(); setLoading(true); setMsg('')
+    try {
+      await ghFetch(token, 'git/refs/heads/main')
+      localStorage.setItem('gh_admin_token', token)
+      setAuthed(true)
+      await loadPosts(token)
+    } catch (err) { setMsg('토큰 오류: ' + err.message) }
+    setLoading(false)
+  }
+
+  const startNew = () => {
+    setForm({ id: null, slug: '', title: '', tag: '', created_at: new Date().toISOString().slice(0, 10), content: '' })
+    setMsg(''); setPreview(false); setView('edit')
+  }
+
+  const startEdit = async (slug) => {
+    setLoading(true)
+    const { content } = await getRepoFile(token, `public/data/posts/${slug}.json`)
+    if (content) { setForm(content); setMsg(''); setPreview(false); setView('edit') }
+    setLoading(false)
+  }
+
+  const publish = async e => {
+    e.preventDefault()
+    if (!form.title || !form.content) return setMsg('제목과 본문은 필수입니다.')
+    setLoading(true); setMsg('저장 중...')
+    try {
+      const slug = form.slug || slugify(form.title)
+      const maxId = posts.reduce((m, p) => Math.max(m, p.id || 0), 0)
+      const id = form.id || maxId + 1
+      const postData = { ...form, id, slug }
+
+      const { sha: postSha } = await getRepoFile(token, `public/data/posts/${slug}.json`)
+      await putRepoFile(token, `public/data/posts/${slug}.json`, postData, postSha, `post: ${form.title}`)
+
+      const { content: idx, sha: idxSha } = await getRepoFile(token, 'public/data/posts.json')
+      const excerpt = form.content.replace(/!\[.*?\]\(.*?\)/g, '').replace(/[#>\-*`\[\]]/g, '').split('\n').find(l => l.trim().length > 20)?.trim().slice(0, 80) + '...' || ''
+      const meta = { id, slug, title: form.title, tag: form.tag, excerpt, created_at: form.created_at }
+      const updated = [(idx || []).filter(p => p.slug !== slug), meta].flat().sort((a, b) => b.id - a.id)
+      await putRepoFile(token, 'public/data/posts.json', updated, idxSha, `index: ${form.title}`)
+
+      setMsg('✓ 발행 완료! GitHub Actions가 1~2분 내 배포합니다.')
+      await loadPosts(); setView('list')
+    } catch (err) { setMsg('오류: ' + err.message) }
+    setLoading(false)
+  }
+
+  const deletePost = async (slug, title) => {
+    if (!confirm(`"${title}" 글을 삭제할까요?`)) return
+    setLoading(true); setMsg('')
+    try {
+      const { sha } = await getRepoFile(token, `public/data/posts/${slug}.json`)
+      if (sha) await ghFetch(token, `contents/public/data/posts/${slug}.json`, 'DELETE', { message: `delete: ${slug}`, sha, branch: BRANCH })
+      const { content: idx, sha: idxSha } = await getRepoFile(token, 'public/data/posts.json')
+      await putRepoFile(token, 'public/data/posts.json', (idx || []).filter(p => p.slug !== slug), idxSha, `delete: ${slug}`)
+      await loadPosts()
+    } catch (err) { setMsg('삭제 오류: ' + err.message) }
+    setLoading(false)
+  }
+
+  const inp = { width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }
+  const btnStyle = { padding: '10px 22px', border: 'none', borderRadius: 8, cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.04em', transition: 'all 0.2s' }
+
+  if (!authed) return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
+      <form onSubmit={login} style={{ display: 'flex', flexDirection: 'column', gap: 14, width: 340 }}>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: 24, fontWeight: 300, color: 'var(--text-primary)', marginBottom: 4 }}>관리자</p>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.7 }}>
+          GitHub Personal Access Token (Contents 읽기/쓰기 권한)을 입력하세요.
+        </p>
+        <input type="password" placeholder="ghp_xxxxxxxxxxxx" value={token} onChange={e => setToken(e.target.value)} style={inp} required />
+        {msg && <p style={{ fontSize: 12, color: '#c0392b' }}>{msg}</p>}
+        <button type="submit" disabled={loading} style={{ ...btnStyle, background: 'var(--accent)', color: '#fff' }}>
+          {loading ? '확인 중...' : '로그인'}
+        </button>
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', lineHeight: 1.6 }}>
+          GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → New token<br/>
+          → Repository: bylhn.github.io → Contents: Read and write
+        </p>
+      </form>
+    </div>
+  )
+
+  if (view === 'edit') return (
+    <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 60px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 36 }}>
+        <button onClick={() => setView('list')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)' }}>← 목록</button>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 300, color: 'var(--text-primary)' }}>{form.id ? '글 수정' : '새 글 쓰기'}</p>
+      </div>
+      <form onSubmit={publish} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <input placeholder="제목" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value, slug: f.slug || slugify(e.target.value) }))} style={inp} required />
+        <div style={{ display: 'flex', gap: 10 }}>
+          <input placeholder="슬러그 (자동생성)" value={form.slug} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} style={{ ...inp, flex: 2 }} />
+          <input placeholder="태그 (예: Unix)" value={form.tag} onChange={e => setForm(f => ({ ...f, tag: e.target.value }))} style={{ ...inp, flex: 1 }} />
+          <input type="date" value={form.created_at} onChange={e => setForm(f => ({ ...f, created_at: e.target.value }))} style={{ ...inp, flex: 1 }} />
+        </div>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>본문 (마크다운 지원: # ## - {'>'} ![alt](url))</p>
+            <button type="button" onClick={() => setPreview(p => !p)} style={{ background: 'none', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, padding: '4px 12px', cursor: 'pointer', fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-muted)' }}>
+              {preview ? '편집' : '미리보기'}
+            </button>
+          </div>
+          {preview ? (
+            <div style={{ minHeight: 300, padding: '20px 24px', background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 15, color: 'var(--text-primary)', lineHeight: 2 }}>
+              {renderContent(form.content)}
+            </div>
+          ) : (
+            <textarea ref={contentRef} placeholder="본문을 입력하세요..." value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
+              rows={20} style={{ ...inp, resize: 'vertical', lineHeight: 1.8, fontFamily: 'monospace', fontSize: 13 }} required />
+          )}
+        </div>
+        {msg && <p style={{ fontSize: 12, color: msg.startsWith('✓') ? 'var(--accent)' : '#c0392b' }}>{msg}</p>}
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button type="button" onClick={() => setView('list')} style={{ ...btnStyle, background: 'none', border: '1px solid rgba(0,0,0,0.15)', color: 'var(--text-muted)' }}>취소</button>
+          <button type="submit" disabled={loading} style={{ ...btnStyle, background: loading ? 'var(--text-light)' : 'var(--accent)', color: '#fff' }}>
+            {loading ? '발행 중...' : '발행하기'}
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+
+  return (
+    <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(80px, 10vw, 120px) clamp(24px, 6vw, 60px) 80px', background: 'var(--bg)', minHeight: '100vh' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 36 }}>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: 24, fontWeight: 300, color: 'var(--text-primary)' }}>블로그 관리</p>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button onClick={() => loadPosts()} disabled={loading} style={{ ...btnStyle, background: 'none', border: '1px solid rgba(0,0,0,0.1)', color: 'var(--text-muted)', padding: '8px 16px' }}>↻ 새로고침</button>
+          <button onClick={startNew} style={{ ...btnStyle, background: 'var(--accent)', color: '#fff' }}>+ 새 글</button>
+        </div>
+      </div>
+      {msg && <p style={{ fontFamily: 'var(--sans)', fontSize: 12, color: msg.startsWith('✓') ? 'var(--accent)' : '#c0392b', marginBottom: 16 }}>{msg}</p>}
+      {loading && <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)' }}>로딩 중...</p>}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {posts.map(post => (
+          <div key={post.slug} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 0', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+            <div>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-primary)', marginBottom: 4 }}>{post.title}</p>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{post.created_at} · {post.tag} · {post.slug}</p>
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+              <button onClick={() => startEdit(post.slug)} style={{ background: 'none', border: '1px solid rgba(126,168,196,0.4)', borderRadius: 6, padding: '6px 14px', fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--accent)', cursor: 'pointer' }}>수정</button>
+              <button onClick={() => deletePost(post.slug, post.title)} style={{ background: 'none', border: '1px solid rgba(192,57,43,0.3)', borderRadius: 6, padding: '6px 14px', fontFamily: 'var(--sans)', fontSize: 12, color: '#c0392b', cursor: 'pointer' }}>삭제</button>
+            </div>
+          </div>
+        ))}
+        {posts.length === 0 && !loading && <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-muted)', paddingTop: 24 }}>글이 없습니다.</p>}
+      </div>
+    </div>
+  )
+}
+
 /* ─── Router ─── */
 const getPageFromPath = path => {
+  if (path.toLowerCase() === '/bylhn') return { page: 'admin', slug: '' }
   if (path === '/blog') return { page: 'blog', slug: '' }
   if (path.startsWith('/blog/')) return { page: 'post', slug: path.replace('/blog/', '') }
   return { page: 'home', slug: '' }
@@ -1099,6 +1306,8 @@ export default function App() {
     try { localStorage.setItem('klru_visited', '1') } catch {}
     setIntro(false); setTimeout(() => setFadeIn(false), 800)
   }
+
+  if (page === 'admin') return <Admin />
 
   return (
     <>
