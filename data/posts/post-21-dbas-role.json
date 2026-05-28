@@ -1,0 +1,9 @@
+{
+  "id": 23,
+  "slug": "post-21-dbas-role",
+  "title": "[ DBAs Role ]",
+  "tag": "Database",
+  "excerpt": "DBA(Database Administrator)는 조직의 데이터가 안전하고 빠르게, 끊기지 않고 쓰이도록 책임지는 사람으로 설계부터 성능, 보...",
+  "content": "DBA(Database Administrator)는 조직의 데이터가 안전하고 빠르게, 끊기지 않고 쓰이도록 책임지는 사람으로 설계부터 성능, 보안, 백업, 장애대응, 운영 자동화까지 '데이터 생애주기' 전 과정을 관리하는 사람을 말한다.\n\n그러나 요즘은 DBA라는 직함도 대신 DBRE(Database Reliability Engineer), Data/Platform Engineer,SRE로 바뀌는 조직이 늘었다.\n\n결론, **\"타이틀은 사라질 수 있어도, 기술 수요는 계속된다.\"**",
+  "created_at": "2025-10-25"
+}

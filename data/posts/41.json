@@ -1,9 +1,0 @@
-{
-  "id": 41,
-  "slug": "41",
-  "title": "프로그램의 기본 구성",
-  "tag": "C언어",
-  "excerpt": "함수 = input(입력) + output(출력) + function(기능)...",
-  "content": "## 함수(Function)란?\n\n함수 = **input(입력) + output(출력) + function(기능)**\n\n## 기본 프로그램 구조\n\n> #include <stdio.h>\n>\n> int main(void){\n>     printf(\"Hello world \\n\");\n>     return 0;\n> }\n\n## 주요 요소 설명\n\n- **int** — 출력 형태 (정수)\n- **main** — 함수 이름\n- **void** — 입력 형태 (없음)\n- **세미콜론(;)** — 문장의 끝 표시\n- **return 0;** — 현재 실행 중인 함수의 종료\n- **주석** — 코드에 대한 설명을 달 수 있는 메모장 역할\n- **\\n** — 줄을 바꾸는 이스케이프 시퀀스 (Enter 개념)",
-  "created_at": "2025-11-07"
-}

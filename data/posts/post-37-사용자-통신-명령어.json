@@ -1,0 +1,9 @@
+{
+  "id": 39,
+  "slug": "post-37-사용자-통신-명령어",
+  "title": "[ 사용자 통신 명령어 ]",
+  "tag": "Unix",
+  "excerpt": "\"로그인된 사용자 보기 ( $ users, $ who, $ w, $ finger )...",
+  "content": "\"**로그인된 사용자 보기 ( $ users, $ who, $ w, $ finger )**\n\n계정 추가 후, SSH Client 프로그램 통해 다수 접속하고 실행해볼 것.\n\n1. $ users\n\n2. $ who : 가장 보편적으로 많이 사용됨.\n\n3. $ w [user_id]\n\n4. $ finger [user_id]\n\nsudo apt-get install finger\n\n---\n\n**\"사용자 공개정보 바꾸기 ( $ chfn 계정 : Change full name)**\n\n$ chfn [-option] [user_id]\n\n옵션 없이 실행하면 하나씩 설정 가능하다.\n\n**옵션**\n\n-**f (full name)**사용자 실제 이름 \n-**o (office)**      사용자 직장 \n-**p (phone)**사용자 직장 전화번호 \n-**h (home)**     사용자 집(핸드폰) 번호\n\n---\n\n**\"대화하기 ( $ talk )**\n\n한쪽에서 요청 후, 상대방도 $talk user_id 명령을 통해 수락 해야 가능\n\n$ talk [user_id][terminal_name]\n\n---\n\n**\"쪽지 보내기 ( $ write )**\n\n문장 입력 후, 컨트롤 D를 눌러 문장의 끝을 알림\n\n$ write [user_id] [termianl_name]\n\n---\n\n**\"메시지 제어 ( $ mesg)**\n\n메시지 남용은 타 사용자의 작업을 방해할 수 있으므로, 메시지 수신 거부/허용 필요\n\n$ mesg [n | no | y | yes]\n\n---\n\n**\"전체 메시지 보내기 ( $ wall )**\n\n시스템 관리자만 실행 가능하도록 설정 변경 권장으로 메시지 입력 완료 후 컨트롤 D\n\n$ wall [message]",
+  "created_at": "2025-10-27"
+}
