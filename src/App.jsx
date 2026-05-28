@@ -217,7 +217,51 @@ const StickerStar = () => (
     </div>
   </div>
 )
+const STICKER_LIST = [
+  { name: 'cat', label: '고양이', C: StickerCat },
+  { name: 'heart', label: '하트', C: StickerHeart },
+  { name: 'star', label: '별', C: StickerStar },
+]
 const STICKER_MAP = { cat: StickerCat, heart: StickerHeart, star: StickerStar }
+
+const StickerPicker = ({ onSelect }) => {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (!open) return
+    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
+      <button type="button" onClick={() => setOpen(o => !o)}
+        style={{ background: 'none', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', fontSize: 14, color: 'var(--text-muted)', transition: 'border-color 0.2s' }}
+        onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+        onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(0,0,0,0.1)'}>
+        🎭
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', bottom: 'calc(100% + 6px)', left: 0, background: 'var(--bg)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 14, padding: 14, display: 'flex', gap: 10, zIndex: 300, boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+          {STICKER_LIST.map(s => (
+            <button key={s.name} type="button" onClick={() => { onSelect(s.name); setOpen(false) }}
+              style={{ background: 'none', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 10, padding: '10px 14px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, transition: 'background 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.04)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+              <s.C />
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 10, color: 'var(--text-light)' }}>{s.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <style>{`
+        @keyframes stickerFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+        @keyframes stickerPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.22)} }
+        @keyframes stickerSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+      `}</style>
+    </div>
+  )
+}
 
 /* ─── Pixel Cat Intro Overlay ─── */
 const CAT_PX = [
@@ -816,6 +860,114 @@ const BlogList = ({ onPost }) => {
   )
 }
 
+/* ─── Comments ─── */
+const Comments = ({ slug }) => {
+  const [comments, setComments] = useState([])
+  const [form, setForm] = useState({ name: '', content: '', password: '' })
+  const [msg, setMsg] = useState('')
+  const [delId, setDelId] = useState(null)
+  const [delPw, setDelPw] = useState('')
+  const commentRef = useRef(null)
+
+  const load = () => fetch(`/api/comments?slug=${slug}`).then(r => r.json()).then(setComments).catch(() => {})
+  useEffect(() => { load() }, [slug]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const submit = async e => {
+    e.preventDefault()
+    if (!form.name || !form.content || !form.password) return
+    setMsg('저장 중...')
+    const res = await fetch('/api/comments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, ...form }),
+    })
+    const data = await res.json().catch(() => ({}))
+    if (data.ok) { setForm({ name: '', content: '', password: '' }); setMsg(''); load() }
+    else setMsg(data.error || '현재 댓글 기능을 사용할 수 없습니다.')
+  }
+
+  const deleteComment = async (id) => {
+    if (!delPw) return
+    const res = await fetch(`/api/comments/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: delPw }),
+    })
+    const data = await res.json().catch(() => ({}))
+    if (data.ok) { setDelId(null); setDelPw(''); load() }
+    else alert(data.error || '오류가 발생했습니다.')
+  }
+
+  const inp = { width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }
+
+  return (
+    <div style={{ marginTop: 80, paddingTop: 48, borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+      <p style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)', letterSpacing: '0.15em', marginBottom: 32 }}>
+        COMMENTS {comments.length > 0 && `· ${comments.length}`}
+      </p>
+
+      {comments.map(c => (
+        <div key={c.id} style={{ padding: '20px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 500, color: 'var(--text-primary)' }}>{c.name}</span>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--text-light)' }}>{c.created_at}</span>
+            </div>
+            <button onClick={() => { setDelId(delId === c.id ? null : c.id); setDelPw('') }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, color: 'var(--text-light)', padding: 0 }}>삭제</button>
+          </div>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{c.content}</p>
+          {delId === c.id && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+              <input type="password" placeholder="비밀번호" value={delPw} onChange={e => setDelPw(e.target.value)} style={{ ...inp, width: 160 }} />
+              <button onClick={() => deleteComment(c.id)}
+                style={{ padding: '8px 16px', background: 'none', border: '1px solid rgba(192,57,43,0.3)', borderRadius: 6, fontSize: 12, color: '#c0392b', cursor: 'pointer' }}>확인</button>
+            </div>
+          )}
+        </div>
+      ))}
+
+      {comments.length === 0 && (
+        <p style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-light)', marginBottom: 32 }}>첫 번째 댓글을 남겨보세요.</p>
+      )}
+
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 32 }}>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <input placeholder="이름" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ ...inp, flex: 1 }} required />
+          <input type="password" placeholder="비밀번호 (삭제용)" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} style={{ ...inp, flex: 1 }} required />
+        </div>
+        <div style={{ position: 'relative' }}>
+          <textarea ref={commentRef} placeholder="댓글을 입력하세요..." value={form.content} onChange={e => setForm({ ...form, content: e.target.value })}
+            rows={4} style={{ ...inp, resize: 'vertical', lineHeight: 1.7 }} required />
+          <div style={{ marginTop: 6, display: 'flex', gap: 8 }}>
+            <EmojiPicker onSelect={em => {
+              const el = commentRef.current
+              const s = el?.selectionStart ?? form.content.length
+              const next = form.content.slice(0, s) + em + form.content.slice(s)
+              setForm(f => ({ ...f, content: next }))
+              requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + em.length; el.focus() } })
+            }} />
+            <StickerPicker onSelect={name => {
+              const tag = `[sticker:${name}]`
+              const el = commentRef.current
+              const s = el?.selectionStart ?? form.content.length
+              const next = form.content.slice(0, s) + tag + form.content.slice(s)
+              setForm(f => ({ ...f, content: next }))
+              requestAnimationFrame(() => { if (el) { el.selectionStart = el.selectionEnd = s + tag.length; el.focus() } })
+            }} />
+          </div>
+        </div>
+        {msg && <p style={{ fontSize: 12, color: '#c0392b' }}>{msg}</p>}
+        <button type="submit" style={{ alignSelf: 'flex-end', padding: '10px 24px', background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 6, fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.08em', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s' }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--accent)' }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.15)'; e.currentTarget.style.color = 'var(--text-muted)' }}>
+          남기기
+        </button>
+      </form>
+    </div>
+  )
+}
+
 /* ─── Blog Post ─── */
 const BlogPost = ({ slug, onBack }) => {
   const [post, setPost] = useState(null)
@@ -846,6 +998,7 @@ const BlogPost = ({ slug, onBack }) => {
           onCopy={e => e.preventDefault()}
           onContextMenu={e => e.preventDefault()}
         >{renderContent(post.content)}</div>
+        <Comments slug={slug} />
       </article>
     </>
   )
