@@ -1088,15 +1088,18 @@ const compressImage = (file) => new Promise(resolve => {
   const img = new Image()
   const url = URL.createObjectURL(file)
   img.onload = () => {
-    const MAX = 1000
+    const MAX = 1800
     let w = img.width, h = img.height
     if (w > MAX) { h = Math.round(h * MAX / w); w = MAX }
     if (h > MAX) { w = Math.round(w * MAX / h); h = MAX }
     const canvas = document.createElement('canvas')
     canvas.width = w; canvas.height = h
-    canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+    const ctx2d = canvas.getContext('2d')
+    ctx2d.imageSmoothingEnabled = true
+    ctx2d.imageSmoothingQuality = 'high'
+    ctx2d.drawImage(img, 0, 0, w, h)
     URL.revokeObjectURL(url)
-    canvas.toBlob(resolve, 'image/jpeg', 0.75)
+    canvas.toBlob(resolve, 'image/jpeg', 0.92)
   }
   img.src = url
 })
@@ -1140,7 +1143,7 @@ const parseInline = (text) => {
     if (/^\*\*[^*]+\*\*$/.test(p)) return <strong key={i} style={{ fontWeight: 600 }}>{p.slice(2, -2)}</strong>
     if (/^\*[^*]+\*$/.test(p))   return <em key={i}>{p.slice(1, -1)}</em>
     const img = p.match(/^!\[(.*?)\]\((.*?)\)$/)
-    if (img) return <img key={i} src={img[2]} alt={img[1]} style={{ maxWidth: '100%', borderRadius: 6, verticalAlign: 'middle' }} />
+    if (img) return <img key={i} src={img[2]} alt={img[1]} style={{ maxWidth: '100%', borderRadius: 6, verticalAlign: 'middle', imageRendering: 'high-quality', filter: 'contrast(1.06) brightness(1.01)' }} />
     const stk = p.match(/^\[sticker:([a-z]+)\]$/)
     if (stk) { const C = STICKER_MAP[stk[1]]; return C ? <span key={i} style={{ display: 'inline-block', verticalAlign: 'middle', margin: '0 3px' }}><C /></span> : null }
     return p
@@ -1155,7 +1158,7 @@ const renderContent = (text) => {
     if (line.startsWith('> '))  return <blockquote key={i} style={{ borderLeft: '3px solid var(--accent)', paddingLeft: 16, margin: '0.6em 0', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.9 }}>{parseInline(line.slice(2))}</blockquote>
     if (line.startsWith('- '))  return <div key={i} style={{ display: 'flex', gap: 10, margin: '0.2em 0', lineHeight: 2 }}><span style={{ color: 'var(--accent)', flexShrink: 0 }}>·</span><span>{parseInline(line.slice(2))}</span></div>
     const imgM = line.match(/^!\[(.*?)\]\((.*?)\)$/)
-    if (imgM) return <img key={i} src={imgM[2]} alt={imgM[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block' }} />
+    if (imgM) return <img key={i} src={imgM[2]} alt={imgM[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block', imageRendering: 'high-quality', filter: 'contrast(1.06) brightness(1.01)' }} />
     const stkM = line.match(/^\[sticker:([a-z]+)\]$/)
     if (stkM) { const C = STICKER_MAP[stkM[1]]; return C ? <div key={i} style={{ margin: '6px 0' }}><C /></div> : null }
     const bkmM = line.match(/^\[bookmark:(https?:\/\/.+)\]$/)
