@@ -1,0 +1,9 @@
+{
+  "id": 14,
+  "slug": "14",
+  "title": "데이터베이스 for Beginner ch01 연습문제",
+  "tag": "Database",
+  "excerpt": "데이터베이스 for Beginner 1장 연습문제 풀이입니다....",
+  "content": "데이터베이스 for Beginner 1장 연습문제 풀이입니다.\n\n> 개인 학습 자료로, 오답이 있을 수 있습니다.\n\n# 주요 문제 해설\n\n## DBMS/데이터베이스 개념\n- 데이터베이스는 여러 사람이 공유하고 동시에 접근 가능한 데이터 집합\n- \"데이터 파일 저장소 변경 시 즉시 응용프로그램 수정 필요\" → 틀린 설명 (DBMS의 독립성 특징)\n\n## 오픈소스 데이터베이스 구분\n오픈소스가 아닌 것: Oracle, SQL Server, Access\n\n## DBMS 유형\n실제 DBMS 분류: 계층형, 망형, 관계형, NoSQL\n- \"계층형-관계형\" 혼합 유형은 존재하지 않습니다.\n\n## SQL의 특징\n틀린 설명:\n- \"모든 회사에서 완전히 통일된 문법\" → SQL은 회사마다 방언이 존재\n- \"중앙 집중식 질의만 가능\" → 분산형 환경도 지원\n\n## MySQL 버전 호환성\nMySQL 8.4는 Windows 7에서 실행 불가합니다.\n\n## MySQL 설치 패키지\nMySQL Workbench는 MySQL 8.1 이상의 기본 설치 패키지에 포함되지 않아 별도 설치가 필요합니다.\n\n## Employees 데이터베이스\nMySQL Server에 번들로 포함되지 않으며 별도 다운로드가 필요합니다.",
+  "created_at": "2025-10-17"
+}

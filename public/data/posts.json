@@ -1,1 +1,386 @@
-[]
+[
+  {
+    "id": 48,
+    "slug": "48",
+    "title": "면접에서 말한 내용은 어떻게 평가될까",
+    "tag": "잡지식",
+    "excerpt": "본 자료는 면접 컨설팅 이후 개인 정리 기록입니다....",
+    "created_at": "2026-02-10"
+  },
+  {
+    "id": 47,
+    "slug": "47",
+    "title": "내일인데 '명일'? | 날짜 관련 회사 언어 이해하기",
+    "tag": "잡지식",
+    "excerpt": "회사에서 자주 쓰이는 날짜 관련 공식 표현, 일자 지시어를 정리합니다....",
+    "created_at": "2026-02-04"
+  },
+  {
+    "id": 46,
+    "slug": "46",
+    "title": "Iotgoat 환경 다운받기",
+    "tag": "기타",
+    "excerpt": "IoTGoat은 의도적으로 취약하게 설계된 펌웨어 프로젝트로, IoT 보안 취약점을 안전한 가상 환경에서 실습할 수 있게 해줍니다....",
+    "created_at": "2026-01-11"
+  },
+  {
+    "id": 45,
+    "slug": "45",
+    "title": "CNN 기초 이해하기!",
+    "tag": "Python",
+    "excerpt": "CNN(Convolutional Neural Networks)을 이해하기 전에 컴퓨터가 이미지를 어떻게 인식하는지 먼저 알아야 합니다....",
+    "created_at": "2025-11-23"
+  },
+  {
+    "id": 44,
+    "slug": "44",
+    "title": "우분투/리눅스에서 한글 쓰는 법",
+    "tag": "Unix",
+    "excerpt": "우분투에서 한글 입력이 안 될 때 해결 방법을 정리합니다....",
+    "created_at": "2025-11-19"
+  },
+  {
+    "id": 43,
+    "slug": "43",
+    "title": "변수와 연산자",
+    "tag": "C언어",
+    "excerpt": "변수란 \"값을 저장할 수 있는 메모리 공간에 붙여진 이름\"입니다. 컴퓨터 메모리에 데이터를 저장하고 참조하기 위한 레이블입니다....",
+    "created_at": "2025-11-15"
+  },
+  {
+    "id": 42,
+    "slug": "42",
+    "title": "c언어의 매우 기초 부분 (printf)",
+    "tag": "C언어",
+    "excerpt": "include <stdio.h는 printf와 scanf 함수가 들어있는 필수 기본 헤더 파일입니다....",
+    "created_at": "2025-11-14"
+  },
+  {
+    "id": 41,
+    "slug": "41",
+    "title": "프로그램의 기본 구성",
+    "tag": "C언어",
+    "excerpt": "함수는 입력(input) + 출력(output) + 기능(function)으로 구성됩니다....",
+    "created_at": "2025-11-07"
+  },
+  {
+    "id": 40,
+    "slug": "40",
+    "title": "c언어 프롤로그",
+    "tag": "C언어",
+    "excerpt": "C는 가장 기본적인 언어로, 모든 프로그래밍 언어의 기초가 되는 언어입니다....",
+    "created_at": "2025-11-06"
+  },
+  {
+    "id": 39,
+    "slug": "39",
+    "title": "vi editor",
+    "tag": "Unix",
+    "excerpt": "vi는 Bill Joy가 UC Berkeley에서 개발한 Unix의 기본 텍스트 에디터입니다....",
+    "created_at": "2025-10-27"
+  },
+  {
+    "id": 38,
+    "slug": "38",
+    "title": "사용자 관리 명령어 (프로세스)",
+    "tag": "Unix",
+    "excerpt": "프로세스는 컴퓨터가 지금 실행 중인 작업을 의미합니다. UNIX는 멀티태스킹을 지원하므로 여러 프로세스가 동시에 실행됩니다....",
+    "created_at": "2025-10-27"
+  },
+  {
+    "id": 37,
+    "slug": "37",
+    "title": "사용자 통신 명령어",
+    "tag": "Unix",
+    "excerpt": "Unix에서 사용자 간 통신을 위한 명령어들을 정리합니다....",
+    "created_at": "2025-10-27"
+  },
+  {
+    "id": 36,
+    "slug": "36",
+    "title": "사용자 관리 명령어",
+    "tag": "Unix",
+    "excerpt": "Linux/Unix 환경에서 사용자 및 그룹을 관리하는 기본 명령어를 정리합니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 35,
+    "slug": "35",
+    "title": "쉘(Shell)",
+    "tag": "Unix",
+    "excerpt": "쉘은 명령어 해석기로, 커널에 사용자의 명령을 전달하는 인터페이스이자 프로그램입니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 34,
+    "slug": "34",
+    "title": "파일 응용 명령어",
+    "tag": "Unix",
+    "excerpt": "Unix 파일 응용 명령어를 정리합니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 33,
+    "slug": "33",
+    "title": "파일 관리 명령어",
+    "tag": "Unix",
+    "excerpt": "Unix 기본 파일 관리 명령어를 정리합니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 32,
+    "slug": "32",
+    "title": "디렉터리 관리 명령어 mkdir, rmdir",
+    "tag": "Unix",
+    "excerpt": "mkdir (Make Directory)...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 31,
+    "slug": "31",
+    "title": "디렉터리 관리 명령어 ls",
+    "tag": "Unix",
+    "excerpt": "ls는 디렉터리 내용을 나열하는 명령어로, DOS의 dir 명령어와 유사합니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 30,
+    "slug": "30",
+    "title": "와일드카드 (*, 에스터리스크)",
+    "tag": "Unix",
+    "excerpt": "파일명의 일부만 알거나, 여러 파일을 한꺼번에 지정할 때 사용하는 특수 문자입니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 29,
+    "slug": "29",
+    "title": "파일 시스템",
+    "tag": "Unix",
+    "excerpt": "운영체제가 파티션이나 디스크에 파일을 저장하고 관리하는 방법과 자료구조입니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 28,
+    "slug": "28",
+    "title": "명령어 일반형식과 매뉴얼",
+    "tag": "Unix",
+    "excerpt": "옵션:  로 시작하며 명령어의 동작 방식을 변경...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 27,
+    "slug": "27",
+    "title": "리눅스",
+    "tag": "Unix",
+    "excerpt": "Linux는 쉘(Shell) 프로그램을 갖춘 명령어 처리기 운영체제입니다. 사용자가 운영체제와 직접 소통할 수 있게 해줍니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 26,
+    "slug": "26",
+    "title": "운영체제",
+    "tag": "Unix",
+    "excerpt": "운영체제(Operating System)란?...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 25,
+    "slug": "25",
+    "title": "소프트웨어",
+    "tag": "Unix",
+    "excerpt": "인간이 컴퓨터 하드웨어를 운용하기 위해 필요한 일련의 명령어 집합입니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 24,
+    "slug": "24",
+    "title": "Alias",
+    "tag": "Database",
+    "excerpt": "테이블이나 컬럼에 임시로 붙이는 이름으로, 쿼리 실행 중에만 존재하며 실제 데이터베이스 구조를 변경하지 않습니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 23,
+    "slug": "23",
+    "title": "SELECT ... FROM문",
+    "tag": "Database",
+    "excerpt": "SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 22,
+    "slug": "22",
+    "title": "데이터베이스 for Beginner ch03 연습문제",
+    "tag": "Database",
+    "excerpt": "데이터베이스 for Beginner 3장 연습문제 풀이입니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 21,
+    "slug": "21",
+    "title": "DBA's Role",
+    "tag": "Database",
+    "excerpt": "DBA(Database Administrator)란?...",
+    "created_at": "2025-10-25"
+  },
+  {
+    "id": 20,
+    "slug": "20",
+    "title": "요구 분석과 시스템 설계 그리고 모델링",
+    "tag": "Database",
+    "excerpt": "분석 → 설계 → 구현 → 테스트 → 유지보수...",
+    "created_at": "2025-10-25"
+  },
+  {
+    "id": 19,
+    "slug": "19",
+    "title": "파일시스템(FS) 장단점",
+    "tag": "Database",
+    "excerpt": "파일시스템(File System)이란?...",
+    "created_at": "2025-10-25"
+  },
+  {
+    "id": 18,
+    "slug": "18",
+    "title": "데이터베이스 for Beginner ch02 연습문제",
+    "tag": "Database",
+    "excerpt": "데이터베이스 for Beginner 2장 연습문제 풀이입니다....",
+    "created_at": "2025-10-20"
+  },
+  {
+    "id": 17,
+    "slug": "17",
+    "title": "DB 개체",
+    "tag": "Database",
+    "excerpt": "데이터베이스에서 사용되는 주요 개체(Object)들을 정리합니다....",
+    "created_at": "2025-10-20"
+  },
+  {
+    "id": 16,
+    "slug": "16",
+    "title": "데이터베이스 구축 절차",
+    "tag": "Database",
+    "excerpt": "MySQL, PostgreSQL 등 원하는 DBMS를 설치합니다....",
+    "created_at": "2025-10-19"
+  },
+  {
+    "id": 15,
+    "slug": "15",
+    "title": "데이터베이스 모델링",
+    "tag": "Database",
+    "excerpt": "분석 → 설계 → 구현 → 테스트 → 유지보수...",
+    "created_at": "2025-10-19"
+  },
+  {
+    "id": 14,
+    "slug": "14",
+    "title": "데이터베이스 for Beginner ch01 연습문제",
+    "tag": "Database",
+    "excerpt": "데이터베이스 for Beginner 1장 연습문제 풀이입니다....",
+    "created_at": "2025-10-17"
+  },
+  {
+    "id": 13,
+    "slug": "13",
+    "title": "SQL, MySQL 개요",
+    "tag": "Database",
+    "excerpt": "SQL(Structured Query Language)은 관계형 데이터베이스 관리 시스템(RDBMS)의 데이터 관리를 위해 설계된 특수 목적 프...",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 12,
+    "slug": "12",
+    "title": "DB & DBMS 특징",
+    "tag": "Database",
+    "excerpt": "1. 데이터의 무결성 (Integrity)...",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 11,
+    "slug": "11",
+    "title": "DBMS",
+    "tag": "Database",
+    "excerpt": "DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어입니다....",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 10,
+    "slug": "10",
+    "title": "Database",
+    "tag": "Database",
+    "excerpt": "물리적으로 HDD 하드디스크를 의미하며, 데이터를 담는 그릇으로서 \"데이터의 집합, 데이터 저장 공간\"을 말합니다. 여러 명의 사용자나 응용 프...",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 9,
+    "slug": "9",
+    "title": "정보의 진화 단계, DIKW",
+    "tag": "Database",
+    "excerpt": "DataInformationKnowledgeWisdom의 앞글자를 따온 약자로, 정보의 진화 단계를 나타냅니다....",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 8,
+    "slug": "8",
+    "title": "최신 DBMS / DB 기술 트렌드",
+    "tag": "Database",
+    "excerpt": "DBMS(Database Management System)는 데이터베이스를 관리하고 운영하는 소프트웨어로, \"은행 관리 시스템 혹은 비서\"로 비...",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 7,
+    "slug": "7",
+    "title": "해킹, 그것은 어디까지 발을 뻗을 수 있는가.",
+    "tag": "독서",
+    "excerpt": "\"해킹에는 나쁜 부분도 많지만 그만큼 좋은 부분들도 참 많다\"...",
+    "created_at": "2025-09-21"
+  },
+  {
+    "id": 6,
+    "slug": "6",
+    "title": "해킹으로 본 사이버 범죄 #4.",
+    "tag": "독서",
+    "excerpt": "책의 78장을 읽고 미래의 해킹 대응과 윤리적 측면에 대해 정리합니다....",
+    "created_at": "2025-09-21"
+  },
+  {
+    "id": 5,
+    "slug": "5",
+    "title": "해킹으로 본 사이버 범죄 #3.",
+    "tag": "독서",
+    "excerpt": "\"해킹으로 본 사이버 범죄\" 5, 6장 독서 기록입니다....",
+    "created_at": "2025-09-21"
+  },
+  {
+    "id": 4,
+    "slug": "4",
+    "title": "해킹으로 본 사이버 범죄 #2.",
+    "tag": "독서",
+    "excerpt": "\"해킹으로 본 사이버 범죄\" 3, 4장 독서 기록입니다. 사이버 범죄의 대상과 영향, 해킹의 법적 위치에 대해 학습했습니다....",
+    "created_at": "2025-09-21"
+  },
+  {
+    "id": 3,
+    "slug": "3",
+    "title": "해킹으로 본 사이버 범죄 #1.",
+    "tag": "독서",
+    "excerpt": "\"해킹으로 본 사이버 범죄\" ch01, 02 독서 기록입니다. 해킹이 어떻게 변질되어 발생했는지와 해킹 기법 및 공격 유형에 대해 알 수 있었습...",
+    "created_at": "2025-09-21"
+  },
+  {
+    "id": 2,
+    "slug": "2",
+    "title": "A하라 죽이기 #2.",
+    "tag": "독서",
+    "excerpt": "\"A하라 죽이기\" 중후반부 독서 감상문입니다....",
+    "created_at": "2025-09-19"
+  },
+  {
+    "id": 1,
+    "slug": "1",
+    "title": "A하라 죽이기 #1.",
+    "tag": "독서",
+    "excerpt": "\"A하라 죽이기\" 전반부 독서 감상문입니다....",
+    "created_at": "2025-09-19"
+  }
+]
