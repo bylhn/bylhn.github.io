@@ -1,0 +1,9 @@
+{
+  "id": 42,
+  "slug": "42",
+  "title": "c언어의 매우 기초 부분 (printf)",
+  "tag": "C언어",
+  "excerpt": "include <stdio.h는 printf와 scanf 함수가 들어있는 필수 기본 헤더 파일입니다....",
+  "content": "# C언어 기본 구조\n\n`#include <stdio.h>`는 printf와 scanf 함수가 들어있는 필수 기본 헤더 파일입니다.\n\n# 주요 키워드\n\n- **int**: 정수형 데이터 타입\n- **main**: 프로그램 실행 시 가장 먼저 호출되는 함수\n- **( )**: 파라미터 입력 위치\n- **{ }**: 코드 실행 영역\n- **return 0;**: 프로그램의 정상 종료\n\n# printf 함수\n\nprintf는 \"print formatted\"의 줄임말로, 화면에 출력할 때 반드시 사용해야 합니다.\n\n예시 프로그램 (디지털 포렌식 연습 출력):\n\n#include <stdio.h>\nint main(){\n    printf(\"================\\n\");\n    printf(\"  디 지 털 포 렌 식 연 습  \\n\");\n    printf(\"================\\n\");\n    return 0;\n}\n\n> 초보자는 #include <stdio.h>부터 int main() { }까지를 기본 틀로 암기하는 것이 좋습니다.",
+  "created_at": "2025-11-14"
+}
