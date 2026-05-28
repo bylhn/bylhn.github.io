@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bylhn — Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Serif+KR:wght@300&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #070b14;
+      color: #c8d8f0;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* 배경 노이즈 */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26,95,255,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* 홈 링크 */
+    .nav-back {
+      position: fixed; top: 24px; left: 28px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: rgba(200,216,240,.35);
+      text-decoration: none;
+      transition: color .2s;
+      z-index: 10;
+    }
+    .nav-back:hover { color: rgba(200,216,240,.8); }
+
+    /* 중앙 레이아웃 */
+    .stage {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+    }
+
+    /* 픽셀 고양이 */
+    #catCanvas {
+      image-rendering: pixelated;
+      display: block;
+      animation: catFloat 2.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(60,120,255,.65));
+      margin-bottom: 6px;
+    }
+    .cat-shadow {
+      width: 64px; height: 8px;
+      background: rgba(30,60,200,.25);
+      border-radius: 50%;
+      margin: 0 auto 52px;
+      animation: shadowPulse 2.8s ease-in-out infinite;
+    }
+    @keyframes catFloat {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    @keyframes shadowPulse {
+      0%,100% { transform: scaleX(1); opacity: .5; }
+      50%      { transform: scaleX(.6); opacity: .15; }
+    }
+
+    /* 레이블 */
+    .label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(110,155,181,.7);
+      margin-bottom: 20px;
+    }
+
+    /* 이메일 */
+    .email-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .email {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(18px, 4vw, 28px);
+      letter-spacing: .04em;
+      color: #eef3ff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(110,155,181,.3);
+      padding-bottom: 4px;
+      transition: color .2s, border-color .2s;
+      cursor: pointer;
+    }
+    .email:hover { color: #fff; border-color: rgba(110,155,181,.8); }
+
+    /* 복사 피드백 */
+    .copy-msg {
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      top: calc(100% + 10px);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: rgba(110,155,181,.9);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+    }
+    .copy-msg.show { opacity: 1; }
+
+    /* 서브 텍스트 */
+    .sub {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(200,216,240,.3);
+      font-style: italic;
+      margin-top: 32px;
+      letter-spacing: .01em;
+    }
+
+    /* 하단 링크 */
+    .links {
+      position: fixed;
+      bottom: 28px;
+      display: flex;
+      gap: 28px;
+    }
+    .links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(200,216,240,.25);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .links a:hover { color: rgba(200,216,240,.7); }
+
+    /* 페이드인 */
+    .fade { opacity: 0; animation: fadeUp .8s ease forwards; }
+    .fade:nth-child(1) { animation-delay: .1s; }
+    .fade:nth-child(2) { animation-delay: .3s; }
+    .fade:nth-child(3) { animation-delay: .5s; }
+    .fade:nth-child(4) { animation-delay: .7s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="nav-back">← bylhn.com</a>
+
+  <div class="stage">
+    <canvas id="catCanvas" width="80" height="80"></canvas>
+    <div class="cat-shadow"></div>
+
+    <p class="label fade">Contact</p>
+
+    <div class="email-wrap fade">
+      <a class="email" onclick="copyEmail(event)">contact@bylhn.com</a>
+      <span class="copy-msg" id="copyMsg">copied ✓</span>
+    </div>
+
+    <p class="sub fade">기록으로 닿겠습니다.</p>
+
+    <div class="links fade">
+      <a href="/portfolio">Portfolio</a>
+      <a href="/blog">Blog</a>
+      <a href="/roadmap">Roadmap</a>
+    </div>
+  </div>
+
+  <script>
+    /* ── 픽셀 고양이 ── */
+    const CAT_PX = [
+      ['_','_','_','B','B','_','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','B','B','B','B','_','_','B','B','B','B','_','_','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','W','W','W','G','B','B','W','W','W','_','B','B','_','_'],
+      ['B','B','W','G','G','G','B','B','W','G','G','_','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','G','G','G','G','B','B','B','B','B','_','_'],
+      ['B','B','B','B','G','G','G','_','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','_'],
+      ['_','B','B','_','B','B','B','B','B','B','B','_','B','B','_','_'],
+      ['_','_','_','_','B','B','_','D','D','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+    ];
+    const PX_C = { B:'#1a5fff', W:'#eef3ff', G:'#8899bb', D:'#334466', _:null };
+
+    const canvas = document.getElementById('catCanvas');
+    const ctx = canvas.getContext('2d');
+    const px = 5;
+    CAT_PX.forEach((row, ri) => row.forEach((c, ci) => {
+      const color = PX_C[c];
+      if (!color) return;
+      ctx.fillStyle = color;
+      ctx.fillRect(ci * px, ri * px, px, px);
+    }));
+
+    /* ── 이메일 복사 ── */
+    function copyEmail(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText('contact@bylhn.com').catch(() => {});
+      const msg = document.getElementById('copyMsg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2000);
+    }
+  </script>
+
+</body>
+</html>

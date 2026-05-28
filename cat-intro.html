@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Intro Character</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* ===== SHARED ===== */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes cursor-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ===== PIXEL COLOR CLASSES (shared) ===== */
+    .px { width: 14px; height: 14px; }
+    .B  { background: #1a5fff; }
+    .b  { background: #2b70ff; }
+    .W  { background: #eef3ff; }
+    .G  { background: #8899bb; }
+    .D  { background: #334466; }
+    ._  { background: transparent; }
+
+    /* ===== LAPTOP PIXEL CLASSES ===== */
+    .lp  { width: 8px; height: 8px; }
+    .L   { background: #334466; }
+    .S   { background: #5a7aaa; }
+    .lp_ { background: transparent; }
+    .lp-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 8px);
+      image-rendering: pixelated;
+    }
+
+    /* ===== INTRO OVERLAY ===== */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0a0a0f;
+      overflow: hidden;
+    }
+
+    /* Scene 1–4: cat + laptop */
+    #cat-scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cat-actor {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Suppress float/glow on intro cat */
+    #cat-actor .pixel-char {
+      display: grid;
+      grid-template-columns: repeat(16, 14px);
+      grid-template-rows: repeat(16, 14px);
+      image-rendering: pixelated;
+      filter: drop-shadow(0 0 18px rgba(60,120,255,0.7));
+      animation: none;
+    }
+
+    /* Walk-in: combined translateX + bounce over 2s */
+    @keyframes cat-walk-in {
+      0%   { transform: translateX(-420px) translateY(0); }
+      8%   { transform: translateX(-356px) translateY(-6px); }
+      17%  { transform: translateX(-286px) translateY(0); }
+      25%  { transform: translateX(-218px) translateY(-6px); }
+      33%  { transform: translateX(-150px) translateY(0); }
+      42%  { transform: translateX(-86px)  translateY(-6px); }
+      50%  { transform: translateX(-28px)  translateY(0); }
+      58%  { transform: translateX(0)      translateY(-4px); }
+      65%  { transform: translateX(0)      translateY(0); }
+      100% { transform: translateX(0)      translateY(0); }
+    }
+
+    /* Laptop prop — right of cat, arm level */
+    #laptop-prop {
+      position: absolute;
+      right: -68px;
+      top: 65%;
+      transform: translateY(-50%);
+    }
+
+    .laptop-lid {
+      position: relative;
+      transform-origin: bottom center;
+      transform: scaleY(0);
+      overflow: hidden;
+      transition: transform 1.5s ease-out;
+    }
+
+    .laptop-screen-glow {
+      position: absolute;
+      inset: 0;
+      background: rgba(58,138,255,0.45);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Floor laptop (scene 2: dropped) */
+    #laptop-floor {
+      position: absolute;
+      bottom: 32%;
+      left: calc(50% + 20px);
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    /* ===== SCENE 5: BOOT LOG ===== */
+    #boot-scene {
+      position: absolute;
+      inset: 0;
+      background: #0d0f0f;
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 64px;
+      font-family: 'Share Tech Mono', monospace;
+      color: #3a8aff;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    #boot-log { display: flex; flex-direction: column; gap: 2px; }
+    .boot-line { min-height: 1.5em; white-space: pre; }
+    .boot-cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: #3a8aff;
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: cursor-blink 0.8s step-end infinite;
+    }
+
+    /* ===== SCENE 6: KEYWORDS ===== */
+    #keyword-scene {
+      position: absolute;
+      inset: 0;
+      background: #0a0a0f;
+      opacity: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .keyword {
+      color: #3a8aff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.3rem;
+      letter-spacing: 0.2em;
+      opacity: 0;
+      text-shadow: 0 0 12px rgba(58,138,255,0.7);
+    }
+
+    @keyframes glitch {
+      0%,100% { transform: translateX(0);    clip-path: none; }
+      10%      { transform: translateX(-4px); clip-path: inset(20% 0 60% 0); }
+      20%      { transform: translateX(4px);  clip-path: inset(60% 0 20% 0); }
+      30%      { transform: translateX(0);    clip-path: none; }
+      45%      { transform: translateX(-2px); clip-path: inset(40% 0 40% 0); }
+      55%      { transform: translateX(2px);  clip-path: none; }
+    }
+
+    /* ===== SCENE 7: LOGO ===== */
+    #logo-scene {
+      position: absolute;
+      inset: 0;
+      background: #0a0a0f;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #bylhn-text {
+      font-family: 'Share Tech Mono', monospace;
+      color: #3a8aff;
+      font-size: 2rem;
+      letter-spacing: 0.3em;
+      opacity: 0;
+      text-shadow: 0 0 40px rgba(58,138,255,0.9);
+    }
+
+    /* ===== MAIN SCENE (existing) ===== */
+    .scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+      background: #0a0a0f;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .char-wrap {
+      position: relative;
+      animation: float 2.4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    .pixel-char {
+      display: grid;
+      grid-template-columns: repeat(16, 14px);
+      grid-template-rows: repeat(16, 14px);
+      image-rendering: pixelated;
+      filter: drop-shadow(0 0 18px rgba(60,120,255,0.7));
+      animation: pulse-glow 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { filter: drop-shadow(0 0 18px rgba(60,120,255,0.7)); }
+      50%       { filter: drop-shadow(0 0 32px rgba(80,160,255,1.0)); }
+    }
+
+    .shadow-blob {
+      width: 120px; height: 18px;
+      background: rgba(30,60,200,0.25);
+      border-radius: 50%;
+      margin-top: 10px;
+      animation: shadow-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes shadow-pulse {
+      0%, 100% { transform: scaleX(1);   opacity: 0.5; }
+      50%       { transform: scaleX(0.7); opacity: 0.2; }
+    }
+
+    .cli-text {
+      margin-top: 28px;
+      color: #3a8aff;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-align: center;
+      animation: text-flicker 3s ease-in-out infinite;
+    }
+
+    @keyframes text-flicker {
+      0%,100% { opacity: 1; }
+      48%      { opacity: 1; }
+      50%      { opacity: 0.3; }
+      52%      { opacity: 1; }
+      88%      { opacity: 1; }
+      90%      { opacity: 0.5; }
+      92%      { opacity: 1; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 9px; height: 14px;
+      background: #3a8aff;
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: cursor-blink 1.0s step-end infinite;
+    }
+
+    .particles { position: absolute; inset: 0; pointer-events: none; }
+    .p { position: absolute; width: 3px; height: 3px; background: #3a8aff; border-radius: 0; opacity: 0; }
+
+    .p1 { left:12%; top:20%; animation: rise 3.2s 0.0s ease-in-out infinite; }
+    .p2 { left:80%; top:30%; animation: rise 2.8s 0.4s ease-in-out infinite; }
+    .p3 { left:50%; top:10%; animation: rise 3.6s 0.8s ease-in-out infinite; }
+    .p4 { left:25%; top:65%; animation: rise 2.6s 1.2s ease-in-out infinite; }
+    .p5 { left:70%; top:70%; animation: rise 3.0s 0.6s ease-in-out infinite; }
+    .p6 { left:38%; top:80%; animation: rise 2.4s 1.8s ease-in-out infinite; }
+    .p7 { left:60%; top:15%; animation: rise 3.4s 1.0s ease-in-out infinite; }
+    .p8 { left:88%; top:55%; animation: rise 2.9s 2.2s ease-in-out infinite; }
+
+    @keyframes rise {
+      0%   { transform: translateY(0)     scale(1);   opacity: 0;   }
+      20%  {                                           opacity: 0.7; }
+      80%  {                                           opacity: 0.3; }
+      100% { transform: translateY(-55px) scale(0.4); opacity: 0;   }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== INTRO OVERLAY ========== -->
+<div id="intro-overlay">
+
+  <div class="scanlines"></div>
+
+  <!-- Scenes 1–4: Cat + laptop -->
+  <div id="cat-scene">
+
+    <div id="cat-actor">
+      <!-- 16×16 pixel cat -->
+      <div class="pixel-char">
+        <!-- row 1 -->
+        <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 2 -->
+        <div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 3 -->
+        <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 4 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 5 -->
+        <div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px W"></div><div class="px W"></div>
+        <div class="px G"></div><div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px W"></div>
+        <div class="px W"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 6 -->
+        <div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px G"></div><div class="px G"></div>
+        <div class="px G"></div><div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px G"></div>
+        <div class="px G"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 7 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 8 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px G"></div><div class="px G"></div><div class="px G"></div><div class="px G"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 9 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px G"></div>
+        <div class="px G"></div><div class="px G"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 10 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 11 -->
+        <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 12 -->
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div>
+        <!-- row 13 -->
+        <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 14 -->
+        <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px D"></div><div class="px D"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 15 -->
+        <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+        <!-- row 16 -->
+        <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+        <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      </div>
+
+      <!-- 8×5 laptop prop -->
+      <div id="laptop-prop">
+        <!-- Lid rows 1–3 (scaleY in scene 3) -->
+        <div class="laptop-lid">
+          <div class="lp-grid">
+            <div class="lp lp_"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp lp_"></div>
+            <div class="lp L"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp L"></div>
+            <div class="lp L"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp S"></div><div class="lp L"></div>
+          </div>
+          <div class="laptop-screen-glow"></div>
+        </div>
+        <!-- Base rows 4–5 -->
+        <div class="lp-grid">
+          <div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div>
+          <div class="lp lp_"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp lp_"></div>
+        </div>
+      </div>
+    </div><!-- /#cat-actor -->
+
+    <!-- Laptop on floor (scene 2 drop) -->
+    <div id="laptop-floor">
+      <div class="lp-grid">
+        <div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div>
+        <div class="lp lp_"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp L"></div><div class="lp lp_"></div>
+      </div>
+    </div>
+
+  </div><!-- /#cat-scene -->
+
+  <!-- Scene 5: Boot log -->
+  <div id="boot-scene">
+    <div id="boot-log"></div>
+  </div>
+
+  <!-- Scene 6: Keywords -->
+  <div id="keyword-scene">
+    <div class="keyword">DISK IMAGING</div>
+    <div class="keyword">HASH VERIFICATION</div>
+    <div class="keyword">CHAIN OF CUSTODY</div>
+    <div class="keyword">METADATA ANALYSIS</div>
+    <div class="keyword">EVIDENCE RECOVERY</div>
+    <div class="keyword">TIMELINE FORENSICS</div>
+  </div>
+
+  <!-- Scene 7: Logo -->
+  <div id="logo-scene">
+    <div id="bylhn-text">bylhn</div>
+  </div>
+
+</div><!-- /#intro-overlay -->
+
+
+<!-- ========== MAIN SCENE (existing) ========== -->
+<div class="scene">
+  <div class="scanlines"></div>
+  <div class="particles">
+    <div class="p p1"></div><div class="p p2"></div><div class="p p3"></div>
+    <div class="p p4"></div><div class="p p5"></div><div class="p p6"></div>
+    <div class="p p7"></div><div class="p p8"></div>
+  </div>
+  <div class="char-wrap">
+    <div class="pixel-char">
+      <!-- row 1 -->
+      <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 2 -->
+      <div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 3 -->
+      <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 4 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 5 -->
+      <div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px W"></div><div class="px W"></div>
+      <div class="px G"></div><div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px W"></div>
+      <div class="px W"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 6 -->
+      <div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px G"></div><div class="px G"></div>
+      <div class="px G"></div><div class="px B"></div><div class="px B"></div><div class="px W"></div><div class="px G"></div>
+      <div class="px G"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 7 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 8 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px G"></div><div class="px G"></div><div class="px G"></div><div class="px G"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 9 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px G"></div>
+      <div class="px G"></div><div class="px G"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 10 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 11 -->
+      <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 12 -->
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div>
+      <!-- row 13 -->
+      <div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px B"></div><div class="px B"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 14 -->
+      <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px D"></div><div class="px D"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 15 -->
+      <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+      <!-- row 16 -->
+      <div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px B"></div>
+      <div class="px B"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div><div class="px _"></div>
+    </div>
+    <div class="shadow-blob"></div>
+  </div>
+  <div class="cli-text">INITIALIZING<span class="cursor"></span></div>
+</div>
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Timer pool (for skip) ── */
+  const timers = [];
+  function t(fn, ms) { timers.push(setTimeout(fn, ms)); }
+
+  /* ── Skip ── */
+  function skipIntro() {
+    timers.forEach(clearTimeout);
+    timers.length = 0;
+    detachSkip();
+    const ov = document.getElementById('intro-overlay');
+    ov.style.transition = 'opacity 0.4s ease';
+    ov.style.opacity = '0';
+    setTimeout(() => ov.remove(), 420);
+  }
+  function onKey(e)  { if (e.key === 'Escape') skipIntro(); }
+  function onClick() { skipIntro(); }
+  function detachSkip() {
+    document.removeEventListener('keydown', onKey);
+    document.removeEventListener('click',   onClick);
+  }
+  document.addEventListener('keydown', onKey);
+  document.addEventListener('click',   onClick);
+
+  /* ─────────────────────────────────────
+     SCENE 1  (0 → 2s)  Cat walks in
+  ───────────────────────────────────── */
+  function startScene1() {
+    const actor = document.getElementById('cat-actor');
+    actor.style.animation = 'cat-walk-in 2s ease-out forwards';
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 2  (2 → 5s)  Put down / pick up
+  ───────────────────────────────────── */
+  function startScene2() {
+    const actor      = document.getElementById('cat-actor');
+    const prop       = document.getElementById('laptop-prop');
+    const floor      = document.getElementById('laptop-floor');
+
+    /* Lock position, kill walk anim */
+    actor.style.animation  = 'none';
+    actor.style.transform  = 'translateX(0) translateY(0)';
+
+    /* 2.0s — drop laptop */
+    prop.style.transition  = 'opacity 0.2s ease';
+    prop.style.opacity     = '0';
+    floor.style.transition = 'opacity 0.3s ease';
+    floor.style.opacity    = '1';
+
+    /* 2.3s — lean down */
+    t(() => {
+      actor.style.transition = 'transform 0.8s ease';
+      actor.style.transform  = 'rotate(-8deg) translateY(10px)';
+    }, 300);
+
+    /* 3.1s — straighten (thinking pause) */
+    t(() => {
+      actor.style.transition = 'transform 0.8s ease';
+      actor.style.transform  = 'rotate(0deg) translateY(0)';
+    }, 1100);
+
+    /* 3.9s — lean down again */
+    t(() => {
+      actor.style.transition = 'transform 0.8s ease';
+      actor.style.transform  = 'rotate(-8deg) translateY(10px)';
+    }, 1900);
+
+    /* 4.7s — straighten + pick up */
+    t(() => {
+      actor.style.transition  = 'transform 0.3s ease';
+      actor.style.transform   = 'rotate(0deg) translateY(0)';
+      floor.style.transition  = 'opacity 0.3s ease';
+      floor.style.opacity     = '0';
+      prop.style.transition   = 'opacity 0.3s ease';
+      prop.style.opacity      = '1';
+    }, 2700);
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 3  (5 → 6.5s)  Open lid
+  ───────────────────────────────────── */
+  function startScene3() {
+    const lid = document.querySelector('.laptop-lid');
+    lid.style.transform = 'scaleY(1)';          /* CSS transition already set */
+
+    setTimeout(() => {
+      document.querySelector('.laptop-screen-glow').style.opacity = '1';
+    }, 600);
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 4  (6.5 → 8s)  Zoom in → boot
+  ───────────────────────────────────── */
+  function startScene4() {
+    const catScene  = document.getElementById('cat-scene');
+    const bootScene = document.getElementById('boot-scene');
+
+    /* Zoom */
+    catScene.style.transition = 'transform 1.5s ease-in';
+    catScene.style.transform  = 'scale(2.5) translateY(40px)';
+
+    /* Fade cat out at 7.7s (1200ms into this scene) */
+    setTimeout(() => {
+      catScene.style.transition += ', opacity 0.3s ease';
+      catScene.style.opacity = '0';
+    }, 1200);
+
+    /* Fade boot in at 7.5s (1000ms into this scene) */
+    setTimeout(() => {
+      bootScene.style.transition = 'opacity 0.5s ease';
+      bootScene.style.opacity    = '1';
+    }, 1000);
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 5  (8 → 11s)  Boot typing
+  ───────────────────────────────────── */
+  function startScene5() {
+    const log = document.getElementById('boot-log');
+    const lines = [
+      '> initializing bylhn.system...',
+      '> loading memory fragments...',
+      '> mounting evidence volume...',
+      '> verifying integrity [SHA-256]...',
+      '> access granted.'
+    ];
+    const CSPD = 15;   /* ms per character */
+    const GAP  = 220;  /* ms between lines  */
+    let delay  = 0;
+
+    lines.forEach((line, li) => {
+      /* Create line element */
+      t(() => {
+        const el = document.createElement('div');
+        el.className = 'boot-line';
+        el.id = 'bl' + li;
+        log.appendChild(el);
+      }, delay);
+      delay += 40;
+
+      /* Type characters */
+      for (let ci = 0; ci < line.length; ci++) {
+        const ch = line[ci];
+        t((() => {
+          const _li = li, _ch = ch;
+          return () => {
+            const el = document.getElementById('bl' + _li);
+            if (el) el.textContent += _ch;
+          };
+        })(), delay + ci * CSPD);
+      }
+      delay += line.length * CSPD + GAP;
+    });
+
+    /* Blinking cursor after last line */
+    t(() => {
+      const last = document.getElementById('bl' + (lines.length - 1));
+      if (last) {
+        const cur = document.createElement('span');
+        cur.className = 'boot-cursor';
+        last.appendChild(cur);
+      }
+    }, delay);
+
+    /* Fade out boot scene */
+    t(() => {
+      document.getElementById('boot-scene').style.opacity = '0';
+    }, delay + 500);
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 6  (11 → 14s)  Keywords
+  ───────────────────────────────────── */
+  function startScene6() {
+    const ks = document.getElementById('keyword-scene');
+    ks.style.transition = 'opacity 0.3s ease';
+    ks.style.opacity    = '1';
+
+    const kws = ks.querySelectorAll('.keyword');
+    kws.forEach((kw, i) => {
+      t(() => {
+        kw.style.opacity   = '1';
+        kw.style.animation = 'glitch 0.45s ease';
+        setTimeout(() => {
+          kw.style.transition = 'opacity 0.4s ease';
+          kw.style.opacity    = '0';
+        }, 1000);
+      }, i * 420);
+    });
+
+    /* Fade out keyword scene */
+    t(() => {
+      ks.style.opacity = '0';
+    }, kws.length * 420 + 700);
+  }
+
+  /* ─────────────────────────────────────
+     SCENE 7  (14 → 16s)  bylhn logo
+  ───────────────────────────────────── */
+  function startScene7() {
+    const ls   = document.getElementById('logo-scene');
+    const text = document.getElementById('bylhn-text');
+
+    ls.style.transition = 'opacity 0.3s ease';
+    ls.style.opacity    = '1';
+
+    /* Scale-up + fade-in */
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      text.style.transition = 'font-size 1.5s ease, opacity 0.5s ease';
+      text.style.opacity    = '1';
+      text.style.fontSize   = '10rem';
+    }));
+
+    /* Fast fade-out starting at 14.5s (500ms into scene 7) */
+    setTimeout(() => {
+      text.style.transition = 'opacity 1.5s ease';
+      text.style.opacity    = '0';
+    }, 500);
+  }
+
+  /* ─────────────────────────────────────
+     END (16s) — reveal main scene
+  ───────────────────────────────────── */
+  function endIntro() {
+    detachSkip();
+    const ov = document.getElementById('intro-overlay');
+    ov.style.transition = 'opacity 0.8s ease';
+    ov.style.opacity    = '0';
+    setTimeout(() => ov.remove(), 820);
+  }
+
+  /* ── Schedule ── */
+  t(startScene1,  0);
+  t(startScene2,  2000);
+  t(startScene3,  5000);
+  t(startScene4,  6500);
+  t(startScene5,  8000);
+  t(startScene6, 11000);
+  t(startScene7, 14000);
+  t(endIntro,    16000);
+
+})();
+</script>
+</body>
+</html>

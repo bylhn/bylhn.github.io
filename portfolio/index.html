@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다." />
+  <title>bylhn — Digital Forensics Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #F7F6F3;
+      --bg-alt:  #EFECE6;
+      --text:    #242424;
+      --accent:  #6E9BB5;
+      --muted:   #909090;
+      --border:  #E0DDD7;
+      --card:    #FDFCFA;
+      --serif:   'Noto Serif KR', Georgia, serif;
+      --sans:    'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(247,246,243,.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 58px;
+    }
+    .nav-logo {
+      font-family: var(--sans);
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: .08em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: .06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+    }
+    nav ul a {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--text); }
+
+    /* ── SECTIONS ── */
+    section { padding: 112px 0 96px; }
+
+    .section-heading {
+      margin-bottom: 56px;
+    }
+    .section-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      display: block;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3.5vw, 34px);
+      font-weight: 400;
+      letter-spacing: -.01em;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 58px;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 72px;
+      align-items: center;
+      width: 100%;
+    }
+    .hero-img {
+      width: 280px;
+      border-radius: 20px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.06);
+      image-rendering: pixelated;
+    }
+    @media (max-width: 720px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-img { width: 100%; max-width: 260px; margin: 0 auto; }
+    }
+    .hero-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(48px, 9vw, 80px);
+      font-weight: 300;
+      letter-spacing: -.02em;
+      line-height: 1;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .hero-title {
+      font-family: var(--sans);
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: .01em;
+      margin-bottom: 36px;
+    }
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(14px, 1.8vw, 17px);
+      font-style: italic;
+      border-left: 2px solid var(--accent);
+      padding-left: 18px;
+      max-width: 460px;
+      margin-bottom: 48px;
+      color: #555;
+      line-height: 1.9;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 2px 12px rgba(110,155,181,.3);
+    }
+    .btn:hover { background: #5a8aa3; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(110,155,181,.35); }
+    .btn .arrow { transition: transform .2s; }
+    .btn:hover .arrow { transform: translateX(4px); }
+
+    /* ── ABOUT ── */
+    .about-text {
+      max-width: 600px;
+      color: #4a4a4a;
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 2;
+    }
+    .about-text p + p { margin-top: 20px; }
+    .about-link {
+      font-family: var(--sans);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 28px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s, color .2s;
+    }
+    .about-link:hover { border-color: var(--accent); color: #5a8aa3; }
+
+    /* ── ROLE ── */
+    #role { background: var(--bg-alt); }
+    .role-card {
+      display: flex;
+      gap: 28px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+      background: var(--card);
+      box-shadow: 0 2px 16px rgba(0,0,0,.04);
+    }
+    .role-icon { font-size: 28px; flex-shrink: 0; margin-top: 4px; opacity: .85; }
+    .role-tag {
+      font-family: var(--sans);
+      display: inline-block;
+      background: rgba(110,155,181,.1);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+    .role-card h3 { font-family: var(--serif); font-size: 20px; font-weight: 400; margin-bottom: 10px; }
+    .role-card p { font-family: var(--sans); font-size: 14px; color: #5a5a5a; line-height: 1.85; }
+
+    /* ── ACTIVITIES ── */
+    .activities-list { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .skill-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 24px 28px;
+      text-align: left;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+      background: var(--card);
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .skill-item:hover::before { opacity: 1; }
+    .skill-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(110,155,181,.12);
+      transform: translateY(-4px);
+    }
+    .skill-icon { font-size: 26px; margin-bottom: 14px; opacity: .9; }
+    .skill-num {
+      position: absolute;
+      top: 20px; right: 22px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      color: rgba(110,155,181,.35);
+    }
+    .skill-name { font-family: var(--sans); font-size: 15px; font-weight: 600; margin-bottom: 8px; letter-spacing: .01em; }
+    .skill-desc { font-family: var(--sans); font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-tag {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      color: var(--accent);
+      background: rgba(110,155,181,.1);
+      border-radius: 99px;
+      padding: 3px 10px;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .3s, transform .25s, border-color .3s;
+    }
+    .card-full { grid-column: 1 / -1; }
+    .project-card:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,.08);
+      transform: translateY(-4px);
+      border-color: rgba(110,155,181,.5);
+    }
+    .card-top { padding: 30px 28px 0; }
+    .card-type {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .card-title { font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 10px; line-height: 1.4; }
+    .card-desc { font-family: var(--sans); font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.7; }
+    .card-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 28px 24px;
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      user-select: none;
+    }
+    .t-icon {
+      display: inline-block;
+      font-size: 9px;
+      transition: transform .3s;
+    }
+    .project-card.open .t-icon { transform: rotate(90deg); }
+
+    .card-detail {
+      border-top: 1px solid var(--border);
+      padding: 28px;
+      display: none;
+      background: rgba(0,0,0,.015);
+    }
+    .project-card.open .card-detail { display: block; }
+
+    .detail-row { margin-bottom: 20px; }
+    .detail-row:last-child { margin-bottom: 0; }
+    .detail-label {
+      font-family: var(--sans);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .detail-text { font-family: var(--sans); font-size: 14px; color: #4a4a4a; line-height: 1.75; }
+    .conclusion {
+      background: rgba(110,155,181,.08);
+      border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: #2e5c78;
+      line-height: 1.8;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 56px 0;
+      text-align: center;
+    }
+    footer p { font-family: var(--sans); font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+    footer em { color: var(--accent); font-style: normal; }
+
+    /* ── FADE-IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* stagger for skill items */
+    .skill-item { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease, border-color .25s, box-shadow .25s; }
+    .skill-item.visible { opacity: 1; transform: translateY(0); }
+    .skill-item:nth-child(2) { transition-delay: .1s; }
+    .skill-item:nth-child(3) { transition-delay: .2s; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(20,18,15,.45);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      max-width: 560px; width: 100%;
+      max-height: 85vh; overflow-y: auto;
+      padding: 40px;
+      transform: translateY(16px) scale(.98);
+      transition: transform .3s ease;
+      box-shadow: 0 24px 64px rgba(0,0,0,.14);
+    }
+    .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .modal-type {
+      font-family: var(--sans); font-size: 10px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--accent); font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .modal-title {
+      font-family: var(--serif); font-size: 22px; font-weight: 400;
+      line-height: 1.4; color: var(--text);
+    }
+    .modal-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 18px; color: var(--muted); padding: 4px 8px; margin: -4px -8px 0 16px;
+      border-radius: 6px; transition: background .15s, color .15s; flex-shrink: 0; line-height: 1;
+    }
+    .modal-close:hover { background: rgba(0,0,0,.06); color: var(--text); }
+    .modal-detail-row { margin-bottom: 22px; }
+    .modal-detail-row:last-child { margin-bottom: 0; }
+    .modal-detail-label {
+      font-family: var(--sans); font-size: 9px; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+    }
+    .modal-detail-text { font-family: var(--sans); font-size: 14px; color: #4a4a4a; line-height: 1.75; }
+    .modal-conclusion {
+      background: rgba(110,155,181,.08); border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0; padding: 14px 18px;
+      font-family: var(--serif); font-size: 14px; font-style: italic;
+      color: #2e5c78; line-height: 1.8;
+    }
+
+    /* ── CHATBOT ── */
+    .klru-btn {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 300;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,.12);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .klru-btn:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(110,155,181,.25); }
+    .klru-panel {
+      position: fixed;
+      bottom: 92px; right: 28px;
+      z-index: 300;
+      width: 320px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 12px 48px rgba(0,0,0,.14);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      transform: translateY(16px) scale(.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .klru-panel.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+    .klru-header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .klru-avatar { line-height: 1; image-rendering: pixelated; display: flex; align-items: center; }
+    .klru-header-info { flex: 1; }
+    .klru-header-name { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text); }
+    .klru-header-status { font-family: var(--sans); font-size: 11px; color: var(--muted); }
+    .klru-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 16px; color: var(--muted); padding: 2px 6px;
+      border-radius: 4px; transition: background .15s;
+    }
+    .klru-close:hover { background: rgba(0,0,0,.06); color: var(--text); }
+    .klru-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 10px;
+      max-height: 280px;
+      min-height: 120px;
+    }
+    .klru-msg {
+      max-width: 85%;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-family: var(--sans);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .klru-msg.bot {
+      background: rgba(110,155,181,.1);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+    }
+    .klru-msg.user {
+      background: var(--accent);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    .klru-typing { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
+    .klru-typing span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); opacity: .5;
+      animation: kBounce 1s infinite;
+    }
+    .klru-typing span:nth-child(2) { animation-delay: .15s; }
+    .klru-typing span:nth-child(3) { animation-delay: .3s; }
+    @keyframes kBounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+    .klru-footer {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 8px;
+    }
+    .klru-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .klru-input:focus { border-color: var(--accent); }
+    .klru-input::placeholder { color: var(--muted); }
+    .klru-send {
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      width: 36px; height: 36px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .klru-send:hover { background: #5a8aa3; }
+    .klru-send:disabled { opacity: .5; cursor: default; }
+
+    /* ── FLIPBOOK ── */
+    .fb-overlay {
+      position: fixed; inset: 0; z-index: 400;
+      background: rgba(8,8,8,.92);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 16px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .fb-overlay.open { opacity: 1; pointer-events: all; }
+    .fb-wrap { position: relative; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .fb-close {
+      position: absolute; top: -44px; right: 0;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px; color: rgba(255,255,255,.8);
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      letter-spacing: .06em; padding: 6px 16px; cursor: pointer;
+      transition: background .2s;
+    }
+    .fb-close:hover { background: rgba(255,255,255,.2); }
+    #fb-el { box-shadow: 0 32px 80px rgba(0,0,0,.7); }
+    .fb-controls { display: flex; align-items: center; gap: 16px; }
+    .fb-btn {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px; color: rgba(255,255,255,.85);
+      width: 40px; height: 36px; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .fb-btn:hover { background: rgba(255,255,255,.2); }
+    .fb-info {
+      font-family: var(--sans); font-size: 11px; color: rgba(255,255,255,.45);
+      letter-spacing: .08em; min-width: 56px; text-align: center;
+    }
+    .view-report-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: rgba(110,155,181,.1); border: 1px solid rgba(110,155,181,.3);
+      border-radius: 8px; color: var(--accent);
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .view-report-btn:hover { background: rgba(110,155,181,.2); border-color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 660px) {
+      .container { padding: 0 24px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .role-card { flex-direction: column; gap: 16px; padding: 28px; }
+    }
+    @media (max-width: 420px) {
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-logo">bylhn</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#role">Activities</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+      <a href="/" class="nav-back">← 홈으로</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <p class="hero-label">Digital Forensics Portfolio</p>
+          <h1 class="hero-name">bylhn</h1>
+          <p class="hero-title">Digital Forensics Analyst</p>
+          <p style="font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.04em;margin-bottom:28px;">백석대학교 컴퓨터공학부 정보보호 전공 · 3학년</p>
+          <p class="hero-tagline">기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</p>
+          <a href="#projects" class="btn">Investigate <span class="arrow">→</span></a>
+        </div>
+        <img src="/portfolio/hero.png" alt="Digital Forensics Analyst" class="hero-img" />
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">About</span>
+        <h2 class="section-title">흔적을 읽는 사람</h2>
+      </div>
+      <div class="about-text">
+        <p>글쓰기에서 시작했다. 언어로 사실을 기록하고, 기록으로 맥락을 복원하는 일이 좋았다. 그 관심은 자연스럽게 디지털 포렌식으로 이어졌다—삭제된 파일, 남겨진 로그, 보이지 않는 행동의 흔적.</p>
+        <p>데이터는 거짓말하지 않는다고 믿는다. 지금은 시스템 안에서 사람의 행동을 관찰하고, 그 패턴으로부터 진실에 가까운 그림을 그리는 연습을 하고 있다. 분석은 도구지만, 목적은 언제나 사람이다.</p>
+        <p>포렌식 전문가는 사무실이 아닌 현장에서 일하는 직군이기도 하다. 언제 어디서 응급 상황이 발생할지 모른다는 생각에, 주변 사람을 도울 수 있는 사람이 되고 싶어 간호조무사 자격증도 취득했다.</p>
+        <a class="about-link" href="/blog">블로그에서 더 읽기 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ACTIVITIES -->
+  <section id="role">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">Experience & Activities</span>
+        <h2 class="section-title">지금 하고 있는 것들</h2>
+      </div>
+
+      <p style="font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Experience</p>
+      <div class="activities-list" style="margin-bottom:40px;">
+        <div class="role-card">
+          <div class="role-icon">💼</div>
+          <div>
+            <span class="role-tag">Internship · 2026.01 ~ 2026.02</span>
+            <h3>드림텍 — 모바일 개발 2팀</h3>
+            <p>삼성전자 1차 협력사 드림텍 모바일 개발 2팀 인턴. 스마트폰 지문인식 모듈(정전식·광학) SMD~ASSY 작업 지시 및 제조 공정에 참여하고, 폭포수 모델 기반 개발 프로세스와 승인원·변경점 신고서 절차를 통한 양산 이관을 경험했다. 기능 검사기 지그의 테스트 로그 센서 및 모델별 구조를 관찰하고 판단 구조 관찰 기록지를 자체적으로 작성했으며, 사내 버스 안내표(4페이지)와 인턴 온보딩 안내서를 제작해 실제 사내 문서로 채택되었다.</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Activities</p>
+      <div class="activities-list">
+        <div class="role-card">
+          <div class="role-icon">🔬</div>
+          <div>
+            <span class="role-tag">Research Lab · 2024.11 ~</span>
+            <h3>NGMS 연구실</h3>
+            <p>정보보안 관련 연구 활동에 참여 중. 교수님의 연구·논문 업무를 보조하며 학술 자료 정리 및 연구 프로세스 전반을 익히고 있다. 실제 연구 환경에서 보안 이슈를 학문적 시각으로 접근하는 훈련을 지속하고 있다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🛡️</div>
+          <div>
+            <span class="role-tag">Security Club · 2024.10 ~</span>
+            <h3>HUB 정보보안 동아리</h3>
+            <p>교내 정보보안 동아리 소속. CTF, 취약점 분석 등 실습 중심의 보안 학습을 이어가며 팀 단위 문제 해결 역량을 키우고 있다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">📖</div>
+          <div>
+            <span class="role-tag">Club President · 2년째</span>
+            <h3>책갈피 독서동아리 회장</h3>
+            <p>교내 독서동아리를 2년째 이끌며 독서 토론 진행, 도서 큐레이션, 독서 나눔 활동을 운영하고 있다. 글을 읽고 맥락을 파악하는 습관은 디지털 포렌식의 분석적 사고와 같은 뿌리에서 자란다고 생각한다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🖥️</div>
+          <div>
+            <span class="role-tag">Community Operations · 비공개</span>
+            <h3>온라인 커뮤니티 리더 (비공개)</h3>
+            <p>온라인 플랫폼 내 커뮤니티를 운영하며 멤버 관리, 분쟁 예방 및 중재, 일상적 소통을 담당했다. 타 커뮤니티와 연합을 체결하고 공동 이벤트를 기획하는 등 대외 관계를 직접 이끌었다. 리더로서 모범을 보이는 방식으로 집단의 평판을 관리했으며, 구성원들이 어떤 상황에서도 당당히 행동할 수 있는 기반을 만드는 데 주력했다.</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;margin-top:40px;">Certifications</p>
+      <div class="activities-list">
+        <div class="role-card">
+          <div class="role-icon">📜</div>
+          <div>
+            <span class="role-tag">National Certification · 필기 합격 · 실기 준비중</span>
+            <h3>디지털포렌식전문가 2급</h3>
+            <p>한국인터넷진흥원(KISA) 주관 디지털 포렌식 분야 국가공인 자격증. 필기 시험 합격 후 실기 시험을 준비 중이다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🏥</div>
+          <div>
+            <span class="role-tag">National Certification · 취득</span>
+            <h3>간호조무사</h3>
+            <p>포렌식 전문가는 현장에서 일하는 직군이다. 언제 응급 상황이 발생할지 모른다는 생각에, 현장에서 주변 사람을 직접 도울 수 있는 사람이 되고 싶어 취득했다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">Skills</span>
+        <h2 class="section-title">분석의 세 단계</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <span class="skill-num">01</span>
+          <div class="skill-icon">🔍</div>
+          <div class="skill-name">Trace</div>
+          <div class="skill-desc">삭제된 파일, 숨겨진 메타데이터, 잔존 흔적 탐지</div>
+          <div class="skill-tags">
+            <span class="skill-tag">$MFT</span>
+            <span class="skill-tag">ExifTool</span>
+            <span class="skill-tag">Hex Dump</span>
+            <span class="skill-tag">NTFS</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-num">02</span>
+          <div class="skill-icon">🧩</div>
+          <div class="skill-name">Analyze</div>
+          <div class="skill-desc">로그 패턴 분석, 타임라인 구성, 이상 행동 식별</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Apache Log</span>
+            <span class="skill-tag">타임라인</span>
+            <span class="skill-tag">MAC Time</span>
+            <span class="skill-tag">SentinelOne</span>
+            <span class="skill-tag">Python</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <span class="skill-num">03</span>
+          <div class="skill-icon">🗺️</div>
+          <div class="skill-name">Reconstruct</div>
+          <div class="skill-desc">행동 흐름 복원, 사실 관계 재구성, 보고서 작성</div>
+          <div class="skill-tags">
+            <span class="skill-tag">C언어</span>
+            <span class="skill-tag">보고서</span>
+            <span class="skill-tag">포렌식 절차</span>
+            <span class="skill-tag">WSL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container fade-in">
+      <div class="section-heading">
+        <span class="section-label">Projects</span>
+        <h2 class="section-title">분석 사례</h2>
+      </div>
+      <div class="projects-grid">
+
+        <!-- Research Paper — 첫 번째 -->
+        <div class="project-card card-full" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">Research Paper · Cybersecurity Law · 백석대학교 컴퓨터공학부</p>
+            <h3 class="card-title">화이트해커의 법적 지위 확립을 위한 인증 및 윤리 관리 제도 연구</h3>
+            <p class="card-desc">화이트해커의 법적 공백 문제를 분석하고, 인증·평가·서약·교육 4단계 제도를 제안한 학술 연구. (공동저자: 김한별, 이근호)</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('whitehacker')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">논문 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Problem</div>
+              <div class="detail-text">화이트해커는 법적 지위가 모호해 선의의 보안 점검조차 처벌 위험에 노출되어 있다. 이 법적 공백은 보안 연구를 위축시키고 국가 보안 체계에 부정적 영향을 미친다.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Proposal</div>
+              <div class="detail-text">① 화이트해커 인증제 — 자격·평가 과정을 거쳐 공인된 해커로 활동. ② 윤리·심리 평가 시스템 — MMPI·SJT·CTF/PoC 다단계 평가. ③ 비밀 서약 기반 제한적 공개 — 국가기관 승인을 거친 취약점 공개. ④ 정기 법률·윤리 교육 프로그램 — 연 1회 최신 법률 동향 및 사례 교육.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">화이트해커가 불법의 경계에 머무르지 않고 국가 보안의 핵심 자산으로 자리매김하는 전환점을 제시한다. 기술 역량뿐 아니라 공익 의식과 사회적 책임을 갖춘 보안 인재 성장의 제도적 기반을 마련한다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="project-card card-full" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">Assignment · 2026.04</p>
+            <h3 class="card-title">윈도우 파일 행위에 따른 MAC Time 변화 분석</h3>
+            <p class="card-desc">파일 생성·복사·수정·액세스 각 행위가 NTFS 타임스탬프에 미치는 영향을 실측하고, 레지스트리 및 시스템 시간 조작 시나리오까지 검증한 실습 보고서.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('r1')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">보고서 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Scope</div>
+              <div class="detail-text">LG 그램 노트북 (Windows 10.0.26100.1) + SanDisk USB. 파일 버전 단위 타임스탬프 변화, 레지스트리 NTFSDisableLastAccessUpdate 조작, exFAT 포맷 USB 삽입 비교.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Key Findings</div>
+              <div class="detail-text">① 복사 시 Created·Accessed 갱신, Modified는 원본 유지. ② 레지스트리 값 0 설정 후 약 1시간 대기 시 Accessed가 실제 읽기 시각으로 갱신됨. ③ exFAT USB에서는 읽기 수행 시 Accessed 비갱신. ④ 시스템 시간 과거 조작 시 Modified·Accessed가 과거 시각으로 덮어씌워짐.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">파일 유형과 시스템 환경에 따라 MAC Time 변화 패턴이 상이하며, 시스템 시간 조작은 타임스탬프 증거의 신뢰도에 직접 영향을 준다. 포렌식 분석 시 파일 시스템 종류와 레지스트리 설정을 반드시 선행 확인해야 한다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Report 2 -->
+        <div class="project-card card-full" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">Assignment · 2026.05 · Application Artifacts</p>
+            <h3 class="card-title">윈도우 응용 프로그램 사용 흔적 조사</h3>
+            <p class="card-desc">HWP·HCell·Chrome·KakaoTalk 4개 앱의 실행 및 사용 흔적을 Prefetch, 레지스트리 MRU, Jump List, SQLite DB 등 다중 아티팩트로 교차 분석한 실습 보고서.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('r2')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">보고서 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Scope</div>
+              <div class="detail-text">HWP (Run Counter 408), HCell (Run Counter 22), Chrome (Run Counter 1,204 · 다운로드 310건 · 쿠키 4,852개 · 로그인 사이트 23개), KakaoTalk (Run Counter 1,205 · EDB 채팅 파일). 분석 도구: WinPrefetchView v1.37, JumpListsView v1.16, RegEdit, UserAssistView v1.02, DB Browser for SQLite v3.13.1.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Key Findings</div>
+              <div class="detail-text">① Prefetch Run Counter로 각 앱의 실행 빈도·마지막 실행 시각 확인. ② 레지스트리 MRU + Jump List 교차 분석으로 최근 열람 문서 목록 복원. ③ Chrome SQLite DB(History·Login Data·Cookies)에서 방문 기록·계정 정보·쿠키 4,852개 추출. ④ KakaoTalk EDB 채팅 파일 복호화는 키 미확보로 실패 — 한계로 명시.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">단일 아티팩트 의존 분석의 한계를 실증하고, Prefetch·레지스트리·DB 다중 소스 교차 검증이 행동 재구성의 신뢰도를 높임을 확인. 복호화 실패 사례를 통해 암호화된 아티팩트에 대한 키 관리 및 법적 접근 방법의 중요성을 인식.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="project-card" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">CTF · HUB 정보보안 동아리</p>
+            <h3 class="card-title">이미지 메타데이터 내 은닉 플래그 추출</h3>
+            <p class="card-desc">육안으로 이상이 없는 JPEG 파일에서 ExifTool을 활용해 숨겨진 데이터를 식별한 CTF 문제 풀이.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('exiftool')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">풀이 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Target</div>
+              <div class="detail-text">ugly_cat.jpg — 외관상 이상 없는 일반 JPEG 파일.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Analysis</div>
+              <div class="detail-text">ExifTool로 메타데이터 접근 → 생성 시각과 수정 시각이 7초 이상 차이남을 확인. 코멘트(주석) 필드에 문자열 데이터 존재 확인.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">메타데이터 코멘트 필드에 플래그 HUB{Ug1y_C4t_Ewww} 은닉 확인. 육안 검사만으로는 탐지 불가능하며, 메타데이터 분석이 초기 트리아지 단계에서 필수임을 확인.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="project-card" onclick="openModal(this)">
+          <div class="card-top">
+            <p class="card-type">CTF · HUB 정보보안 동아리</p>
+            <h3 class="card-title">PPTX 내부 비가시 이미지 리소스 식별</h3>
+            <p class="card-desc">PPTX 파일에 숨겨진 이미지를 파일 포맷 구조 분석으로 추출하고, 손상된 PNG 헤더를 확인한 CTF 풀이.</p>
+            <button class="view-report-btn" onclick="event.stopPropagation();openFlipbook('pptx')">📖 원본 보고서 보기</button>
+          </div>
+          <div class="card-toggle">
+            <span class="t-icon">▶</span>
+            <span class="toggle-label">풀이 보기</span>
+          </div>
+          <div class="card-detail">
+            <div class="detail-row">
+              <div class="detail-label">Target</div>
+              <div class="detail-text">report.pptx — 슬라이드상 이미지가 보이지 않으나 내부에 이미지 리소스가 존재하는 파일.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Analysis</div>
+              <div class="detail-text">PPTX를 ZIP으로 해제 → Media 폴더 내 이미지 파일 확인. WSL 환경에서 헥사 덤프 분석 → PNG 정상 시그니처(89 50 4E 47)가 존재하지 않음. 파일 헤더 손상 확인.</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Conclusion</div>
+              <div class="conclusion">파일 확장자와 외형에 의존하는 분석의 한계를 실증. 헤더 시그니처 검증이 파일 무결성 확인의 핵심임을 확인. 헤더 손상 원인 규명을 위한 추가 검증 필요성 제시.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <p class="modal-type" id="modal-type"></p>
+          <h2 class="modal-title" id="modal-title"></h2>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="닫기">✕</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- FLIPBOOK -->
+  <div class="fb-overlay" id="fb-overlay">
+    <div class="fb-wrap">
+      <button class="fb-close" onclick="closeFlipbook()">✕ 닫기</button>
+      <div id="fb-el"></div>
+      <div class="fb-controls">
+        <button class="fb-btn" id="fb-prev">◀</button>
+        <span class="fb-info" id="fb-info">1 / 1</span>
+        <button class="fb-btn" id="fb-next">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHATBOT -->
+  <button class="klru-btn" id="klruBtn" aria-label="클루에게 질문하기" title="클루에게 물어보기"><canvas id="klruBtnCanvas" width="40" height="40" style="image-rendering:pixelated;display:block;"></canvas></button>
+  <div class="klru-panel" id="klruPanel" role="dialog" aria-label="클루 챗봇">
+    <div class="klru-header">
+      <div class="klru-avatar"><canvas id="klruHeaderCanvas" width="22" height="22" style="image-rendering:pixelated;display:block;"></canvas></div>
+      <div class="klru-header-info">
+        <div class="klru-header-name">클루</div>
+        <div class="klru-header-status">bylhn의 포트폴리오 도우미</div>
+      </div>
+      <button class="klru-close" id="klruClose" aria-label="닫기">✕</button>
+    </div>
+    <div class="klru-messages" id="klruMessages">
+      <div class="klru-msg bot">안녕! 나는 클루야 🐾<br>bylhn의 포트폴리오나 프로젝트에 대해 뭐든 물어봐!</div>
+    </div>
+    <div class="klru-footer">
+      <input class="klru-input" id="klruInput" type="text" placeholder="메시지 입력..." maxlength="200" autocomplete="off" />
+      <button class="klru-send" id="klruSend" aria-label="보내기">↑</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© 2026 <em>bylhn</em> · Digital Forensics Analyst</p>
+      <p style="margin-top:6px;">기록은 사라지지 않는다.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Modal ── */
+    const modal = document.getElementById('modal');
+
+    function openModal(card) {
+      const rows = card.querySelectorAll('.detail-row');
+      let bodyHTML = '';
+      rows.forEach(row => {
+        const label = row.querySelector('.detail-label');
+        const text  = row.querySelector('.detail-text');
+        const conc  = row.querySelector('.conclusion');
+        if (label && text)  bodyHTML += `<div class="modal-detail-row"><div class="modal-detail-label">${label.textContent}</div><div class="modal-detail-text">${text.textContent}</div></div>`;
+        if (label && conc)  bodyHTML += `<div class="modal-detail-row"><div class="modal-detail-label">${label.textContent}</div><div class="modal-conclusion">${conc.textContent}</div></div>`;
+      });
+      document.getElementById('modal-type').textContent  = card.querySelector('.card-type').textContent;
+      document.getElementById('modal-title').textContent = card.querySelector('.card-title').textContent;
+      document.getElementById('modal-body').innerHTML    = bodyHTML;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── Scroll animations ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in, .skill-item').forEach(el => observer.observe(el));
+
+    /* ── Pixel Cat ── */
+    const CAT_PX = [
+      ['_','_','_','B','B','_','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','B','B','B','B','_','_','B','B','B','B','_','_','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','W','W','W','G','B','B','W','W','W','_','B','B','_','_'],
+      ['B','B','W','G','G','G','B','B','W','G','G','_','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','G','G','G','G','B','B','B','B','B','_','_'],
+      ['B','B','B','B','G','G','G','_','B','B','B','B','B','B','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+      ['_','B','B','B','B','B','B','B','B','B','B','B','B','_','_','_'],
+      ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','B','_'],
+      ['_','B','B','_','B','B','B','B','B','B','B','_','B','B','_','_'],
+      ['_','_','_','_','B','B','_','D','D','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+      ['_','_','_','_','B','B','_','_','_','B','B','_','_','_','_','_'],
+    ];
+    const PX_C = {B:'#1a5fff',W:'#eef3ff',G:'#8899bb',D:'#334466','_':null};
+
+    function drawCat(canvas, pxSize) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      CAT_PX.forEach((row, ri) => row.forEach((c, ci) => {
+        const color = PX_C[c];
+        if (!color) return;
+        ctx.fillStyle = color;
+        ctx.fillRect(ci * pxSize, ri * pxSize, pxSize, pxSize);
+      }));
+    }
+
+    // Button: 40px canvas, 16 pixels → 2.5px per pixel
+    drawCat(document.getElementById('klruBtnCanvas'), 2.5);
+    // Header: 22px canvas, 16 pixels → ~1.375px per pixel
+    drawCat(document.getElementById('klruHeaderCanvas'), 1.375);
+
+    /* ── Klru Chatbot ── */
+    const klruBtn   = document.getElementById('klruBtn');
+    const klruPanel = document.getElementById('klruPanel');
+    const klruClose = document.getElementById('klruClose');
+    const klruInput = document.getElementById('klruInput');
+    const klruSend  = document.getElementById('klruSend');
+    const klruMsgs  = document.getElementById('klruMessages');
+    let chatHistory = [];
+    let klruOpen = false;
+
+    function toggleKlru() {
+      klruOpen = !klruOpen;
+      klruPanel.classList.toggle('open', klruOpen);
+      if (klruOpen) { setTimeout(() => klruInput.focus(), 250); }
+    }
+    klruBtn.addEventListener('click', toggleKlru);
+    klruClose.addEventListener('click', toggleKlru);
+
+    function appendMsg(text, role) {
+      const div = document.createElement('div');
+      div.className = 'klru-msg ' + role;
+      div.textContent = text;
+      klruMsgs.appendChild(div);
+      klruMsgs.scrollTop = klruMsgs.scrollHeight;
+      return div;
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'klru-msg bot';
+      div.innerHTML = '<div class="klru-typing"><span></span><span></span><span></span></div>';
+      klruMsgs.appendChild(div);
+      klruMsgs.scrollTop = klruMsgs.scrollHeight;
+      return div;
+    }
+
+    async function sendMessage() {
+      const text = klruInput.value.trim();
+      if (!text) return;
+      klruInput.value = '';
+      klruSend.disabled = true;
+      appendMsg(text, 'user');
+      chatHistory.push({ role: 'user', content: text });
+      const typing = showTyping();
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history: chatHistory.slice(-8) })
+        });
+        const data = await res.json();
+        typing.remove();
+        const reply = data.reply || '죄송해, 잠깐 대답하기 어려워 🐾';
+        appendMsg(reply, 'bot');
+        chatHistory.push({ role: 'assistant', content: reply });
+      } catch {
+        typing.remove();
+        appendMsg('연결에 문제가 생겼어. 잠시 후 다시 시도해봐! 🐾', 'bot');
+      }
+      klruSend.disabled = false;
+      klruInput.focus();
+    }
+
+    klruSend.addEventListener('click', sendMessage);
+    klruInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    /* ── Flipbook ── */
+    let fbInstance = null;
+    let fbTotalPages = 0;
+    const REPORTS = {
+      r1: { pages: 21, dir: '/portfolio/reports/r1/' },
+      r2: { pages: 34, dir: '/portfolio/reports/r2/' },
+      exiftool: { pages: 5, dir: '/portfolio/reports/exiftool/' },
+      pptx: { pages: 4, dir: '/portfolio/reports/pptx/' },
+      whitehacker: { pages: 3, dir: '/portfolio/reports/화이트해커/' }
+    };
+
+    function openFlipbook(key) {
+      const rpt = REPORTS[key];
+      const imgs = Array.from({ length: rpt.pages }, (_, i) =>
+        rpt.dir + String(i + 1).padStart(2, '0') + '.jpg'
+      );
+      fbTotalPages = rpt.pages;
+
+      const overlay = document.getElementById('fb-overlay');
+      const el = document.getElementById('fb-el');
+      el.innerHTML = '';
+      if (fbInstance) { try { fbInstance.destroy(); } catch(e){} fbInstance = null; }
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const portrait = vw < 720;
+      const maxH = vh - 110;
+      const maxW = portrait
+        ? Math.min(vw - 32, 500)
+        : Math.min(Math.floor((vw - 64) / 2), 610);
+      const pgW = Math.min(maxW, Math.round(maxH / 1.414));
+      const pgH = Math.round(pgW * 1.414);
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      fbInstance = new St.PageFlip(el, {
+        width: pgW, height: pgH,
+        size: 'fixed',
+        showCover: false,
+        usePortrait: portrait,
+        mobileScrollSupport: false,
+        maxShadowOpacity: 0.45,
+        flippingTime: 650,
+        startPage: 0,
+      });
+      fbInstance.loadFromImages(imgs);
+      fbInstance.on('flip', updateFbInfo);
+      updateFbInfo();
+    }
+
+    function updateFbInfo() {
+      if (!fbInstance) return;
+      document.getElementById('fb-info').textContent =
+        (fbInstance.getCurrentPageIndex() + 1) + ' / ' + fbTotalPages;
+    }
+
+    function closeFlipbook() {
+      document.getElementById('fb-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('fb-prev').addEventListener('click', () => { if (fbInstance) fbInstance.flipPrev(); });
+    document.getElementById('fb-next').addEventListener('click', () => { if (fbInstance) fbInstance.flipNext(); });
+    document.getElementById('fb-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('fb-overlay')) closeFlipbook();
+    });
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('fb-overlay').classList.contains('open')) return;
+      if (e.key === 'Escape')     closeFlipbook();
+      if (e.key === 'ArrowLeft')  { if (fbInstance) fbInstance.flipPrev(); }
+      if (e.key === 'ArrowRight') { if (fbInstance) fbInstance.flipNext(); }
+    });
+  </script>
+  <script src="https://unpkg.com/page-flip/dist/js/page-flip.browser.js"></script>
+
+</body>
+</html>
