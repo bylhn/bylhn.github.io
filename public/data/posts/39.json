@@ -1,9 +1,0 @@
-{
-  "id": 39,
-  "slug": "39",
-  "title": "vi editor",
-  "tag": "Unix",
-  "excerpt": "vi는 Bill Joy가 UC Berkeley에서 개발한 Unix 기본 텍스트 에디터입니다....",
-  "content": "vi는 Bill Joy가 UC Berkeley에서 개발한 Unix 기본 텍스트 에디터입니다.\n\n## 실행 방법\n\n> $ vi [filename]\n> $ vi +줄번호 filename\n> $ vi +/검색어 filename\n> $ vi -R filename  (읽기 전용)\n> $ view filename   (읽기 전용)\n\n## 모드 전환\n\n- **명령 모드 → 삽입 모드**: i, a, o, O 키\n- **삽입 모드 → 명령 모드**: ESC 키\n\n## 커서 이동\n\n- h: 왼쪽 / j: 아래 / k: 위 / l: 오른쪽\n- w: 다음 단어 / b: 이전 단어\n- 방향키도 사용 가능\n\n## 저장 및 종료\n\n- :wq — 저장 후 종료\n- :x — 저장 후 종료 (변경 있을 때만)\n- :q! — 저장 없이 강제 종료\n- :w filename — 다른 이름으로 저장\n\n## 설정\n\n- :set nu — 줄 번호 표시\n- :set ts=n — 탭 크기 설정\n\n> vi는 마우스를 지원하지 않고 명령/삽입 이중 모드로 처음엔 어렵지만 강력한 도구입니다.",
-  "created_at": "2025-10-27"
-}

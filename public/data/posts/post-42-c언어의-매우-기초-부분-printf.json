@@ -1,0 +1,9 @@
+{
+  "id": 44,
+  "slug": "post-42-c언어의-매우-기초-부분-printf",
+  "title": "[ c언어의 매우 기초 부분 (printf) ]",
+  "tag": "C",
+  "excerpt": "include <stdio.h   &rarr; 필수 기본 헤더 파일. C에서는 printf, scanf 같은 기능이 stdio.h 안에 들어 있...",
+  "content": "#include <stdio.h>   &rarr; 필수 기본 헤더 파일. C에서는 printf, scanf 같은 기능이 stdio.h 안에 들어 있기 때문에 규칙처럼 항상 넣는다고 보면 된다. int   &rarr; 정수형 자료형을 의미한다. main   &rarr; 프로그램이 실행될 때 맨 처음 불리는 함수 이름이다. ( )   &rarr; 함수의 입력(매개변수)이 들어가는 자리. 보통 void가 들어가지만 생략해도 된다. { }   &rarr; 함수가 실제로 실행되는 코드 영역. 말 그대로 &ldquo;여기 안에 있는 코드 그대로 실행해봐&rdquo;라고 프로그램에게 시키는 부분이다. return 0;   &rarr; 프로그램을 정상적으로 종료한다는 의미이다. C 언어를 처음 시작할 때는   ' #include <stdio.h> ' 부터 ' int main() { } ' 까지가 거의 기본 틀이라고 보면 된다. 즉, C 언어의 기본 구조만 잡혀 있다면   화면에 글자를 출력하고 싶을 때는 printf를 쓰면 되고,   print 같은 다른 이름을 사용하면 오류가 난다.   (printf는 print formatted의 줄임말이라 C에서는 반드시 printf를 써야 한다.)\n\n---\n\n예시)\n\n#include <stdio.h>\nint main() {\n\tprintf(\" ------------------------------------------------\\n\");\n\tprintf(\"\\n\");\n\tprintf(\"\\n\");\n\tprintf(\"\\n\");\n\tprintf(\"           디 지 털 포 렌 식 연 습                 \\n\");\n\tprintf(\"\\n\");\n\tprintf(\"\\n\");\n\tprintf(\"\\n\");\n\tprintf(\"--------------------------------------------------\\n\");\n\treturn 0;\n}\n\n    \n        \n![image](/images/d1/1779953274330-gl2uhurb.png)",
+  "created_at": "2025-11-14"
+}

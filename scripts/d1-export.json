@@ -1,0 +1,51 @@
+﻿[
+  {
+    "results": [
+      {
+        "id": 2,
+        "title": "[  숨겨진 진실을 찾는 사람이 되고 싶습니다. ]",
+        "slug": "digital-forensics",
+        "tag": "Forensics",
+        "excerpt": "이 글은 디지털 포렌식에 대한 관심과 전문가가 되고 싶은 꿈을 가진 사람의 생각을 공유하는 내용입니다.",
+        "content": "![image](/api/img/1779941069036-b5cc4a09.jpg)\n\n안녕하세요,\n제가 관심있는 분야는 '디지털 포렌식'입니다.\n\n디지털 포렌식하면 흔히, 분야가 좁다는 말을 많이 하시는데요. \n\n저는 이 말을 듣고 상당히 고민했습니다. 그렇지만 이상하게도 전 이 꿈을 포기하고 싶지 않았습니다. 왜냐하면 숨겨진 진실을 밝혀 누군가를 도울 수 있다는 것과 동시, 사실을 분명히 정의 내릴 수 있다는 것이 너무도 좋았기 때문입니다. \n\n저는 4년 전부터 sns에 글쓰기 활동을 진행하며 감정적인 상황에서도 의도적으로 객관적 사고를 하는 습관을 들였습니다. 그 과정에서 감정을 걷어내야 비로소 사실을 보인다는 것을 깨닫게 되었습니다. 실제로 이러한 기록이 누군가에게 힘이 된다는 것을 전해 들었을 때, 진실된 기록이 사람에게 힘을 준다는 것을 확신했습니다.\n\n그래서 저는 포렌식이 단순한 데이터 분석이 아닌 숨겨진 진실을 밝혀내는 과정이라 봅니다. 데이터를 감정이 아닌 사실로 읽을 때, 사건의 진짜 흐름이 드러나는 것처럼요. 그렇기에 저는 숨겨진 진실을 찾아내고 사실을 분명히 정의내리는 디지털 포렌식 전문가가 되고 싶습니다.\n\n[sticker:cat]\n\n",
+        "created_at": "2026. 04. 19"
+      },
+      {
+        "id": 51,
+        "title": "[ 디지털포렌식 2급 필기 합격 ]",
+        "slug": "https://exam.forensickorea.org/web/main.do",
+        "tag": "Forensics",
+        "excerpt": "이 글은 디지털 포렌식 2급 필기 자격증 합격에 대한 내용입니다.",
+        "content": "안녕하세요, 별입니다.\n디지털 포렌식 2급 필기 자격증 합격으로 돌아왔습니다!\n![image](/api/img/1779941070003-abb466d5.jpg)\n\n솔직히 아직도 합격이 너무 안 믿는데요.\n시험 당시, 망한 줄 알고 대전 길거리에서 울던 것이 정말 아직도 기억에 남네요. OMR 카드도 3번이나 바꿨던 터라 무척이나 겁이 났었던 거 같아요.\n\n그치만 결국은 붙었고\n붙는 과정 속 저를 도와주신 모든 분들\n진심으로 감사드립니다. \n\n---\n\n디지털 포렌식 2급 필기의 경우,\n흔히 구판 교재들로 준비를 많이 하실 텐데요.\n\n구판 보단 신판 문제를 위주로 분석하며 이해하시길 추천 드립니다.\n\n물론 저는 두 교재를 모두 보긴 하였으나,\n압도적으로 시험 볼 땐 신판 교재를 보는 것이 더 도움이 되리라 생각합니다.\n\n특히 법 파트 부분은 제대로 이해하고 가시길 추천드리며\n법관에서 입장에서 법률을 해석하고 이해하는 것이 중요하다고 생각합니다.\n\n나머지 개념적 그런 부분들은 내가 얼마나 이것을 이해하고 받아들였냐고 중요하다고 봅니다.   또한 하나의 취중하기 보단 개념적 부분이나 원리 중심 쪽으로 공부하는 것이 좋다고 봅니다. \n\n그럼 다음 시험 기수분들도, 화이팅 하시길 바랍니다 !\n[sticker:cool]",
+        "created_at": "2026. 04. 24"
+      },
+      {
+        "id": 55,
+        "title": "[ Autopsy 사용법 ]",
+        "slug": "[ Autopsy 사용법 ]",
+        "tag": "Forensics",
+        "excerpt": "이 글은 디지털 포렌식 플랫폼인 Autopsy의 사용법에 대한 내용입니다.",
+        "content": "# Autopsy란,\n\n![image](/api/images/blog/1779080585291-863f7054.jpg)\n\n전 세계 법 집행 기관, 군대, 기업 등에서 널리 사용하는 무료 오픈 소스 디지털 포렌식 플랫폼으로, 컴퓨터나 저장 매체에 남은 디지털 증거를 식별, 수집, 분석하여 법적 효력이 있는 자료를 만들거나 범죄 흔적을 추적하는 데  사용함을 말한다.\n\n오늘은 본 도구를 사용하여 실습을 진행해 보고자 한다. \n\n그 전에 네컷 만화로 가볍게 훑고 가보자.\n\n![image](/api/images/blog/1779080616401-53bb87a6.jpg)\n\n대략적 흐름은 위와 같다. 이제 진짜 실습을 진행해 보자.\n\n실습하기 앞서, 실습 파일은 클로드로 제작하였다. 혹시나 따라할 이들을 위해 파일을 올려본다. \n\n[forensic_training_v4.dd](attachment:dd0166b8-3445-493e-a787-7824eea31783:forensic_training_v4.dd)\n\n---\n\n# 1. 케이스를 생성한다.\n\n① Autopsy 파일을 연다.\n\n② New case를 누르고 각자 원하는 케이스명(Case Name), 저장 경로(Base Directory)를 지정한다. \n\n③ next 누르고 케이스 번호를 지정한 다음, finish를 누른다.\n\n![image](/api/images/blog/1779080667304-8a312afe.jpg)\n\n![image](/api/images/blog/1779080680327-d8ef025a.jpg)\n\n![image](/api/images/blog/1779080703660-498f7655.jpg)\n\n![image](/api/images/blog/1779080716868-d6899193.jpg)\n\n---\n\n# 2. 데이터를 추가한다.\n\n① Generate new host name based on data source name 누르고, next를 클릭한다. \n\n② Disk image or VM files 누른 뒤, 다음 페이지에서 해당 dd 파일로 지정한다. \n\n③ configure Ingest는 각자 필요한 것에 맞춰 선택해도 되는데 쓴이는 그냥 기본 옵션으로 가기로 함. 변경 없이 그대로  next 진행. \n\n④ 마지막 add date source 페이지에서 다 되면 finish 뜰 텐데 그때 누르면 됨.\n\n![image](/api/images/blog/1779080751115-3586aca7.jpg)\n![image](/api/images/blog/1779080777178-aaec5937.jpg)\n![image](/api/images/blog/1779080795066-72b2bc94.jpg)\n![image](/api/images/blog/1779080808161-4c36d7bf.jpg)\n![image](/api/images/blog/1779080816440-1de2d64f.jpg)\n![image](/api/images/blog/1779080823888-ea75aa22.jpg)\n---\n\n# 3. 데이터 분석하기\n\n① Data Sources 클릭해서 dd 파일 열어보기 \n\n② dd 파일에서 vol2파일 열기\n\n③ carved files 발견 > 파일 복구할 수 있는 단서 발견\n\n![image](/api/images/blog/1779080837009-a4621e88.jpg)\n![image](/api/images/blog/1779080843516-3d12cb43.jpg)\n---\n\n# 4. 데이터 카빙 실습\n\n> **데이터 카빙(Data Carving, 파일 카빙)**은 **파일 시스템의 정보(메타데이터)가 손상되거나 삭제되어 일반적인 방법으로는 파일을 찾을 수 없을 때, 저장 장치에 남아있는 데이터의 고유한 구조와 패턴을 직접 분석하여 파일을 복구하는 디지털 포렌식 기법**\n> \n\n① carved files 클릭\n\n② 1 더블클릭 후, 2개 파일 중 하나 복구 하기\n\n③  마우스 오른쪽 커서 눌러, extract file 누르고 원하는 파일 위치 지정하면 파일 복구됨.\n\n![image](/api/images/blog/1779080858437-4c1b8eb3.jpg)\n![image](/api/images/blog/1779080869697-a77d6d06.jpg)\n![image](/api/images/blog/1779080879365-f6a8129f.jpg)\n![image](/api/images/blog/1779080890715-3d51c187.jpg)\n![image](/api/images/blog/1779080897692-94d830e2.jpg)\n![image](/api/images/blog/1779080903770-5441b643.jpg)\n(file → file extracted)\n\n---\n\n# 5. 파일 복구 성공 !!\n\n![image](/api/images/blog/1779080911609-e0ecfc47.jpg)\n\n\n",
+        "created_at": "2026. 05. 18"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "APAC",
+      "served_by_colo": "ICN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1948
+      },
+      "duration": 0.1948,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 225280,
+      "rows_read": 6,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]
