@@ -1,5 +1,126 @@
 import { useEffect, useRef, useState } from 'react'
 
+/* ─── Pixel Cat Float (chat emotions) ─── */
+const FACE_PX = {
+  idle: {
+    4: ['B','B','W','W','W','G','B','B','W','W','W','_','B','B','_','_'],
+    5: ['B','B','W','G','G','G','B','B','W','G','G','_','B','B','_','_'],
+    7: ['B','B','B','B','B','G','G','G','G','B','B','B','B','B','_','_'],
+    8: ['B','B','B','B','G','G','G','_','B','B','B','B','B','B','_','_'],
+  },
+  happy: {
+    4: ['B','B','B','G','G','G','B','B','B','G','G','B','B','B','_','_'],
+    5: ['B','B','G','G','B','B','B','B','G','G','B','_','B','B','_','_'],
+    7: ['B','B','B','G','G','G','G','G','G','G','G','B','B','B','_','_'],
+    8: ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+  },
+  thinking: {
+    4: ['B','B','W','W','W','G','B','B','B','G','G','_','B','B','_','_'],
+    5: ['B','B','W','G','G','G','B','B','B','G','B','_','B','B','_','_'],
+    7: ['B','B','B','B','B','B','G','G','B','B','B','B','B','B','_','_'],
+    8: ['B','B','B','B','B','B','B','B','B','B','B','B','B','B','_','_'],
+  },
+  confused: {
+    4: ['B','B','G','W','G','W','B','B','G','W','G','_','B','B','_','_'],
+    5: ['B','B','W','G','W','G','B','B','W','G','W','_','B','B','_','_'],
+    7: ['B','B','B','G','B','G','B','G','B','G','B','B','B','B','_','_'],
+    8: ['B','B','B','B','G','B','G','_','B','B','B','B','B','B','_','_'],
+  },
+}
+const buildCatPx = (emotion) => {
+  const face = FACE_PX[emotion] || FACE_PX.idle
+  return CAT_PX.map((row, ri) => face[ri] ? face[ri] : row)
+}
+const CatChibiFloat = ({ emotion = 'idle' }) => {
+  const glow = emotion === 'happy' ? 'rgba(60,200,120,0.85)' : emotion === 'thinking' ? 'rgba(200,160,60,0.65)' : emotion === 'confused' ? 'rgba(200,80,60,0.75)' : 'rgba(60,120,255,0.7)'
+  const anim = emotion === 'happy' ? 'catBounce 0.55s ease-in-out infinite' : emotion === 'confused' ? 'catShake 0.35s ease-in-out infinite' : 'catFloat 2.4s ease-in-out infinite'
+  const px = buildCatPx(emotion)
+  return (
+    <div style={{ position: 'relative', display: 'inline-block', animation: anim }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(16,5px)', gridTemplateRows: 'repeat(16,5px)', imageRendering: 'pixelated', filter: `drop-shadow(0 0 8px ${glow})`, transition: 'filter 0.5s ease' }}>
+        {px.flatMap((row, ri) => row.map((c, ci) => (
+          <div key={`${ri}-${ci}`} style={{ width: 5, height: 5, background: PX_C[c] }} />
+        )))}
+      </div>
+      {emotion === 'confused' && <div style={{ position: 'absolute', top: -10, right: -10, fontSize: 15, color: '#c04040', fontWeight: 'bold', lineHeight: 1 }}>?</div>}
+      {emotion === 'thinking' && <div style={{ position: 'absolute', top: -12, right: -14, fontSize: 13, lineHeight: 1 }}>💭</div>}
+      <div style={{ width: 46, height: 7, background: 'rgba(30,60,200,0.18)', borderRadius: '50%', margin: '4px auto 0', animation: 'catShadow 2.4s ease-in-out infinite' }} />
+    </div>
+  )
+}
+
+/* ─── Chatbot ─── */
+const Chatbot = () => {
+  const [open, setOpen] = useState(() => { try { return localStorage.getItem('klru_open') === 'true' } catch { return false } })
+  const [msgs, setMsgs] = useState([{ role: 'assistant', content: '안녕! 궁금한 거 있으면 물어봐 😊' }])
+  const [input, setInput] = useState('')
+  const [emotion, setEmotion] = useState('idle')
+  const [loading, setLoading] = useState(false)
+  const bottomRef = useRef(null)
+  useEffect(() => { try { localStorage.setItem('klru_open', open) } catch {} }, [open])
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [msgs])
+  const send = async () => {
+    const msg = input.trim()
+    if (!msg || loading) return
+    setInput(''); setMsgs(m => [...m, { role: 'user', content: msg }]); setLoading(true); setEmotion('thinking')
+    try {
+      const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: msgs.slice(-6) }) })
+      const data = await res.json()
+      const reply = data.reply || '잠깐, 생각 중이에요...'
+      setEmotion(reply.includes('없어요') || reply.includes('모르') ? 'confused' : 'happy')
+      setMsgs(m => [...m, { role: 'assistant', content: reply }])
+      setTimeout(() => setEmotion('idle'), 3000)
+    } catch {
+      setMsgs(m => [...m, { role: 'assistant', content: '잠깐 연결이 안 됐어요 😅' }])
+      setEmotion('confused'); setTimeout(() => setEmotion('idle'), 2000)
+    }
+    setLoading(false)
+  }
+  return (
+    <>
+      <div onClick={() => setOpen(o => !o)} style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 1000, cursor: 'pointer', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))', transition: 'transform 0.2s' }}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+        <CatChibiFloat emotion={open ? 'happy' : emotion} />
+      </div>
+      {open && (
+        <div style={{ position: 'fixed', bottom: 180, right: 28, zIndex: 1000, width: 320, background: 'var(--bg)', borderRadius: 16, boxShadow: '0 8px 40px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.07)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ padding: '14px 18px', borderBottom: '1px solid rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7ea8c4' }} />
+            <span style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>클루</span>
+            <button onClick={() => setOpen(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text-light)', lineHeight: 1 }}>×</button>
+          </div>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 320 }}>
+            {msgs.map((m, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                <div style={{ maxWidth: '80%', padding: '9px 13px', borderRadius: m.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px', background: m.role === 'user' ? 'rgba(126,168,196,0.15)' : 'rgba(0,0,0,0.04)', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7 }}>{m.content}</div>
+              </div>
+            ))}
+            {loading && (
+              <div style={{ display: 'flex', gap: 4, padding: '9px 13px', background: 'rgba(0,0,0,0.04)', borderRadius: '14px 14px 14px 4px', width: 'fit-content' }}>
+                {[0,1,2].map(i => <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', display: 'block', animation: `chatDot 1s ${i*0.2}s ease-in-out infinite` }} />)}
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+          <div style={{ padding: '10px 12px', borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', gap: 8 }}>
+            <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} placeholder="궁금한 거 물어봐..."
+              style={{ flex: 1, padding: '8px 12px', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13, outline: 'none', background: 'transparent', color: 'var(--text-primary)' }} />
+            <button onClick={send} disabled={loading} style={{ padding: '8px 14px', background: 'rgba(126,168,196,0.2)', border: 'none', borderRadius: 8, cursor: loading ? 'not-allowed' : 'pointer', fontSize: 14, color: 'var(--accent)' }}>→</button>
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes chatDot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+        @keyframes catFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+        @keyframes catBounce { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-12px) scale(1.06)} }
+        @keyframes catShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+        @keyframes catShadow { 0%,100%{transform:scaleX(1);opacity:0.5} 50%{transform:scaleX(0.65);opacity:0.15} }
+      `}</style>
+    </>
+  )
+}
+
 /* ─── Emoji Picker ─── */
 const EMOJIS = ['😊','😂','😍','🥺','😭','😅','🤔','😎','🥳','😴','❤️','🔥','✨','💯','👍','👏','🙏','💪','👀','😢','😤','🤣','😇','🤗','😏','🙄','😬','🫡','😮','📝','💡','🔍','💻','🛡️','⚡','🎯','🔐','📁','🐱','✅','🕵️','📂','🧩','🖥️','🔗','⚠️','🗂️','📌']
 
@@ -829,6 +950,7 @@ export default function App() {
   return (
     <>
       <CursorDot />
+      {!intro && <Chatbot />}
       {intro && <IntroOverlay onDone={onIntroDone} />}
       {!intro && page === 'home' && <MainPage onNav={onNav} />}
       {!intro && page !== 'home' && (
