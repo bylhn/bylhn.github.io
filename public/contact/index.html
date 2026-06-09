@@ -171,7 +171,7 @@
     <p class="label fade">Contact</p>
 
     <div class="email-wrap fade">
-      <a class="email" onclick="copyEmail(event)">contact@bylhn.com</a>
+      <a class="email" onclick="copyEmail(event)">bylhn02@gmail.com</a>
       <span class="copy-msg" id="copyMsg">copied ✓</span>
     </div>
 
@@ -219,7 +219,7 @@
     /* ── 이메일 복사 ── */
     function copyEmail(e) {
       e.preventDefault();
-      navigator.clipboard.writeText('contact@bylhn.com').catch(() => {});
+      navigator.clipboard.writeText('bylhn02@gmail.com').catch(() => {});
       const msg = document.getElementById('copyMsg');
       msg.classList.add('show');
       setTimeout(() => msg.classList.remove('show'), 2000);
