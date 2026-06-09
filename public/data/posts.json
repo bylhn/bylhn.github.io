@@ -1,5 +1,13 @@
 [
   {
+    "id": 203,
+    "slug": "-mq6klvjz",
+    "title": "[ 64bit 랑 32bit 차이점 ]",
+    "tag": "Forensics",
+    "excerpt": "비트는 미국의 통계학자 존 튜키가 “통신이론의 수학적 기초”에서 Binary digit를 Bit로 줄여쓰자고 제안한 것에서 시작된 것으로, 클로...",
+    "created_at": "2026-06-09"
+  },
+  {
     "id": 202,
     "slug": "autopsy-tutorial",
     "title": "[ Autopsy 사용법 ]",
@@ -96,11 +104,11 @@
     "created_at": "2025-11-06"
   },
   {
-    "id": 39,
-    "slug": "post-37-사용자-통신-명령어",
-    "title": "[ 사용자 통신 명령어 ]",
+    "id": 41,
+    "slug": "post-39-vi-editor",
+    "title": "[ vi editor ]",
     "tag": "Unix",
-    "excerpt": "\"로그인된 사용자 보기 ( $ users, $ who, $ w, $ finger )...",
+    "excerpt": "1. 일반 문서작성 및 수정, 각종 환경설정 변경...",
     "created_at": "2025-10-27"
   },
   {
@@ -112,115 +120,19 @@
     "created_at": "2025-10-27"
   },
   {
-    "id": 41,
-    "slug": "post-39-vi-editor",
-    "title": "[ vi editor ]",
+    "id": 39,
+    "slug": "post-37-사용자-통신-명령어",
+    "title": "[ 사용자 통신 명령어 ]",
     "tag": "Unix",
-    "excerpt": "1. 일반 문서작성 및 수정, 각종 환경설정 변경...",
+    "excerpt": "\"로그인된 사용자 보기 ( $ users, $ who, $ w, $ finger )...",
     "created_at": "2025-10-27"
   },
   {
-    "id": 24,
-    "slug": "post-22-데이터베이스-for-beginner-ch03-연습문제",
-    "title": "[ 데이터베이스 for Beginner ch03 연습문제 ]",
-    "tag": "Database",
-    "excerpt": "순전히 개인 공부 용도로 쓴 것이라, 정답이 아닐 수도 있음을 양해 부탁드립니다....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 25,
-    "slug": "post-23-select-from문",
-    "title": "[ SELECT ... FROM문 ]",
-    "tag": "Database",
-    "excerpt": "SQL은 구조화된 질의 언어를 말하는 것으로, 데이터베이스에서 사용되는 일종의 공통 언어이다. DBMS에는 SQL문으로 명령을 지시해야 알아듣고...",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 26,
-    "slug": "post-24-alias",
-    "title": "[ Alias ]",
-    "tag": "Database",
-    "excerpt": "별칭이란 테이블이나 열에 부여하는 임시적인 이름으로, 데이터베이스의 실제 이름을 변경하는 것이 아닌, 해당 쿼리의 실행 동안만 사용되는 '별명'...",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 27,
-    "slug": "post-25-소프트웨어",
-    "title": "[ 소프트웨어 ]",
+    "id": 38,
+    "slug": "post-36-사용자-관리-명령어",
+    "title": "[ 사용자 관리 명령어 ]",
     "tag": "Unix",
-    "excerpt": "소프트웨어(Software)란, 인간이 컴퓨터 하드웨어를 운용하기 위해 필요한 일련의 명령어 집합으로 크게 두 가지 종류가 있다....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 28,
-    "slug": "post-26-운영체제",
-    "title": "[ 운영체제]",
-    "tag": "Unix",
-    "excerpt": "운영체제(Operating System)이란, 컴퓨터 사용자와 하드웨어 간의 인터페이스 역할을 담당하는 시스템 프로그램으로  한정된 시스템 자원...",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 29,
-    "slug": "post-27-리눅스",
-    "title": "[ 리눅스 ]",
-    "tag": "Unix",
-    "excerpt": "본 프로그램은 명령어 해석기(Command processor)이라고도 불리는데, 사용자가 운영체에 직접 명령을 전달하는 것을 말한다....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 30,
-    "slug": "post-28-명령어-일반형식과-매뉴얼",
-    "title": "[ 명령어 일반형식과 매뉴얼 ]",
-    "tag": "Unix",
-    "excerpt": "세미콜론 이용해 여러 명령어를 실행한다....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 31,
-    "slug": "post-29-파일-시스템",
-    "title": "[ 파일 시스템 ]",
-    "tag": "Unix",
-    "excerpt": "파일시스템(File System)이란, 운영체제가 파티션이나 디스크에 파일들을 저장하는 방법이자 자료구조로 파일들이 디스크 상에 구성되는 방식을...",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 32,
-    "slug": "post-30-와일드카드-에스터리스크",
-    "title": "[ 와일드카드 (*, 에스터리스크) ]",
-    "tag": "Unix",
-    "excerpt": "\" 파일의 일부를 로 표시하는 와일드카드....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 33,
-    "slug": "post-31-디렉터리-관리-명령어-ls",
-    "title": "[ 디렉터리 관리 명령어 ls ]",
-    "tag": "Unix",
-    "excerpt": "1. 디렉터리 정보 출력 ( $ ls )...",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 34,
-    "slug": "post-32-디렉터리-관리-명령어-mkdir-rmdir",
-    "title": "[ 디렉터리 관리 명령어  mkdir, rmdir]",
-    "tag": "Unix",
-    "excerpt": "\"새로운 디렉터리 생성( $ mkdir 디렉터리이름 )....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 35,
-    "slug": "post-33-파일-관리-명령어",
-    "title": "[ 파일 관리 명령어 ]",
-    "tag": "Unix",
-    "excerpt": "\" 파일의 이동 명령( $ mv 소스파일 타겟파일)....",
-    "created_at": "2025-10-26"
-  },
-  {
-    "id": 36,
-    "slug": "post-34-파일-응용-명령어",
-    "title": "[ 파일 응용 명령어 ]",
-    "tag": "Unix",
-    "excerpt": "\"지정한 파일의 라인 수, 단어 수, 문자 수 알아내기 ( $ wc)...",
+    "excerpt": "\"사용자 계정 추가 ( $ useradd 계정  root만 사용 가능 )...",
     "created_at": "2025-10-26"
   },
   {
@@ -232,19 +144,115 @@
     "created_at": "2025-10-26"
   },
   {
-    "id": 38,
-    "slug": "post-36-사용자-관리-명령어",
-    "title": "[ 사용자 관리 명령어 ]",
+    "id": 36,
+    "slug": "post-34-파일-응용-명령어",
+    "title": "[ 파일 응용 명령어 ]",
     "tag": "Unix",
-    "excerpt": "\"사용자 계정 추가 ( $ useradd 계정  root만 사용 가능 )...",
+    "excerpt": "\"지정한 파일의 라인 수, 단어 수, 문자 수 알아내기 ( $ wc)...",
     "created_at": "2025-10-26"
   },
   {
-    "id": 21,
-    "slug": "post-19-파일시스템fs-장단점",
-    "title": "[ 파일시스템(FS) 장단점 ]",
+    "id": 35,
+    "slug": "post-33-파일-관리-명령어",
+    "title": "[ 파일 관리 명령어 ]",
+    "tag": "Unix",
+    "excerpt": "\" 파일의 이동 명령( $ mv 소스파일 타겟파일)....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 34,
+    "slug": "post-32-디렉터리-관리-명령어-mkdir-rmdir",
+    "title": "[ 디렉터리 관리 명령어  mkdir, rmdir]",
+    "tag": "Unix",
+    "excerpt": "\"새로운 디렉터리 생성( $ mkdir 디렉터리이름 )....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 33,
+    "slug": "post-31-디렉터리-관리-명령어-ls",
+    "title": "[ 디렉터리 관리 명령어 ls ]",
+    "tag": "Unix",
+    "excerpt": "1. 디렉터리 정보 출력 ( $ ls )...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 32,
+    "slug": "post-30-와일드카드-에스터리스크",
+    "title": "[ 와일드카드 (*, 에스터리스크) ]",
+    "tag": "Unix",
+    "excerpt": "\" 파일의 일부를 로 표시하는 와일드카드....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 31,
+    "slug": "post-29-파일-시스템",
+    "title": "[ 파일 시스템 ]",
+    "tag": "Unix",
+    "excerpt": "파일시스템(File System)이란, 운영체제가 파티션이나 디스크에 파일들을 저장하는 방법이자 자료구조로 파일들이 디스크 상에 구성되는 방식을...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 30,
+    "slug": "post-28-명령어-일반형식과-매뉴얼",
+    "title": "[ 명령어 일반형식과 매뉴얼 ]",
+    "tag": "Unix",
+    "excerpt": "세미콜론 이용해 여러 명령어를 실행한다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 29,
+    "slug": "post-27-리눅스",
+    "title": "[ 리눅스 ]",
+    "tag": "Unix",
+    "excerpt": "본 프로그램은 명령어 해석기(Command processor)이라고도 불리는데, 사용자가 운영체에 직접 명령을 전달하는 것을 말한다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 28,
+    "slug": "post-26-운영체제",
+    "title": "[ 운영체제]",
+    "tag": "Unix",
+    "excerpt": "운영체제(Operating System)이란, 컴퓨터 사용자와 하드웨어 간의 인터페이스 역할을 담당하는 시스템 프로그램으로  한정된 시스템 자원...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 27,
+    "slug": "post-25-소프트웨어",
+    "title": "[ 소프트웨어 ]",
+    "tag": "Unix",
+    "excerpt": "소프트웨어(Software)란, 인간이 컴퓨터 하드웨어를 운용하기 위해 필요한 일련의 명령어 집합으로 크게 두 가지 종류가 있다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 26,
+    "slug": "post-24-alias",
+    "title": "[ Alias ]",
     "tag": "Database",
-    "excerpt": "파일(데이터 모임)을 저장 장치에 저장하고 사용하기 위한 일종의 규칙이나 체계를 말한다. 쉽게 말해, 파일의 이름 붙이고 쉽게 파일에 접근할 수...",
+    "excerpt": "별칭이란 테이블이나 열에 부여하는 임시적인 이름으로, 데이터베이스의 실제 이름을 변경하는 것이 아닌, 해당 쿼리의 실행 동안만 사용되는 '별명'...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 25,
+    "slug": "post-23-select-from문",
+    "title": "[ SELECT ... FROM문 ]",
+    "tag": "Database",
+    "excerpt": "SQL은 구조화된 질의 언어를 말하는 것으로, 데이터베이스에서 사용되는 일종의 공통 언어이다. DBMS에는 SQL문으로 명령을 지시해야 알아듣고...",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 24,
+    "slug": "post-22-데이터베이스-for-beginner-ch03-연습문제",
+    "title": "[ 데이터베이스 for Beginner ch03 연습문제 ]",
+    "tag": "Database",
+    "excerpt": "순전히 개인 공부 용도로 쓴 것이라, 정답이 아닐 수도 있음을 양해 부탁드립니다....",
+    "created_at": "2025-10-26"
+  },
+  {
+    "id": 23,
+    "slug": "post-21-dbas-role",
+    "title": "[ DBAs Role ]",
+    "tag": "Database",
+    "excerpt": "DBA(Database Administrator)는 조직의 데이터가 안전하고 빠르게, 끊기지 않고 쓰이도록 책임지는 사람으로 설계부터 성능, 보...",
     "created_at": "2025-10-25"
   },
   {
@@ -256,20 +264,12 @@
     "created_at": "2025-10-25"
   },
   {
-    "id": 23,
-    "slug": "post-21-dbas-role",
-    "title": "[ DBAs Role ]",
+    "id": 21,
+    "slug": "post-19-파일시스템fs-장단점",
+    "title": "[ 파일시스템(FS) 장단점 ]",
     "tag": "Database",
-    "excerpt": "DBA(Database Administrator)는 조직의 데이터가 안전하고 빠르게, 끊기지 않고 쓰이도록 책임지는 사람으로 설계부터 성능, 보...",
+    "excerpt": "파일(데이터 모임)을 저장 장치에 저장하고 사용하기 위한 일종의 규칙이나 체계를 말한다. 쉽게 말해, 파일의 이름 붙이고 쉽게 파일에 접근할 수...",
     "created_at": "2025-10-25"
-  },
-  {
-    "id": 19,
-    "slug": "post-17-db-개체",
-    "title": "[DB 개체]",
-    "tag": "Database",
-    "excerpt": "1. 스키마(데이터베이스) : 객체 담는 상자(네임스페이스), 문자셋/콜레이션 설정. 여기서 콜레이션이란, 데이터베이스에서 문자열을 비교&mid...",
-    "created_at": "2025-10-20"
   },
   {
     "id": 20,
@@ -280,12 +280,12 @@
     "created_at": "2025-10-20"
   },
   {
-    "id": 17,
-    "slug": "post-15-데이터베이스-모델링",
-    "title": "[ 데이터베이스 모델링 ]",
+    "id": 19,
+    "slug": "post-17-db-개체",
+    "title": "[DB 개체]",
     "tag": "Database",
-    "excerpt": "우선, 정보시스템 구축 절차에 대해 먼저 다루겠다....",
-    "created_at": "2025-10-19"
+    "excerpt": "1. 스키마(데이터베이스) : 객체 담는 상자(네임스페이스), 문자셋/콜레이션 설정. 여기서 콜레이션이란, 데이터베이스에서 문자열을 비교&mid...",
+    "created_at": "2025-10-20"
   },
   {
     "id": 18,
@@ -293,6 +293,14 @@
     "title": "[ 데이터베이스 구축 절차]",
     "tag": "Database",
     "excerpt": "데이터베이스 구축 절차는 아래와 같다....",
+    "created_at": "2025-10-19"
+  },
+  {
+    "id": 17,
+    "slug": "post-15-데이터베이스-모델링",
+    "title": "[ 데이터베이스 모델링 ]",
+    "tag": "Database",
+    "excerpt": "우선, 정보시스템 구축 절차에 대해 먼저 다루겠다....",
     "created_at": "2025-10-19"
   },
   {
@@ -304,35 +312,11 @@
     "created_at": "2025-10-17"
   },
   {
-    "id": 10,
-    "slug": "post-8-최신-dbms-db-기술-트렌드",
-    "title": "[ 최신 DBMS / DB 기술 트렌드 ]",
+    "id": 15,
+    "slug": "post-13-sql-mysql-개요",
+    "title": "[ SQL, MySQL 개요]",
     "tag": "Database",
-    "excerpt": "DBMS란, Database Management System의 줄임말이다....",
-    "created_at": "2025-10-16"
-  },
-  {
-    "id": 11,
-    "slug": "post-9-정보의-진화-단계-dikw",
-    "title": "[ 정보의 진화 단계, DIKW ]",
-    "tag": "Database",
-    "excerpt": "정보의 진화 단계로는 크게 4가지 단계가 있다....",
-    "created_at": "2025-10-16"
-  },
-  {
-    "id": 12,
-    "slug": "post-10-database",
-    "title": "[ Database ]",
-    "tag": "Database",
-    "excerpt": "데이터베이스(Database)란, 물리적으로 HDD로 하드디스크를 의미한다....",
-    "created_at": "2025-10-16"
-  },
-  {
-    "id": 13,
-    "slug": "post-11-dbms",
-    "title": "[ DBMS ]",
-    "tag": "Database",
-    "excerpt": "DBMS란, Database Management System으로 데이터베이스 관리 및 운영하는 역할을 하는 SW(소프트웨어)개념을 말한다. 즉,...",
+    "excerpt": "SQL은 Structured Query Language의 줄임말이다....",
     "created_at": "2025-10-16"
   },
   {
@@ -344,11 +328,35 @@
     "created_at": "2025-10-16"
   },
   {
-    "id": 15,
-    "slug": "post-13-sql-mysql-개요",
-    "title": "[ SQL, MySQL 개요]",
+    "id": 13,
+    "slug": "post-11-dbms",
+    "title": "[ DBMS ]",
     "tag": "Database",
-    "excerpt": "SQL은 Structured Query Language의 줄임말이다....",
+    "excerpt": "DBMS란, Database Management System으로 데이터베이스 관리 및 운영하는 역할을 하는 SW(소프트웨어)개념을 말한다. 즉,...",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 12,
+    "slug": "post-10-database",
+    "title": "[ Database ]",
+    "tag": "Database",
+    "excerpt": "데이터베이스(Database)란, 물리적으로 HDD로 하드디스크를 의미한다....",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 11,
+    "slug": "post-9-정보의-진화-단계-dikw",
+    "title": "[ 정보의 진화 단계, DIKW ]",
+    "tag": "Database",
+    "excerpt": "정보의 진화 단계로는 크게 4가지 단계가 있다....",
+    "created_at": "2025-10-16"
+  },
+  {
+    "id": 10,
+    "slug": "post-8-최신-dbms-db-기술-트렌드",
+    "title": "[ 최신 DBMS / DB 기술 트렌드 ]",
+    "tag": "Database",
+    "excerpt": "DBMS란, Database Management System의 줄임말이다....",
     "created_at": "2025-10-16"
   }
 ]
