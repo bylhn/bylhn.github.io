@@ -1026,7 +1026,27 @@ const BookmarkCard = ({ url }) => {
   )
 }
 
-marked.setOptions({ breaks: true, gfm: true })
+marked.use({
+  gfm: true,
+  breaks: true,
+  renderer: {
+    code({ text, lang, escaped }) {
+      const safe = escaped ? text : text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      return `<div class="md-code-wrap">${lang ? `<div class="md-code-lang">${lang}</div>` : ''}<pre><code>${safe}</code></pre></div>`
+    },
+    blockquote({ tokens }) {
+      return `<div class="md-callout">${this.parser.parse(tokens)}</div>`
+    },
+    image({ href, title, text }) {
+      return `<figure class="md-figure"><img src="${href||''}" alt="${text||''}" />${title ? `<figcaption class="md-caption">${title}</figcaption>` : ''}</figure>`
+    },
+    link({ href, title, tokens }) {
+      const inner = this.parser.parseInline(tokens)
+      const isExt = /^https?:\/\//.test(href || '')
+      return `<a href="${href||''}"${title?` title="${title}"`:''}${isExt?' target="_blank" rel="noopener noreferrer"':''}>${inner}</a>`
+    },
+  }
+})
 
 const renderContent = (text) => {
   if (!text) return null
