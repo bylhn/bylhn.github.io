@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { marked } from 'marked'
 
 /* ─── Pixel Cat Float (chat emotions) ─── */
 const FACE_PX = {
@@ -1025,35 +1026,37 @@ const BookmarkCard = ({ url }) => {
   )
 }
 
-const parseInline = (text) => {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|!\[.*?\]\(.*?\)|\[sticker:[a-z]+\])/g)
-  return parts.map((p, i) => {
-    if (/^\*\*[^*]+\*\*$/.test(p)) return <strong key={i} style={{ fontWeight: 600 }}>{p.slice(2, -2)}</strong>
-    if (/^\*[^*]+\*$/.test(p))   return <em key={i}>{p.slice(1, -1)}</em>
-    const img = p.match(/^!\[(.*?)\]\((.*?)\)$/)
-    if (img) return <img key={i} src={img[2]} alt={img[1]} style={{ maxWidth: '100%', borderRadius: 6, verticalAlign: 'middle', imageRendering: 'high-quality', filter: 'contrast(1.06) brightness(1.01)' }} />
-    const stk = p.match(/^\[sticker:([a-z]+)\]$/)
-    if (stk) { const C = STICKER_MAP[stk[1]]; return C ? <span key={i} style={{ display: 'inline-block', verticalAlign: 'middle', margin: '0 3px' }}><C /></span> : null }
-    return p
-  })
-}
+marked.setOptions({ breaks: true, gfm: true })
+
 const renderContent = (text) => {
   if (!text) return null
-  return text.split('\n').map((line, i) => {
-    if (line.startsWith('## ')) return <h2 key={i} style={{ fontFamily: 'var(--serif)', fontSize: '1.22em', fontWeight: 400, margin: '1.8em 0 0.4em', color: 'var(--text-primary)', lineHeight: 1.4 }}>{parseInline(line.slice(3))}</h2>
-    if (line.startsWith('# '))  return <h1 key={i} style={{ fontFamily: 'var(--serif)', fontSize: '1.5em',  fontWeight: 400, margin: '2em 0 0.5em',   color: 'var(--text-primary)', lineHeight: 1.3 }}>{parseInline(line.slice(2))}</h1>
-    if (line === '---') return <hr key={i} style={{ border: 'none', borderTop: '1px solid rgba(0,0,0,0.1)', margin: '2em 0' }} />
-    if (line.startsWith('> '))  return <blockquote key={i} style={{ borderLeft: '3px solid var(--accent)', paddingLeft: 16, margin: '0.6em 0', color: 'var(--text-muted)', fontStyle: 'italic', lineHeight: 1.9 }}>{parseInline(line.slice(2))}</blockquote>
-    if (line.startsWith('- '))  return <div key={i} style={{ display: 'flex', gap: 10, margin: '0.2em 0', lineHeight: 2 }}><span style={{ color: 'var(--accent)', flexShrink: 0 }}>·</span><span>{parseInline(line.slice(2))}</span></div>
-    const imgM = line.match(/^!\[(.*?)\]\((.*?)\)$/)
-    if (imgM) return <img key={i} src={imgM[2]} alt={imgM[1]} style={{ maxWidth: '100%', borderRadius: 6, margin: '16px 0', display: 'block', imageRendering: 'high-quality', filter: 'contrast(1.06) brightness(1.01)' }} />
+
+  const lines = text.split('\n')
+  const segments = []
+  let mdBuffer = []
+
+  const flushMd = () => {
+    if (mdBuffer.length === 0) return
+    segments.push({ type: 'html', html: marked.parse(mdBuffer.join('\n')) })
+    mdBuffer = []
+  }
+
+  for (const line of lines) {
     const stkM = line.match(/^\[sticker:([a-z]+)\]$/)
-    if (stkM) { const C = STICKER_MAP[stkM[1]]; return C ? <div key={i} style={{ margin: '6px 0' }}><C /></div> : null }
     const bkmM = line.match(/^\[bookmark:(https?:\/\/.+)\]$/)
-    if (bkmM) return <BookmarkCard key={i} url={bkmM[1]} />
-    if (/^https?:\/\/\S+$/.test(line.trim())) return <BookmarkCard key={i} url={line.trim()} />
-    if (line === '') return <div key={i} style={{ height: '0.6em' }} />
-    return <p key={i} style={{ margin: 0, lineHeight: 2 }}>{parseInline(line)}</p>
+    const rawUrl = /^https?:\/\/\S+$/.test(line.trim()) && !line.trim().includes(' ')
+    if (stkM) { flushMd(); segments.push({ type: 'sticker', name: stkM[1] }) }
+    else if (bkmM) { flushMd(); segments.push({ type: 'bookmark', url: bkmM[1] }) }
+    else if (rawUrl) { flushMd(); segments.push({ type: 'bookmark', url: line.trim() }) }
+    else { mdBuffer.push(line) }
+  }
+  flushMd()
+
+  return segments.map((seg, i) => {
+    if (seg.type === 'html') return <div key={i} className="md-prose" dangerouslySetInnerHTML={{ __html: seg.html }} />
+    if (seg.type === 'sticker') { const C = STICKER_MAP[seg.name]; return C ? <div key={i} style={{ margin: '6px 0' }}><C /></div> : null }
+    if (seg.type === 'bookmark') return <BookmarkCard key={i} url={seg.url} />
+    return null
   })
 }
 
