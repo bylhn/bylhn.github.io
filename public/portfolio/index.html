@@ -1269,16 +1269,20 @@
         .filter(t => t.length >= 2)
         .map(t => { const s = stripSuf(t); return s === t ? [t] : [t, s]; });
     }
+    /* 해이스택은 앞뒤에 공백이 있는 정규화 문자열.
+       단어 시작 위치 일치는 만점, 단어 중간 일치(예: "데이" ⊂ "메타데이터")는 0.4배로 감점한다. */
+    function hit(hay, v, w) {
+      if (hay.indexOf(' ' + v) !== -1) return w;
+      if (hay.indexOf(v) !== -1) return w * 0.4;
+      return 0;
+    }
     function scoreDoc(doc, groups) {
       let total = 0;
       groups.forEach(variants => {
         let best = 0;
         variants.forEach(v => {
-          let x = 0;
-          if      (doc.h.title.indexOf(v) !== -1) x = 5;
-          else if (doc.h.syn.indexOf(v)   !== -1) x = 3;
-          else if (doc.h.desc.indexOf(v)  !== -1) x = 2;
-          else if (doc.h.body.indexOf(v)  !== -1) x = 1;
+          const x = Math.max(hit(doc.h.title, v, 5), hit(doc.h.syn, v, 3),
+                             hit(doc.h.desc, v, 2),  hit(doc.h.body, v, 1));
           if (x > best) best = x;
         });
         total += best;
@@ -1384,24 +1388,37 @@
       };
     }
 
+    /* 의도 키워드는 "단어 시작" 기준으로만 맞춘다.
+       부분 문자열로 맞추면 "과학기술정보통신부"가 기술 스택 질문으로 오인된다.
+       한국어 조사는 뒤에 붙으므로 앞쪽 경계만 보면 충분하다. */
     const INTENTS = [
-      { re: /^(안녕|하이|hi|hello|ㅎㅇ|반가|여보세요|야옹)/,
+      { kw: ['안녕', '하이', 'hi', 'hello', 'ㅎㅇ', '반가', '여보세요', '야옹'],
         run: () => ({ text: '안녕! 나는 클루야 🐾\nbylhn의 포트폴리오를 전부 외우고 있어. 뭐든 물어봐!', chips: suggestChips() }) },
-      { re: /(고마|감사|ㄳ|thank|잘 봤|멋지|대박)/,
+      { kw: ['고마', '감사', 'ㄳ', 'thank', '잘 봤', '멋지', '대박'],
         run: () => ({ text: '별말씀을 🐾 또 궁금한 거 있으면 불러줘!' }) },
-      { re: /(너 (누구|뭐야|이름)|넌 누구|클루(는|가)? ?(누구|뭐야|뭔데)|고양이)/,
+      { kw: ['너 누구', '너 뭐야', '너 이름', '넌 누구', '클루', '고양이'],
         run: () => ({ text: '나는 클루(Klru), bylhn의 포트폴리오 도우미 고양이야 🐾\n서버 없이 이 페이지 안에서 돌아가서, 이 페이지에 적힌 것만 알고 있어.', chips: suggestChips() }) },
-      { re: /(누구(야|세요|니|인가)|자기소개|소개 ?(해|좀|부탁)|어떤 사람|프로필|profile|about|어떤 분)/, run: profileAns },
-      { re: /(연락|이메일|메일|contact|mail)/,                           run: contactAns },
-      { re: /(보고서|리포트|report|원본|pdf|몇 ?쪽|몇 ?페이지)/,         run: listReports },
-      { re: /(프로젝트|분석 ?사례|사례|뭐 ?했|무엇을 ?했|작업|한 ?일|실적)/, run: listProjects },
-      { re: /(기술|스택|도구|툴|능력|할 수 있|다룰|쓸 수|skill|잘하)/,   run: listSkills },
-      { re: /(자격증|자격|certificat|시험|국가공인)/,                    run: listCerts },
-      { re: /(활동|동아리|경력|인턴|경험|이력|career|activit)/,          run: listActivities },
-      { re: /(학교|전공|대학|학년|백석|재학|나이|몇 ?살)/,               run: eduAns },
-      { re: /(뭐 ?물어|무엇을 ?물어|어떤 ?(걸|거|것) ?(물어|질문)|도움|help|메뉴|사용법|뭘 ?알아)/,
+      { kw: ['누구', '자기소개', '소개', '어떤 사람', '어떤 분', '프로필', 'profile', 'about'], run: profileAns },
+      { kw: ['연락', '이메일', '메일', 'contact', 'mail'],                     run: contactAns },
+      { kw: ['보고서', '리포트', 'report', '원본', 'pdf', '몇 쪽', '몇쪽', '몇 페이지', '몇페이지'], run: listReports },
+      { kw: ['프로젝트', '분석 사례', '사례', '뭐 했', '뭐했', '무엇을 했', '작업', '한 일', '실적'], run: listProjects },
+      { kw: ['기술', '스택', '도구', '툴', '능력', '할 수 있', '다룰', '쓸 수', 'skill', '잘하'], run: listSkills },
+      { kw: ['자격증', '자격', 'certificat', '시험', '국가공인'],              run: listCerts },
+      { kw: ['활동', '동아리', '경력', '인턴', '경험', '이력', 'career', 'activit'], run: listActivities },
+      { kw: ['학교', '전공', '대학', '학년', '백석', '재학', '나이', '몇 살', '몇살'], run: eduAns },
+      { kw: ['뭐 물어', '무엇을 물어', '어떤 걸 물어', '어떤 거 물어', '도움', 'help', '메뉴', '사용법', '뭘 알아'],
         run: () => ({ text: '이런 걸 물어볼 수 있어 🐾', chips: suggestChips() }) }
     ];
+
+    function intentFor(nqb) {
+      for (let i = 0; i < INTENTS.length; i++) {
+        const kws = INTENTS[i].kw;
+        for (let j = 0; j < kws.length; j++) {
+          if (nqb.indexOf(' ' + kws[j]) !== -1) return INTENTS[i];
+        }
+      }
+      return null;
+    }
 
     function answerFor(q) {
       const groups = tokenize(q);
@@ -1411,14 +1428,13 @@
         if (s > bestS) { best = d; bestS = s; ties = 1; }
         else if (s === bestS && s > 0) { ties++; }
       });
-      /* 여러 문서가 같은 점수로 묶이면 개별 답변보다 목록 답변이 정확하다 */
+      /* 제목에 꽂힌 단독 문서는 의도보다 우선. 여러 문서가 동점이면 목록 답변이 정확하다. */
       if (bestS >= 5 && ties === 1) return docAns(best);
 
-      const nq = normH(q).trim();
-      for (let i = 0; i < INTENTS.length; i++) {
-        if (INTENTS[i].re.test(nq)) return INTENTS[i].run();
-      }
-      if (bestS >= 3) return docAns(best);
+      const it = intentFor(normH(q));
+      if (it) return it.run();
+      /* 본문에만 걸린 약한 일치도 fallback보다는 낫다 (예: "KISIA", "공모전") */
+      if (bestS >= 2) return docAns(best);
       return fallback();
     }
 
