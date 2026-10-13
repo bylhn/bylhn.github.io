@@ -1035,10 +1035,10 @@
       <button class="klru-close" id="klruClose" aria-label="닫기">✕</button>
     </div>
     <div class="klru-messages" id="klruMessages">
-      <div class="klru-msg bot">안녕! 나는 클루야 🐾<br>bylhn의 포트폴리오나 프로젝트에 대해 뭐든 물어봐!</div>
+      <div class="klru-msg bot">안녕! 나는 클루야 🐾<br>bylhn 포트폴리오는 다 외우고 있으니까 아무거나 물어봐.</div>
     </div>
     <div class="klru-footer">
-      <input class="klru-input" id="klruInput" type="text" placeholder="메시지 입력..." maxlength="200" autocomplete="off" />
+      <input class="klru-input" id="klruInput" type="text" placeholder="궁금한 거 물어봐" maxlength="200" autocomplete="off" />
       <button class="klru-send" id="klruSend" aria-label="보내기">↑</button>
     </div>
   </div>
@@ -1302,7 +1302,7 @@
     function projectAns(d) {
       const concl = d.rows.filter(r => /Conclusion/i.test(r.label))[0];
       let t = '「' + d.title + '」\n' + d.type + '\n\n' + d.desc;
-      if (concl) t += '\n\n결론 → ' + cut(concl.text, 170);
+      if (concl) t += '\n\n정리하면, ' + cut(concl.text, 170);
       const chips = [{ label: '자세히 보기', run: () => openModal(d.card) }];
       if (d.reportKey && REPORTS[d.reportKey]) {
         chips.push({ label: '📖 원본 보고서 ' + REPORTS[d.reportKey].pages + '쪽', run: () => openFlipbook(d.reportKey) });
@@ -1313,7 +1313,7 @@
       let t = '「' + d.title + '」';
       if (d.type) t += '\n' + d.type;
       t += '\n\n' + d.desc;
-      if (d.tags && d.tags.length) t += '\n\n키워드 · ' + d.tags.join(' · ');
+      if (d.tags && d.tags.length) t += '\n\n주로 쓰는 건 ' + d.tags.join(', ') + '.';
       return { text: t, chips: [{ label: '해당 섹션 보기', run: () => highlight(d.card) }] };
     }
     function docAns(d) { return d.kind === 'project' ? projectAns(d) : plainAns(d); }
@@ -1326,56 +1326,56 @@
 
     function listProjects() {
       const ps = byKind('project');
-      let t = 'bylhn의 분석 사례는 모두 ' + ps.length + '건이야 🐾\n';
+      let t = '분석 사례는 ' + ps.length + '개 있어.\n';
       ps.forEach((p, i) => { t += '\n' + (i + 1) + '. ' + p.title; });
-      t += '\n\n궁금한 걸 눌러봐!';
+      t += '\n\n보고 싶은 거 눌러봐!';
       return { text: t, chips: ps.map(p => chipAsk(p.short, p.title)) };
     }
     function listReports() {
       const ps = byKind('project').filter(p => p.reportKey && REPORTS[p.reportKey]);
-      let t = '원본 보고서는 ' + ps.length + '건을 여기서 바로 넘겨볼 수 있어 📖\n';
+      let t = '보고서 ' + ps.length + '개는 여기서 바로 넘겨볼 수 있어 📖\n';
       ps.forEach(p => { t += '\n· ' + p.short + ' — ' + REPORTS[p.reportKey].pages + '쪽'; });
       return { text: t, chips: ps.map(p => ({ label: '📖 ' + p.short, run: () => openFlipbook(p.reportKey) })) };
     }
     function listSkills() {
       const ss = byKind('skill');
-      let t = '분석을 세 단계로 나눠서 정리해뒀어 🐾\n';
+      let t = 'bylhn은 분석을 세 단계로 나눠서 정리해뒀어.\n';
       ss.forEach(s => { t += '\n' + s.title + ' — ' + s.desc + '\n   ' + s.tags.join(' · ') + '\n'; });
       return { text: t.trim(), chips: [{ label: 'Skills 섹션 보기', run: () => jump('#skills') }] };
     }
     function listCerts() {
       const cs = byKind('cert');
-      let t = '자격증은 ' + cs.length + '개야 🐾\n';
+      let t = '자격증은 ' + cs.length + '개 있어.\n';
       cs.forEach(c => { t += '\n· ' + c.title + ' (' + c.type.replace('National Certification · ', '') + ')'; });
       return { text: t, chips: cs.map(c => chipAsk(c.title, c.title)) };
     }
     function listActivities() {
       const cs = byKind('career').concat(byKind('activity'));
-      let t = '지금까지의 경력과 활동이야 🐾\n';
-      cs.forEach(c => { t += '\n· ' + c.title + ' — ' + c.type; });
+      let t = '이런 걸 해왔어.\n';
+      cs.forEach(c => { t += '\n· ' + c.title + '\n   ' + c.type; });
       return { text: t, chips: cs.map(c => chipAsk(c.short, c.title)) };
     }
     function profileAns() {
       return {
-        text: PROFILE.name + ' — ' + PROFILE.role + ' 🐾\n' + PROFILE.edu + '\n\n"' + PROFILE.tagline + '"\n\n' + cut(ABOUT[0] || '', 180),
+        text: PROFILE.name + ', 디지털 포렌식 공부하는 사람이야.\n' + PROFILE.edu + '\n\n"' + PROFILE.tagline + '"\n\n' + cut(ABOUT[0] || '', 180),
         chips: [{ label: 'About 전문 읽기', run: () => jump('#about') },
                 chipAsk('프로젝트 뭐 했어?'), chipAsk('경력·활동', '활동')]
       };
     }
     function eduAns() {
-      return { text: PROFILE.edu + '에 재학 중이야 🐾',
+      return { text: PROFILE.edu.replace(' · ', ' ') + '이야.',
                chips: [chipAsk('경력·활동', '활동'), chipAsk('자격증', '자격증')] };
     }
     function contactAns() {
       return {
-        text: '이메일로 연락하면 돼 🐾\n' + PROFILE.email,
+        text: '이메일로 연락하면 가장 빨라.\n' + PROFILE.email,
         chips: [{ label: '메일 쓰기', run: () => { window.location.href = 'mailto:' + PROFILE.email; } },
                 { label: 'Contact 페이지', run: () => window.open('/contact', '_blank') }]
       };
     }
     function fallback() {
       return {
-        text: '그건 이 포트폴리오에 적혀 있지 않아서 나도 몰라 😿\n나는 서버 없이 이 페이지 안에서만 돌아가니까, 여기 적힌 내용만 대답할 수 있어.\n\n대신 이런 건 바로 알려줄 수 있어:',
+        text: '음… 그건 포트폴리오에 없는 내용이라 나도 몰라 😿\n\n대신 이런 건 알려줄 수 있어:',
         chips: suggestChips()
       };
     }
@@ -1385,11 +1385,11 @@
        한국어 조사는 뒤에 붙으므로 앞쪽 경계만 보면 충분하다. */
     const INTENTS = [
       { kw: ['안녕', '하이', 'hi', 'hello', 'ㅎㅇ', '반가', '여보세요', '야옹'],
-        run: () => ({ text: '안녕! 나는 클루야 🐾\nbylhn의 포트폴리오를 전부 외우고 있어. 뭐든 물어봐!', chips: suggestChips() }) },
+        run: () => ({ text: '안녕! 나는 클루야 🐾\nbylhn 포트폴리오는 다 외우고 있으니까 아무거나 물어봐.', chips: suggestChips() }) },
       { kw: ['고마', '감사', 'ㄳ', 'thank', '잘 봤', '멋지', '대박'],
-        run: () => ({ text: '별말씀을 🐾 또 궁금한 거 있으면 불러줘!' }) },
+        run: () => ({ text: '도움이 됐다니 다행이야 😊\n또 궁금한 거 있으면 불러줘.' }) },
       { kw: ['너 누구', '너 뭐야', '너 이름', '넌 누구', '클루', '고양이'],
-        run: () => ({ text: '나는 클루(Klru), bylhn의 포트폴리오 도우미 고양이야 🐾\n서버 없이 이 페이지 안에서 돌아가서, 이 페이지에 적힌 것만 알고 있어.', chips: suggestChips() }) },
+        run: () => ({ text: '난 클루야. bylhn 포트폴리오를 안내하는 고양이 🐾\n이 페이지에 적힌 것만 알고 있어서, 그 밖은 잘 몰라.', chips: suggestChips() }) },
       { kw: ['누구', '자기소개', '소개', '어떤 사람', '어떤 분', '프로필', 'profile', 'about'], run: profileAns },
       { kw: ['연락', '이메일', '메일', 'contact', 'mail'],                     run: contactAns },
       { kw: ['보고서', '리포트', 'report', '원본', 'pdf', '몇 쪽', '몇쪽', '몇 페이지', '몇페이지'], run: listReports },
@@ -1399,7 +1399,7 @@
       { kw: ['활동', '동아리', '경력', '인턴', '경험', '이력', 'career', 'activit'], run: listActivities },
       { kw: ['학교', '전공', '대학', '학년', '백석', '재학', '나이', '몇 살', '몇살'], run: eduAns },
       { kw: ['뭐 물어', '무엇을 물어', '어떤 걸 물어', '어떤 거 물어', '도움', 'help', '메뉴', '사용법', '뭘 알아'],
-        run: () => ({ text: '이런 걸 물어볼 수 있어 🐾', chips: suggestChips() }) }
+        run: () => ({ text: '이런 거 물어보면 돼 🐾', chips: suggestChips() }) }
     ];
 
     function intentFor(nqb) {
