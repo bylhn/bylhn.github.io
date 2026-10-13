@@ -209,21 +209,6 @@
       line-height: 2;
     }
     .about-text p + p { margin-top: 20px; }
-    .about-link {
-      font-family: var(--sans);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 28px;
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .04em;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color .2s, color .2s;
-    }
-    .about-link:hover { border-color: var(--accent); color: #5a8aa3; }
 
     /* ── ROLE ── */
     #role { background: var(--bg-alt); }
@@ -592,6 +577,21 @@
     }
     .klru-send:hover { background: #5a8aa3; }
     .klru-send:disabled { opacity: .5; cursor: default; }
+    .klru-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .klru-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 500;
+      color: var(--accent);
+      line-height: 1.4;
+      cursor: pointer;
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .klru-chip:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .klru-msg.wide { max-width: 100%; }
 
     /* ── FLIPBOOK ── */
     .fb-overlay {
@@ -698,7 +698,6 @@
         <p>글쓰기에서 시작했다. 언어로 사실을 기록하고, 기록으로 맥락을 복원하는 일이 좋았다. 그 관심은 자연스럽게 디지털 포렌식으로 이어졌다—삭제된 파일, 남겨진 로그, 보이지 않는 행동의 흔적.</p>
         <p>데이터는 거짓말하지 않는다고 믿는다. 지금은 시스템 안에서 사람의 행동을 관찰하고, 그 패턴으로부터 진실에 가까운 그림을 그리는 연습을 하고 있다. 분석은 도구지만, 목적은 언제나 사람이다.</p>
         <p>포렌식 전문가는 사무실이 아닌 현장에서 일하는 직군이기도 하다. 언제 어디서 응급 상황이 발생할지 모른다는 생각에, 주변 사람을 도울 수 있는 사람이 되고 싶어 간호조무사 자격증도 취득했다.</p>
-        <a class="about-link" href="/blog">블로그에서 더 읽기 ↗</a>
       </div>
     </div>
   </section>
@@ -730,7 +729,7 @@
         <div class="role-card">
           <div class="role-icon">🔬</div>
           <div>
-            <span class="role-tag">Research Lab · 2024.11 ~</span>
+            <span class="role-tag">Research Lab · 2025.11 ~</span>
             <h3>NGMS 연구실</h3>
             <p>정보보안 관련 연구 활동에 참여 중. 교수님의 연구·논문 업무를 보조하며 학술 자료 정리 및 연구 프로세스 전반을 익히고 있다. 실제 연구 환경에서 보안 이슈를 학문적 시각으로 접근하는 훈련을 지속하고 있다.</p>
           </div>
@@ -738,9 +737,17 @@
         <div class="role-card">
           <div class="role-icon">🛡️</div>
           <div>
-            <span class="role-tag">Security Club · 2024.10 ~</span>
+            <span class="role-tag">Security Club · 2025.10 ~</span>
             <h3>HUB 정보보안 동아리</h3>
             <p>교내 정보보안 동아리 소속. CTF, 취약점 분석 등 실습 중심의 보안 학습을 이어가며 팀 단위 문제 해결 역량을 키우고 있다.</p>
+          </div>
+        </div>
+        <div class="role-card">
+          <div class="role-icon">🏛️</div>
+          <div>
+            <span class="role-tag">KUCIS Regional Lead · 2026.05.20 ~</span>
+            <h3>KUCIS 대표운영진 — 충청권역 대표</h3>
+            <p>과학기술정보통신부와 한국정보보호산업협회(KISIA)가 주관하는 대학정보보호동아리연합회(KUCIS) 지원사업의 대표운영진으로 2026년 5월 20일 임명되어 충청권역 대표를 맡고 있다. 전국 4개 권역(서경강·충청·영남·호남) 동아리의 의견을 수렴해 자율 프로젝트·사회공헌 활동을 연계하고, KUCIS 네트워킹 데이와 권역별 세미나를 기획·운영한다. 온라인 실습 교육·기업 견학·정책제안 공모전 등 연간 지원 프로그램을 안내하고 SNS 카드뉴스로 활동을 알리며, 정기 운영진 회의에서 프로그램 세부 일정을 조율한다.</p>
           </div>
         </div>
         <div class="role-card">
@@ -1119,15 +1126,16 @@
     // Header: 22px canvas, 16 pixels → ~1.375px per pixel
     drawCat(document.getElementById('klruHeaderCanvas'), 1.375);
 
-    /* ── Klru Chatbot ── */
+    /* ── Klru Chatbot · 서버 없이 이 페이지 내용만으로 답하는 정적 엔진 ── */
     const klruBtn   = document.getElementById('klruBtn');
     const klruPanel = document.getElementById('klruPanel');
     const klruClose = document.getElementById('klruClose');
     const klruInput = document.getElementById('klruInput');
     const klruSend  = document.getElementById('klruSend');
     const klruMsgs  = document.getElementById('klruMessages');
-    let chatHistory = [];
+
     let klruOpen = false;
+    let klruBusy = false;
 
     function toggleKlru() {
       klruOpen = !klruOpen;
@@ -1137,15 +1145,325 @@
     klruBtn.addEventListener('click', toggleKlru);
     klruClose.addEventListener('click', toggleKlru);
 
+    /* ── 1. 페이지 내용 색인 ── */
+    const KLRU_DOCS = [];
+    const ktxt  = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+    const normH = s  => (' ' + (s || '') + ' ').toLowerCase().replace(/[^0-9a-z가-힣]+/g, ' ');
+    const cut   = (s, n) => s.length > n ? s.slice(0, n - 1).trim() + '…' : s;
+
+    const PROJ_META = [
+      { match: '화이트해커', short: '화이트해커 논문',
+        syn: '논문 연구 학술 법 법적 법률 윤리 제도 인증 해커 지위 공백 mmpi sjt poc 공동저자 김한별 이근호 서약 교육 cybersecurity law' },
+      { match: 'MAC Time', short: 'MAC Time 분석',
+        syn: '타임스탬프 timestamp mactime 시간 시각 ntfs exfat 파일시스템 레지스트리 usb 복사 생성 수정 접근 액세스 조작 변조 증거 신뢰도 그램 샌디스크' },
+      { match: '응용 프로그램', short: '앱 사용 흔적',
+        syn: 'prefetch 프리패치 레지스트리 mru jumplist 점프리스트 sqlite 크롬 chrome 브라우저 쿠키 카카오톡 kakaotalk 한글 hwp 엑셀 hcell 아티팩트 artifact 실행흔적 복호화 교차검증' },
+      { match: '메타데이터', short: '메타데이터 CTF',
+        syn: 'exif exiftool 이미지 사진 jpeg jpg ctf 플래그 flag 은닉 숨김 고양이 메타 주석 코멘트 트리아지 스테가노그래피' },
+      { match: 'PPTX', short: 'PPTX CTF',
+        syn: 'pptx 파워포인트 ppt zip 압축 헥사 hex 시그니처 png 헤더 ctf 플래그 비가시 숨은 이미지 무결성 wsl 손상' }
+    ];
+    function projMeta(title) {
+      for (let i = 0; i < PROJ_META.length; i++) {
+        if (title.indexOf(PROJ_META[i].match) !== -1) return PROJ_META[i];
+      }
+      return { short: cut(title, 18), syn: '' };
+    }
+
+    function addDoc(d) {
+      d.h = {
+        title: normH(d.title),
+        syn:   normH(d.syn),
+        desc:  normH((d.desc || '') + ' ' + (d.type || '')),
+        body:  normH(d.body)
+      };
+      KLRU_DOCS.push(d);
+      return d;
+    }
+
+    document.querySelectorAll('#projects .project-card').forEach(card => {
+      const title = ktxt(card.querySelector('.card-title'));
+      const meta  = projMeta(title);
+      const rows  = Array.prototype.slice.call(card.querySelectorAll('.detail-row')).map(r => ({
+        label: ktxt(r.querySelector('.detail-label')),
+        text:  ktxt(r.querySelector('.detail-text')) || ktxt(r.querySelector('.conclusion'))
+      }));
+      const btn = card.querySelector('.view-report-btn');
+      const oc  = btn ? (btn.getAttribute('onclick') || '') : '';
+      const m   = oc.match(/openFlipbook\(.([a-z0-9]+)./i);
+      addDoc({
+        kind: 'project', card: card, title: title, short: meta.short, syn: meta.syn,
+        type: ktxt(card.querySelector('.card-type')),
+        desc: ktxt(card.querySelector('.card-desc')),
+        rows: rows,
+        reportKey: m ? m[1] : null,
+        body: rows.map(r => r.label + ' ' + r.text).join(' ')
+      });
+    });
+
+    document.querySelectorAll('#role .role-card').forEach(card => {
+      const tag  = ktxt(card.querySelector('.role-tag'));
+      const kind = /Certification/i.test(tag) ? 'cert' : /Internship/i.test(tag) ? 'career' : 'activity';
+      const syn  = kind === 'cert'   ? '자격증 자격 시험 취득 합격 국가공인'
+                 : kind === 'career' ? '경력 인턴 인턴십 회사 직장 실무 경험 취업'
+                 :                     '활동 동아리 대외활동 경험 소속';
+      const name = ktxt(card.querySelector('h3'));
+      addDoc({
+        kind: kind, card: card, title: name, short: name,
+        type: tag, desc: ktxt(card.querySelector('p')),
+        rows: [], syn: syn, body: ''
+      });
+    });
+
+    document.querySelectorAll('#skills .skill-item').forEach(card => {
+      const tags = Array.prototype.slice.call(card.querySelectorAll('.skill-tag')).map(ktxt);
+      const name = ktxt(card.querySelector('.skill-name'));
+      addDoc({
+        kind: 'skill', card: card, title: name, short: name,
+        type: 'Skill ' + ktxt(card.querySelector('.skill-num')),
+        desc: ktxt(card.querySelector('.skill-desc')),
+        rows: [], tags: tags,
+        syn: '기술 스택 도구 툴 능력 사용 다룰 ' + tags.join(' '),
+        body: tags.join(' ')
+      });
+    });
+
+    const ABOUT = Array.prototype.slice.call(document.querySelectorAll('#about .about-text p')).map(ktxt);
+    const PROFILE = {
+      name: 'bylhn',
+      role: 'Digital Forensics Analyst',
+      edu: '백석대학교 컴퓨터공학부 정보보호 전공 · 3학년',
+      tagline: '기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.',
+      email: 'bylhn02@gmail.com'
+    };
+    addDoc({
+      kind: 'about', card: document.getElementById('about'),
+      title: 'bylhn 소개', short: '소개', type: PROFILE.role,
+      desc: ABOUT[0] || '', rows: [],
+      syn: '누구 소개 자기소개 프로필 about 사람 어떤사람 학교 전공 대학 학년 백석 글쓰기 간호조무사 현장',
+      body: ABOUT.join(' ') + ' ' + PROFILE.edu + ' ' + PROFILE.tagline
+    });
+
+    /* ── 2. 질의 토큰화 & 스코어링 ── */
+    const SUF = ['이라는','으로서','에서는','에게서','한테서','까지는','부터는','에서','에게','한테','부터','까지',
+                 '으로','라고','이란','처럼','보다','마다','조차','밖에','이나','들을','들이','는데','인데','이야',
+                 '예요','에요','은데','하고','과는','와는','의','은','는','이','가','을','를','에','도','만','로',
+                 '랑','나','요','들'];
+    function stripSuf(t) {
+      for (let i = 0; i < SUF.length; i++) {
+        const s = SUF[i];
+        if (t.length > s.length + 1 && t.slice(-s.length) === s) return t.slice(0, -s.length);
+      }
+      return t;
+    }
+    function tokenize(q) {
+      return normH(q).split(' ')
+        .filter(t => t.length >= 2)
+        .map(t => { const s = stripSuf(t); return s === t ? [t] : [t, s]; });
+    }
+    /* 해이스택은 앞뒤에 공백이 있는 정규화 문자열.
+       단어 시작 위치 일치는 만점, 단어 중간 일치(예: "데이" ⊂ "메타데이터")는 0.4배로 감점한다. */
+    function hit(hay, v, w) {
+      if (hay.indexOf(' ' + v) !== -1) return w;
+      if (hay.indexOf(v) !== -1) return w * 0.4;
+      return 0;
+    }
+    function scoreDoc(doc, groups) {
+      let total = 0;
+      groups.forEach(variants => {
+        let best = 0;
+        variants.forEach(v => {
+          const x = Math.max(hit(doc.h.title, v, 5), hit(doc.h.syn, v, 3),
+                             hit(doc.h.desc, v, 2),  hit(doc.h.body, v, 1));
+          if (x > best) best = x;
+        });
+        total += best;
+      });
+      return total;
+    }
+
+    /* ── 3. 답변 생성 ── */
+    function chipAsk(label, q) { return { label: label, ask: q || label }; }
+    function jump(sel) {
+      const el = document.querySelector(sel);
+      if (klruOpen) toggleKlru();
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function highlight(card) {
+      if (!card) return;
+      if (klruOpen) toggleKlru();
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const prev = card.style.boxShadow;
+      card.style.transition = 'box-shadow .4s';
+      card.style.boxShadow = '0 0 0 2px var(--accent)';
+      setTimeout(() => { card.style.boxShadow = prev; }, 1800);
+    }
+
+    function projectAns(d) {
+      const concl = d.rows.filter(r => /Conclusion/i.test(r.label))[0];
+      let t = '「' + d.title + '」\n' + d.type + '\n\n' + d.desc;
+      if (concl) t += '\n\n결론 → ' + cut(concl.text, 170);
+      const chips = [{ label: '자세히 보기', run: () => openModal(d.card) }];
+      if (d.reportKey && REPORTS[d.reportKey]) {
+        chips.push({ label: '📖 원본 보고서 ' + REPORTS[d.reportKey].pages + '쪽', run: () => openFlipbook(d.reportKey) });
+      }
+      return { text: t, chips: chips };
+    }
+    function plainAns(d) {
+      let t = '「' + d.title + '」';
+      if (d.type) t += '\n' + d.type;
+      t += '\n\n' + d.desc;
+      if (d.tags && d.tags.length) t += '\n\n키워드 · ' + d.tags.join(' · ');
+      return { text: t, chips: [{ label: '해당 섹션 보기', run: () => highlight(d.card) }] };
+    }
+    function docAns(d) { return d.kind === 'project' ? projectAns(d) : plainAns(d); }
+
+    function suggestChips() {
+      return [chipAsk('프로젝트 뭐 했어?'), chipAsk('어떤 도구 써?', '기술 스택'),
+              chipAsk('자격증 있어?', '자격증'), chipAsk('연락처', '연락처')];
+    }
+    function byKind(k) { return KLRU_DOCS.filter(d => d.kind === k); }
+
+    function listProjects() {
+      const ps = byKind('project');
+      let t = 'bylhn의 분석 사례는 모두 ' + ps.length + '건이야 🐾\n';
+      ps.forEach((p, i) => { t += '\n' + (i + 1) + '. ' + p.title; });
+      t += '\n\n궁금한 걸 눌러봐!';
+      return { text: t, chips: ps.map(p => chipAsk(p.short, p.title)) };
+    }
+    function listReports() {
+      const ps = byKind('project').filter(p => p.reportKey && REPORTS[p.reportKey]);
+      let t = '원본 보고서는 ' + ps.length + '건을 여기서 바로 넘겨볼 수 있어 📖\n';
+      ps.forEach(p => { t += '\n· ' + p.short + ' — ' + REPORTS[p.reportKey].pages + '쪽'; });
+      return { text: t, chips: ps.map(p => ({ label: '📖 ' + p.short, run: () => openFlipbook(p.reportKey) })) };
+    }
+    function listSkills() {
+      const ss = byKind('skill');
+      let t = '분석을 세 단계로 나눠서 정리해뒀어 🐾\n';
+      ss.forEach(s => { t += '\n' + s.title + ' — ' + s.desc + '\n   ' + s.tags.join(' · ') + '\n'; });
+      return { text: t.trim(), chips: [{ label: 'Skills 섹션 보기', run: () => jump('#skills') }] };
+    }
+    function listCerts() {
+      const cs = byKind('cert');
+      let t = '자격증은 ' + cs.length + '개야 🐾\n';
+      cs.forEach(c => { t += '\n· ' + c.title + ' (' + c.type.replace('National Certification · ', '') + ')'; });
+      return { text: t, chips: cs.map(c => chipAsk(c.title, c.title)) };
+    }
+    function listActivities() {
+      const cs = byKind('career').concat(byKind('activity'));
+      let t = '지금까지의 경력과 활동이야 🐾\n';
+      cs.forEach(c => { t += '\n· ' + c.title + ' — ' + c.type; });
+      return { text: t, chips: cs.map(c => chipAsk(c.short, c.title)) };
+    }
+    function profileAns() {
+      return {
+        text: PROFILE.name + ' — ' + PROFILE.role + ' 🐾\n' + PROFILE.edu + '\n\n"' + PROFILE.tagline + '"\n\n' + cut(ABOUT[0] || '', 180),
+        chips: [{ label: 'About 전문 읽기', run: () => jump('#about') },
+                chipAsk('프로젝트 뭐 했어?'), chipAsk('경력·활동', '활동')]
+      };
+    }
+    function eduAns() {
+      return { text: PROFILE.edu + '에 재학 중이야 🐾',
+               chips: [chipAsk('경력·활동', '활동'), chipAsk('자격증', '자격증')] };
+    }
+    function contactAns() {
+      return {
+        text: '이메일로 연락하면 돼 🐾\n' + PROFILE.email,
+        chips: [{ label: '메일 쓰기', run: () => { window.location.href = 'mailto:' + PROFILE.email; } },
+                { label: 'Contact 페이지', run: () => window.open('/contact', '_blank') }]
+      };
+    }
+    function fallback() {
+      return {
+        text: '그건 이 포트폴리오에 적혀 있지 않아서 나도 몰라 😿\n나는 서버 없이 이 페이지 안에서만 돌아가니까, 여기 적힌 내용만 대답할 수 있어.\n\n대신 이런 건 바로 알려줄 수 있어:',
+        chips: suggestChips()
+      };
+    }
+
+    /* 의도 키워드는 "단어 시작" 기준으로만 맞춘다.
+       부분 문자열로 맞추면 "과학기술정보통신부"가 기술 스택 질문으로 오인된다.
+       한국어 조사는 뒤에 붙으므로 앞쪽 경계만 보면 충분하다. */
+    const INTENTS = [
+      { kw: ['안녕', '하이', 'hi', 'hello', 'ㅎㅇ', '반가', '여보세요', '야옹'],
+        run: () => ({ text: '안녕! 나는 클루야 🐾\nbylhn의 포트폴리오를 전부 외우고 있어. 뭐든 물어봐!', chips: suggestChips() }) },
+      { kw: ['고마', '감사', 'ㄳ', 'thank', '잘 봤', '멋지', '대박'],
+        run: () => ({ text: '별말씀을 🐾 또 궁금한 거 있으면 불러줘!' }) },
+      { kw: ['너 누구', '너 뭐야', '너 이름', '넌 누구', '클루', '고양이'],
+        run: () => ({ text: '나는 클루(Klru), bylhn의 포트폴리오 도우미 고양이야 🐾\n서버 없이 이 페이지 안에서 돌아가서, 이 페이지에 적힌 것만 알고 있어.', chips: suggestChips() }) },
+      { kw: ['누구', '자기소개', '소개', '어떤 사람', '어떤 분', '프로필', 'profile', 'about'], run: profileAns },
+      { kw: ['연락', '이메일', '메일', 'contact', 'mail'],                     run: contactAns },
+      { kw: ['보고서', '리포트', 'report', '원본', 'pdf', '몇 쪽', '몇쪽', '몇 페이지', '몇페이지'], run: listReports },
+      { kw: ['프로젝트', '분석 사례', '사례', '뭐 했', '뭐했', '무엇을 했', '작업', '한 일', '실적'], run: listProjects },
+      { kw: ['기술', '스택', '도구', '툴', '능력', '할 수 있', '다룰', '쓸 수', 'skill', '잘하'], run: listSkills },
+      { kw: ['자격증', '자격', 'certificat', '시험', '국가공인'],              run: listCerts },
+      { kw: ['활동', '동아리', '경력', '인턴', '경험', '이력', 'career', 'activit'], run: listActivities },
+      { kw: ['학교', '전공', '대학', '학년', '백석', '재학', '나이', '몇 살', '몇살'], run: eduAns },
+      { kw: ['뭐 물어', '무엇을 물어', '어떤 걸 물어', '어떤 거 물어', '도움', 'help', '메뉴', '사용법', '뭘 알아'],
+        run: () => ({ text: '이런 걸 물어볼 수 있어 🐾', chips: suggestChips() }) }
+    ];
+
+    function intentFor(nqb) {
+      for (let i = 0; i < INTENTS.length; i++) {
+        const kws = INTENTS[i].kw;
+        for (let j = 0; j < kws.length; j++) {
+          if (nqb.indexOf(' ' + kws[j]) !== -1) return INTENTS[i];
+        }
+      }
+      return null;
+    }
+
+    function answerFor(q) {
+      const groups = tokenize(q);
+      let best = null, bestS = 0, ties = 0;
+      KLRU_DOCS.forEach(d => {
+        const s = scoreDoc(d, groups);
+        if (s > bestS) { best = d; bestS = s; ties = 1; }
+        else if (s === bestS && s > 0) { ties++; }
+      });
+      /* 제목에 꽂힌 단독 문서는 의도보다 우선. 여러 문서가 동점이면 목록 답변이 정확하다. */
+      if (bestS >= 5 && ties === 1) return docAns(best);
+
+      const it = intentFor(normH(q));
+      if (it) return it.run();
+      /* 본문에만 걸린 약한 일치도 fallback보다는 낫다 (예: "KISIA", "공모전") */
+      if (bestS >= 2) return docAns(best);
+      return fallback();
+    }
+
+    /* ── 4. 렌더링 ── */
+    function buildChips(chips) {
+      const wrap = document.createElement('div');
+      wrap.className = 'klru-chips';
+      chips.forEach(c => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'klru-chip';
+        b.textContent = c.label;
+        b.addEventListener('click', () => { if (c.run) c.run(); else sendText(c.ask); });
+        wrap.appendChild(b);
+      });
+      return wrap;
+    }
     function appendMsg(text, role) {
       const div = document.createElement('div');
       div.className = 'klru-msg ' + role;
-      div.textContent = text;
+      String(text).split('\n').forEach((line, i) => {
+        if (i) div.appendChild(document.createElement('br'));
+        div.appendChild(document.createTextNode(line));
+      });
       klruMsgs.appendChild(div);
       klruMsgs.scrollTop = klruMsgs.scrollHeight;
       return div;
     }
-
+    function appendBot(ans) {
+      const div = appendMsg(ans.text, 'bot');
+      if (ans.chips && ans.chips.length) {
+        div.classList.add('wide');
+        div.appendChild(buildChips(ans.chips));
+      }
+      klruMsgs.scrollTop = klruMsgs.scrollHeight;
+      return div;
+    }
     function showTyping() {
       const div = document.createElement('div');
       div.className = 'klru-msg bot';
@@ -1155,35 +1473,39 @@
       return div;
     }
 
-    async function sendMessage() {
-      const text = klruInput.value.trim();
-      if (!text) return;
-      klruInput.value = '';
+    function sendText(text) {
+      const t = (text || '').trim();
+      if (!t || klruBusy) return;
+      klruBusy = true;
       klruSend.disabled = true;
-      appendMsg(text, 'user');
-      chatHistory.push({ role: 'user', content: text });
+      appendMsg(t, 'user');
+      const ans = answerFor(t);
       const typing = showTyping();
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history: chatHistory.slice(-8) })
-        });
-        const data = await res.json();
+      setTimeout(() => {
         typing.remove();
-        const reply = data.reply || '죄송해, 잠깐 대답하기 어려워 🐾';
-        appendMsg(reply, 'bot');
-        chatHistory.push({ role: 'assistant', content: reply });
-      } catch {
-        typing.remove();
-        appendMsg('연결에 문제가 생겼어. 잠시 후 다시 시도해봐! 🐾', 'bot');
-      }
-      klruSend.disabled = false;
+        appendBot(ans);
+        klruBusy = false;
+        klruSend.disabled = false;
+      }, 380 + Math.random() * 300);
+    }
+    function sendMessage() {
+      const t = klruInput.value.trim();
+      if (!t) return;
+      klruInput.value = '';
+      sendText(t);
       klruInput.focus();
     }
 
     klruSend.addEventListener('click', sendMessage);
     klruInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    /* 첫 인사말에 추천 질문 붙이기 */
+    (function () {
+      const first = klruMsgs.querySelector('.klru-msg.bot');
+      if (!first) return;
+      first.classList.add('wide');
+      first.appendChild(buildChips(suggestChips()));
+    })();
 
     /* ── Flipbook ── */
     let fbInstance = null;
