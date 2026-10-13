@@ -1377,12 +1377,6 @@
                 { label: 'Contact 페이지', run: () => window.open('/contact', '_blank') }]
       };
     }
-    function blogAns() {
-      return {
-        text: 'bylhn은 공부한 내용을 블로그에 기록해 🐾\n포렌식·DB·리눅스·C언어 글이 올라가 있어.',
-        chips: [{ label: '블로그 열기', run: () => window.open('/blog', '_blank') }]
-      };
-    }
     function fallback() {
       return {
         text: '그건 이 포트폴리오에 적혀 있지 않아서 나도 몰라 😿\n나는 서버 없이 이 페이지 안에서만 돌아가니까, 여기 적힌 내용만 대답할 수 있어.\n\n대신 이런 건 바로 알려줄 수 있어:',
@@ -1399,7 +1393,6 @@
         run: () => ({ text: '나는 클루(Klru), bylhn의 포트폴리오 도우미 고양이야 🐾\n서버 없이 이 페이지 안에서 돌아가서, 이 페이지에 적힌 것만 알고 있어.', chips: suggestChips() }) },
       { re: /(누구(야|세요|니|인가)|자기소개|소개 ?(해|좀|부탁)|어떤 사람|프로필|profile|about|어떤 분)/, run: profileAns },
       { re: /(연락|이메일|메일|contact|mail)/,                           run: contactAns },
-      { re: /(블로그|blog|포스트|글 ?(읽|보|써))/,                       run: blogAns },
       { re: /(보고서|리포트|report|원본|pdf|몇 ?쪽|몇 ?페이지)/,         run: listReports },
       { re: /(프로젝트|분석 ?사례|사례|뭐 ?했|무엇을 ?했|작업|한 ?일|실적)/, run: listProjects },
       { re: /(기술|스택|도구|툴|능력|할 수 있|다룰|쓸 수|skill|잘하)/,   run: listSkills },
