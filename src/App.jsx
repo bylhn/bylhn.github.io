@@ -50,32 +50,128 @@ const CatChibiFloat = ({ emotion = 'idle' }) => {
   )
 }
 
+/* ─── Klru 정적 엔진 (서버 없이 블로그 글·프로필로 답한다) ─── */
+const KLRU_PROFILE = {
+  name: 'bylhn',
+  edu: '백석대학교 컴퓨터공학부 정보보호 전공 3학년',
+  tagline: '기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.',
+  email: 'bylhn02@gmail.com',
+}
+const kNorm = s => (' ' + (s || '') + ' ').toLowerCase().replace(/[^0-9a-z가-힣]+/g, ' ')
+const K_SUF = ['이라는', '으로서', '에서는', '까지는', '부터는', '에서', '에게', '한테', '부터', '까지', '으로',
+  '라고', '이란', '처럼', '보다', '마다', '조차', '밖에', '이나', '는데', '인데', '이야', '예요', '에요', '하고',
+  '의', '은', '는', '이', '가', '을', '를', '에', '도', '만', '로', '랑', '나', '요', '들']
+const kStrip = t => {
+  for (const s of K_SUF) if (t.length > s.length + 1 && t.slice(-s.length) === s) return t.slice(0, -s.length)
+  return t
+}
+const kTokens = q => kNorm(q).split(' ').filter(t => t.length >= 2)
+  .map(t => { const s = kStrip(t); return s === t ? [t] : [t, s] })
+/* 단어 시작 일치는 만점, 단어 중간 일치는 감점 */
+const kHit = (hay, v, w) => hay.indexOf(' ' + v) !== -1 ? w : (hay.indexOf(v) !== -1 ? w * 0.4 : 0)
+const kScore = (doc, groups) => groups.reduce((sum, vs) => sum +
+  Math.max(...vs.map(v => Math.max(kHit(doc.h.title, v, 5), kHit(doc.h.tag, v, 3), kHit(doc.h.body, v, 1)))), 0)
+
+const klruIndex = posts => posts.map(p => ({
+  ...p,
+  h: { title: kNorm(p.title), tag: kNorm(p.tag), body: kNorm((p.excerpt || '') + ' ' + (p.tag || '')) },
+}))
+
+/* 태그 이름을 한글로 묻는 경우를 이어준다 (글 태그는 영문이 섞여 있다) */
+const K_TAG_SYN = {
+  '파이썬': 'python', '유닉스': 'unix', '리눅스': 'unix', '쉘': 'unix', '셸': 'unix',
+  '데이터베이스': 'database', '디비': 'database', '디비엠에스': 'database', 'dbms': 'database',
+  'sql': 'database', '씨언어': 'c', 'c언어': 'c', '포렌식': 'forensics', '어셈': '어셈블리',
+}
+
+const klruAnswer = (q, posts) => {
+  const groups = kTokens(q)
+  let best = null, bestS = 0, ties = 0
+  posts.forEach(p => {
+    const s = kScore(p, groups)
+    if (s > bestS) { best = p; bestS = s; ties = 1 }
+    else if (s === bestS && s > 0) { ties++ }
+  })
+  const nq = kNorm(q)
+  const has = (...kws) => kws.some(k => nq.indexOf(' ' + k) !== -1)
+  const post = p => ({
+    text: `「${p.title}」 글이 있어.\n` + (p.tag ? `태그 ${p.tag}\n` : '') + (p.excerpt || '').slice(0, 90),
+    link: `/blog/${p.slug}`, linkLabel: '글 읽기 →', mood: 'happy',
+  })
+
+  if (bestS >= 5 && ties === 1) return post(best)
+
+  /* 태그를 물었으면 그 태그 글만 모아서 답한다 ("Unix 글 있어?" -> 16편) */
+  const tagNames = posts.map(p => p.tag).filter(Boolean)
+    .filter((v, i, a) => a.indexOf(v) === i)
+  let tagHit = tagNames.filter(n => nq.indexOf(' ' + n.toLowerCase()) !== -1)[0]
+  if (!tagHit) {
+    const key = Object.keys(K_TAG_SYN).filter(k => nq.indexOf(' ' + k) !== -1)[0]
+    if (key) tagHit = tagNames.filter(n => n.toLowerCase() === K_TAG_SYN[key])[0]
+  }
+  if (tagHit) {
+    const ps = posts.filter(p => p.tag === tagHit)
+    const head = ps.slice(0, 5).map(p => '· ' + p.title).join('\n')
+    const rest = ps.length > 5 ? `\n\n…그 외 ${ps.length - 5}편 더 있어.` : ''
+    return { text: `${tagHit} 글은 ${ps.length}편 있어.\n\n` + head + rest, mood: 'happy' }
+  }
+
+  if (has('안녕', '하이', 'hi', 'hello', 'ㅎㅇ', '반가', '야옹'))
+    return { text: '안녕! 나는 클루야 🐾\nbylhn이나 블로그 글에 대해 아무거나 물어봐.', mood: 'happy' }
+  if (has('고마', '감사', 'ㄳ', 'thank'))
+    return { text: '도움이 됐다니 다행이야 😊', mood: 'happy' }
+  if (has('너 누구', '넌 누구', '클루', '고양이'))
+    return { text: '난 클루야. bylhn을 안내하는 고양이 🐾\n이 사이트에 있는 것만 알고 있어.', mood: 'happy' }
+  if (has('포트폴리오', '프로젝트', '분석 사례', '사례', '보고서', '리포트'))
+    return {
+      text: '분석 사례랑 보고서는 포트폴리오에 정리돼 있어.\n거기 있는 클루한테 물어보면 더 자세히 알려줄 거야!',
+      link: '/portfolio', linkLabel: '포트폴리오 보기 →', mood: 'happy',
+    }
+  if (has('연락', '이메일', '메일', 'contact'))
+    return { text: `이메일로 연락하면 가장 빨라.\n${KLRU_PROFILE.email}`, mood: 'happy' }
+  if (has('누구', '소개', '어떤 사람', '프로필', 'about'))
+    return { text: `${KLRU_PROFILE.name}, 디지털 포렌식 공부하는 사람이야.\n${KLRU_PROFILE.edu}\n\n"${KLRU_PROFILE.tagline}"`, mood: 'happy' }
+  if (has('학교', '전공', '대학', '학년', '백석', '재학'))
+    return { text: KLRU_PROFILE.edu + '이야.', mood: 'happy' }
+  if (has('글', '블로그', '포스트', '목록', '몇 개', '몇개', '뭐 있', '무슨')) {
+    if (!posts.length) return { text: '글 목록을 아직 못 읽었어. 잠시 뒤에 다시 물어봐!', mood: 'confused' }
+    const tags = {}
+    posts.forEach(p => { const k = p.tag || '기타'; tags[k] = (tags[k] || 0) + 1 })
+    const lines = Object.keys(tags).sort((a, b) => tags[b] - tags[a]).map(k => `· ${k} ${tags[k]}편`)
+    return { text: `글은 ${posts.length}편 있어.\n\n` + lines.join('\n'), mood: 'happy' }
+  }
+  if (bestS >= 2) return post(best)
+  return {
+    text: '음… 그건 이 사이트에 없는 내용이라 나도 몰라 😿\n블로그 글이나 포트폴리오에 대해 물어봐!',
+    mood: 'confused',
+  }
+}
+
 /* ─── Chatbot ─── */
 const Chatbot = () => {
   const [open, setOpen] = useState(() => { try { return localStorage.getItem('klru_open') === 'true' } catch { return false } })
-  const [msgs, setMsgs] = useState([{ role: 'assistant', content: '안녕! 궁금한 거 있으면 물어봐 😊' }])
+  const [msgs, setMsgs] = useState([{ role: 'assistant', content: '안녕! 나는 클루야 🐾\nbylhn이나 블로그 글에 대해 아무거나 물어봐.' }])
   const [input, setInput] = useState('')
   const [emotion, setEmotion] = useState('idle')
   const [loading, setLoading] = useState(false)
+  const [posts, setPosts] = useState([])
   const bottomRef = useRef(null)
+  useEffect(() => {
+    fetch('/data/posts.json').then(r => r.json()).then(d => setPosts(klruIndex(d))).catch(() => {})
+  }, [])
   useEffect(() => { try { localStorage.setItem('klru_open', open) } catch {} }, [open])
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [msgs])
-  const send = async () => {
+  const send = () => {
     const msg = input.trim()
     if (!msg || loading) return
     setInput(''); setMsgs(m => [...m, { role: 'user', content: msg }]); setLoading(true); setEmotion('thinking')
-    try {
-      const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg, history: msgs.slice(-6) }) })
-      const data = await res.json()
-      const reply = data.reply || '잠깐, 생각 중이에요...'
-      setEmotion(reply.includes('없어요') || reply.includes('모르') ? 'confused' : 'happy')
-      setMsgs(m => [...m, { role: 'assistant', content: reply }])
+    const ans = klruAnswer(msg, posts)
+    setTimeout(() => {
+      setMsgs(m => [...m, { role: 'assistant', content: ans.text, link: ans.link, linkLabel: ans.linkLabel }])
+      setEmotion(ans.mood)
+      setLoading(false)
       setTimeout(() => setEmotion('idle'), 3000)
-    } catch {
-      setMsgs(m => [...m, { role: 'assistant', content: '잠깐 연결이 안 됐어요 😅' }])
-      setEmotion('confused'); setTimeout(() => setEmotion('idle'), 2000)
-    }
-    setLoading(false)
+    }, 420 + Math.random() * 280)
   }
   return (
     <>
@@ -94,7 +190,14 @@ const Chatbot = () => {
           <div style={{ flex: 1, overflowY: 'auto', padding: '16px 14px', display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 320 }}>
             {msgs.map((m, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                <div style={{ maxWidth: '80%', padding: '9px 13px', borderRadius: m.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px', background: m.role === 'user' ? 'rgba(126,168,196,0.15)' : 'rgba(0,0,0,0.04)', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7 }}>{m.content}</div>
+                <div style={{ maxWidth: '80%', padding: '9px 13px', borderRadius: m.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px', background: m.role === 'user' ? 'rgba(126,168,196,0.15)' : 'rgba(0,0,0,0.04)', fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+                  {m.content}
+                  {m.link && (
+                    <a href={m.link} style={{ display: 'inline-block', marginTop: 8, padding: '4px 10px', borderRadius: 999, border: '1px solid rgba(126,168,196,0.5)', color: 'var(--accent)', textDecoration: 'none', fontSize: 11, fontWeight: 500 }}>
+                      {m.linkLabel || '열기 →'}
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
             {loading && (
