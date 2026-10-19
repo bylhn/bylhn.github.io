@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>사건 기록실 시안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F7F6F3;
+    --card: #FFFFFF;
+    --ink: #253746;
+    --muted: #5B6873;
+    --line: #DAD7D0;
+    --steel: #7EA8C4;
+    --steel-ink: #3D6A88;
+    --seal: #B56B45;
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+    --mono: 'Share Tech Mono', monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  .proto { background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: 13px; text-align: center; padding: 8px 16px; letter-spacing: .04em; }
+
+  header { border-bottom: 1px solid var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 0; }
+  .logo { font-family: var(--mono); font-size: 20px; text-decoration: none; letter-spacing: .06em; }
+  .nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  .nav ul a { text-decoration: none; font-size: 15px; color: var(--muted); }
+  .nav ul a:hover { color: var(--ink); }
+
+  .hero { padding: 88px 0 72px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 14px; color: var(--steel-ink); letter-spacing: .12em; margin: 0 0 20px; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 52px); line-height: 1.35; margin: 0 0 28px; max-width: 18em; }
+  .who { font-size: 17px; margin: 0; }
+  .who b { font-weight: 700; }
+  .who span { color: var(--muted); }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border: 1px solid var(--ink); border-radius: 2px; text-decoration: none; font-size: 15px; font-weight: 500; }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn:hover { opacity: .85; }
+
+  section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .sec-head h2 { font-family: var(--serif); font-size: 28px; margin: 0; }
+  .sec-head h2 small { font-family: var(--mono); font-size: 15px; color: var(--muted); font-weight: 400; margin-left: 10px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filters button { font: inherit; font-size: 14px; background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; min-height: 36px; }
+  .filters button.on { border-color: var(--ink); color: var(--ink); }
+
+  .cases { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .case { background: var(--card); border: 1px solid var(--line); border-radius: 2px; display: flex; flex-direction: column; }
+  .tab { display: flex; justify-content: space-between; gap: 8px; font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 12px 20px; border-bottom: 1px dashed var(--line); }
+  .case-body { padding: 20px 20px 0; flex: 1; }
+  .case h3 { font-size: 18px; line-height: 1.45; margin: 0 0 18px; }
+  .evidence { border: 1.5px solid var(--seal); border-radius: 2px; padding: 12px 14px; margin-bottom: 14px; }
+  .evidence .label { font-family: var(--mono); font-size: 12px; color: var(--seal); letter-spacing: .1em; display: block; }
+  .evidence .value { font-size: 19px; font-weight: 700; color: var(--ink); }
+  .meaning { font-size: 15px; color: var(--muted); margin: 0 0 14px; }
+  .limit { display: flex; gap: 8px; align-items: baseline; font-size: 14px; margin: 0 0 14px; padding: 8px 12px; background: #F1EEE8; border-left: 0; border-radius: 2px; }
+  .limit b { font-family: var(--mono); font-weight: 400; font-size: 12px; letter-spacing: .08em; white-space: nowrap; }
+  .case-foot { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-top: 1px solid var(--line); margin-top: 6px; }
+  .case-foot a { font-size: 14px; font-weight: 500; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .case-foot a.pdf { font-family: var(--mono); color: var(--steel-ink); }
+
+  .stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border: 1px solid var(--line); background: var(--card); }
+  .stage { padding: 24px; border-right: 1px solid var(--line); }
+  .stage:last-child { border-right: 0; }
+  .stage .n { font-family: var(--mono); color: var(--steel-ink); font-size: 14px; }
+  .stage h3 { font-family: var(--mono); font-size: 22px; font-weight: 400; margin: 4px 0 8px; }
+  .stage p { font-size: 15px; color: var(--muted); margin: 0 0 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips span { font-family: var(--mono); font-size: 13px; border: 1px solid var(--line); padding: 2px 10px; border-radius: 2px; }
+
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; }
+  .two h3 { font-family: var(--serif); font-size: 20px; margin: 0 0 14px; }
+  .two p { margin: 0 0 12px; }
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log li { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 15px; }
+  .log time { font-family: var(--mono); color: var(--muted); font-size: 13px; padding-top: 2px; }
+  .status { display: inline-block; font-size: 12px; border: 1px solid var(--steel-ink); color: var(--steel-ink); padding: 0 8px; border-radius: 999px; margin-left: 6px; vertical-align: 1px; }
+  .status.done { background: var(--steel-ink); color: #fff; }
+
+  .contact { text-align: center; padding: 88px 0; border-bottom: 0; }
+  .contact h2 { font-family: var(--serif); font-size: 30px; margin: 0 0 16px; }
+  .contact a { font-family: var(--mono); font-size: 20px; }
+  footer { text-align: center; font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 24px 0 40px; }
+
+  .cat { position: fixed; right: 20px; bottom: 20px; display: flex; align-items: center; gap: 8px; background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: 10px 18px 10px 12px; font: inherit; font-size: 14px; cursor: pointer; min-height: 46px; }
+  .cat svg { width: 22px; height: 22px; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 56px 0 48px; }
+    section { padding: 52px 0; }
+    .stage { border-right: 0; border-bottom: 1px solid var(--line); }
+    .stage:last-child { border-bottom: 0; }
+    .log li { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="proto">시안 미리보기 · 실제 사이트 아님 · 버튼은 동작하지 않음</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#">bylhn</a>
+    <ul>
+      <li><a href="#about">소개</a></li>
+      <li><a href="#cases">분석 사례</a></li>
+      <li><a href="#skills">역량·활동</a></li>
+      <li><a href="#contact">연락</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">사건 기록실 / CASE ARCHIVE</p>
+      <h1>기록된 흔적으로 진실을 밝혀, 사람에게 닿게 한다.</h1>
+      <p class="who"><b>bylhn</b> · Digital Forensics Analyst<br><span>백석대학교 컴퓨터공학부 정보보호 전공 · 3학년</span></p>
+      <div class="actions">
+        <a class="btn primary" href="#cases">분석 사례 보기</a>
+        <a class="btn" href="#cases">전체 보고서 보기</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="cases">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>분석 사례<small>05건</small></h2>
+        <div class="filters">
+          <button class="on" type="button">전체</button>
+          <button type="button">연구</button>
+          <button type="button">실측</button>
+          <button type="button">흔적 분석</button>
+          <button type="button">CTF</button>
+        </div>
+      </div>
+
+      <div class="cases">
+        <article class="case">
+          <div class="tab"><span>CASE 01 · 실측</span><span>2026.04</span></div>
+          <div class="case-body">
+            <h3>윈도우 파일 행위에 따른 MAC Time 변화 분석</h3>
+            <div class="evidence"><span class="label">핵심 발견</span><span class="value">복사 후 Modified 유지</span></div>
+            <p class="meaning">생성·복사·수정·액세스가 NTFS 타임스탬프에 미치는 영향을 직접 실측했다.</p>
+          </div>
+          <div class="case-foot"><a href="#">사례 읽기 →</a><a class="pdf" href="#">PDF</a></div>
+        </article>
+
+        <article class="case">
+          <div class="tab"><span>CASE 02 · 흔적 분석</span><span>2026.05</span></div>
+          <div class="case-body">
+            <h3>윈도우 응용 프로그램 사용 흔적 조사</h3>
+            <div class="evidence"><span class="label">핵심 발견</span><span class="value">Chrome 실행 기록 1,204회</span></div>
+            <p class="meaning">Prefetch·레지스트리 MRU·Jump List·SQLite를 교차 분석했다.</p>
+            <p class="limit"><b>한계</b><span>KakaoTalk 복호화 실패 · 키 미확보</span></p>
+          </div>
+          <div class="case-foot"><a href="#">사례 읽기 →</a><a class="pdf" href="#">PDF</a></div>
+        </article>
+
+        <article class="case">
+          <div class="tab"><span>CASE 03 · CTF</span><span>HUB</span></div>
+          <div class="case-body">
+            <h3>PPTX 내부 비가시 이미지 리소스 식별</h3>
+            <div class="evidence"><span class="label">핵심 발견</span><span class="value">PNG 시그니처 부재</span></div>
+            <p class="meaning">ZIP 해제와 헥사 덤프로 슬라이드에 보이지 않는 이미지의 헤더 손상을 확인했다.</p>
+          </div>
+          <div class="case-foot"><a href="#">사례 읽기 →</a><a class="pdf" href="#">PDF</a></div>
+        </article>
+
+        <article class="case">
+          <div class="tab"><span>CASE 04 · CTF</span><span>HUB</span></div>
+          <div class="case-body">
+            <h3>이미지 메타데이터 내 은닉 플래그 추출</h3>
+            <div class="evidence"><span class="label">핵심 발견</span><span class="value">코멘트 필드의 은닉 문자열</span></div>
+            <p class="meaning">육안으로 이상 없는 JPEG를 ExifTool로 분석해 숨겨진 데이터를 찾았다.</p>
+          </div>
+          <div class="case-foot"><a href="#">사례 읽기 →</a><a class="pdf" href="#">PDF</a></div>
+        </article>
+
+        <article class="case">
+          <div class="tab"><span>CASE 05 · 연구</span><span>논문</span></div>
+          <div class="case-body">
+            <h3>화이트해커의 법적 지위 확립을 위한 인증 및 윤리 관리 제도 연구</h3>
+            <div class="evidence"><span class="label">핵심 제안</span><span class="value">인증·평가·서약·교육 4단계</span></div>
+            <p class="meaning">화이트해커의 법적 공백을 분석하고 제도적 해법을 제안했다.</p>
+          </div>
+          <div class="case-foot"><a href="#">사례 읽기 →</a><a class="pdf" href="#">PDF</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head"><h2>분석의 세 단계</h2></div>
+      <div class="stages">
+        <div class="stage">
+          <span class="n">01</span>
+          <h3>Trace</h3>
+          <p>삭제된 파일, 숨겨진 메타데이터, 잔존 흔적 탐지</p>
+          <div class="chips"><span>$MFT</span><span>ExifTool</span><span>Hex Dump</span><span>NTFS</span></div>
+        </div>
+        <div class="stage">
+          <span class="n">02</span>
+          <h3>Analyze</h3>
+          <p>로그 패턴 분석, 타임라인 구성, 이상 행동 식별</p>
+          <div class="chips"><span>Apache Log</span><span>타임라인</span><span>MAC Time</span><span>SentinelOne</span><span>Python</span></div>
+        </div>
+        <div class="stage">
+          <span class="n">03</span>
+          <h3>Reconstruct</h3>
+          <p>행동 흐름 복원, 사실 관계 재구성, 보고서 작성</p>
+          <div class="chips"><span>C언어</span><span>보고서</span><span>포렌식 절차</span><span>WSL</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap two">
+      <div>
+        <h3>분석자 소개</h3>
+        <p>글쓰기에서 시작했다. 언어로 사실을 기록하고, 기록으로 맥락을 복원하는 일이 좋았다. 그 관심은 자연스럽게 디지털 포렌식으로 이어졌다.</p>
+        <p>데이터는 거짓말하지 않는다고 믿는다. 분석은 도구지만, 목적은 언제나 사람이다.</p>
+      </div>
+      <div>
+        <h3>활동과 자격</h3>
+        <ul class="log">
+          <li><time>2026.06 ~</time><span>DFIR Sherpa 1기 멘토링</span></li>
+          <li><time>2026.05 ~</time><span>KUCIS 대표운영진 · 충청권역 대표</span></li>
+          <li><time>2026.01 ~ 02</time><span>드림텍 모바일 개발 2팀 인턴</span></li>
+          <li><time>2025.11 ~</time><span>NGMS 연구실</span></li>
+          <li><time>2025.10 ~</time><span>HUB 정보보안 동아리</span></li>
+          <li><time>자격</time><span>디지털포렌식전문가 2급 <span class="status">실기 준비 중</span></span></li>
+          <li><time>자격</time><span>간호조무사 <span class="status done">취득</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>기록으로 닿겠습니다.</h2>
+      <a href="mailto:bylhn02@gmail.com">bylhn02@gmail.com</a>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 bylhn · 기록은 사라지지 않는다.</footer>
+
+<button class="cat" type="button" aria-label="클루에게 물어보기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V8l3-4 3 4h4l3-4 3 4v12z"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>
+  클루에게 물어보기
+</button>
+</body>
+</html>
