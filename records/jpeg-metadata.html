@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="bylhn-record" content="jpeg-metadata">
+<title>이미지 메타데이터 내 은닉 플래그 추출 · 등대 기록실</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#293f43;background:#f9f5ec;font:17px/1.8 system-ui,sans-serif;word-break:keep-all}
+main{max-width:640px;margin:0 auto;padding:clamp(36px,9vw,84px) 24px}header{color:#526d70;font-size:14px;letter-spacing:.05em}
+h1{line-height:1.35;font:700 clamp(28px,6vw,45px)/1.32 Georgia,serif;margin:.7em 0}h2{font-size:18px;margin:1.7em 0 .25em}
+p{margin:.3em 0 1em}footer{margin-top:2em;border-top:1px solid #b8c9c3;padding-top:1em}a{color:#205a62}
+</style></head><body><main><header>등대 기록실 · 별의 포트폴리오</header>
+<article><h1>이미지 메타데이터 내 은닉 플래그 추출</h1>
+<p>CTF · HUB 정보보안 동아리</p>
+<p>육안으로 이상이 없는 JPEG 파일에서 ExifTool을 활용해 숨겨진 데이터를 식별한 CTF 문제 풀이.</p>
+<h2>분석 대상</h2>
+<p>ugly_cat.jpg — 외관상 이상 없는 일반 JPEG 파일.</p>
+<h2>분석 과정</h2>
+<p>ExifTool로 메타데이터 접근 → 생성 시각과 수정 시각이 7초 이상 차이남을 확인. 코멘트(주석) 필드에 문자열 데이터 존재 확인.</p>
+<h2>기록의 결론</h2>
+<p>메타데이터 코멘트 필드에 플래그 HUB{Ug1y_C4t_Ewww} 은닉 확인. 육안 검사만으로는 탐지 불가능하며, 메타데이터 분석이 초기 트리아지 단계에서 필수임을 확인.</p>
+</article><footer><a href="../BYLHN-coast.html#room/archive">등대 기록실에서 산책 이어가기 →</a> · <a href="https://github.com/bylhn">GitHub</a></footer></main></body></html>

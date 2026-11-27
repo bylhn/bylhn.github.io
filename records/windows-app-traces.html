@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="bylhn-record" content="windows-app-traces">
+<title>윈도우 응용 프로그램 사용 흔적 조사 · 등대 기록실</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#293f43;background:#f9f5ec;font:17px/1.8 system-ui,sans-serif;word-break:keep-all}
+main{max-width:640px;margin:0 auto;padding:clamp(36px,9vw,84px) 24px}header{color:#526d70;font-size:14px;letter-spacing:.05em}
+h1{line-height:1.35;font:700 clamp(28px,6vw,45px)/1.32 Georgia,serif;margin:.7em 0}h2{font-size:18px;margin:1.7em 0 .25em}
+p{margin:.3em 0 1em}footer{margin-top:2em;border-top:1px solid #b8c9c3;padding-top:1em}a{color:#205a62}
+</style></head><body><main><header>등대 기록실 · 별의 포트폴리오</header>
+<article><h1>윈도우 응용 프로그램 사용 흔적 조사</h1>
+<p>Assignment · 2026.05 · Application Artifacts</p>
+<p>HWP·HCell·Chrome·KakaoTalk 4개 앱의 실행 및 사용 흔적을 Prefetch, 레지스트리 MRU, Jump List, SQLite DB 등 다중 아티팩트로 교차 분석한 실습 보고서.</p>
+<h2>실습 범위</h2>
+<p>HWP (Run Counter 408), HCell (Run Counter 22), Chrome (Run Counter 1,204 · 다운로드 310건 · 쿠키 4,852개 · 로그인 사이트 23개), KakaoTalk (Run Counter 1,205 · EDB 채팅 파일). 분석 도구: WinPrefetchView v1.37, JumpListsView v1.16, RegEdit, UserAssistView v1.02, DB Browser for SQLite v3.13.1.</p>
+<h2>관찰한 결과</h2>
+<p>① Prefetch Run Counter로 각 앱의 실행 빈도·마지막 실행 시각 확인.</p>
+<p>② 레지스트리 MRU + Jump List 교차 분석으로 최근 열람 문서 목록 복원.</p>
+<p>③ Chrome SQLite DB(History·Login Data·Cookies)에서 방문 기록·계정 정보·쿠키 4,852개 추출.</p>
+<p>④ KakaoTalk EDB 채팅 파일 복호화는 키 미확보로 실패 — 한계로 명시.</p>
+<h2>기록의 결론</h2>
+<p>단일 아티팩트 의존 분석의 한계를 실증하고, Prefetch·레지스트리·DB 다중 소스 교차 검증이 행동 재구성의 신뢰도를 높임을 확인. 복호화 실패 사례를 통해 암호화된 아티팩트에 대한 키 관리 및 법적 접근 방법의 중요성을 인식.</p>
+</article><footer><a href="../BYLHN-coast.html#room/archive">등대 기록실에서 산책 이어가기 →</a> · <a href="https://github.com/bylhn">GitHub</a></footer></main></body></html>

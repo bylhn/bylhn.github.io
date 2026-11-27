@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="bylhn-record" content="ntfs-file-times">
+<title>윈도우 파일 행위에 따른 MAC Time 변화 분석 · 등대 기록실</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#293f43;background:#f9f5ec;font:17px/1.8 system-ui,sans-serif;word-break:keep-all}
+main{max-width:640px;margin:0 auto;padding:clamp(36px,9vw,84px) 24px}header{color:#526d70;font-size:14px;letter-spacing:.05em}
+h1{line-height:1.35;font:700 clamp(28px,6vw,45px)/1.32 Georgia,serif;margin:.7em 0}h2{font-size:18px;margin:1.7em 0 .25em}
+p{margin:.3em 0 1em}footer{margin-top:2em;border-top:1px solid #b8c9c3;padding-top:1em}a{color:#205a62}
+</style></head><body><main><header>등대 기록실 · 별의 포트폴리오</header>
+<article><h1>윈도우 파일 행위에 따른 MAC Time 변화 분석</h1>
+<p>Assignment · 2026.04</p>
+<p>파일 생성·복사·수정·액세스 각 행위가 NTFS 타임스탬프에 미치는 영향을 실측하고, 레지스트리 및 시스템 시간 조작 시나리오까지 검증한 실습 보고서.</p>
+<h2>실습 범위</h2>
+<p>LG 그램 노트북 (Windows 10.0.26100.1) + SanDisk USB. 파일 버전 단위 타임스탬프 변화, 레지스트리 NTFSDisableLastAccessUpdate 조작, exFAT 포맷 USB 삽입 비교.</p>
+<h2>관찰한 결과</h2>
+<p>① 복사 시 Created·Accessed 갱신, Modified는 원본 유지.</p>
+<p>② 레지스트리 값 0 설정 후 약 1시간 대기 시 Accessed가 실제 읽기 시각으로 갱신됨.</p>
+<p>③ exFAT USB에서는 읽기 수행 시 Accessed 비갱신.</p>
+<p>④ 시스템 시간 과거 조작 시 Modified·Accessed가 과거 시각으로 덮어씌워짐.</p>
+<h2>기록의 결론</h2>
+<p>파일 유형과 시스템 환경에 따라 MAC Time 변화 패턴이 상이하며, 시스템 시간 조작은 타임스탬프 증거의 신뢰도에 직접 영향을 준다. 포렌식 분석 시 파일 시스템 종류와 레지스트리 설정을 반드시 선행 확인해야 한다.</p>
+</article><footer><a href="../BYLHN-coast.html#room/archive">등대 기록실에서 산책 이어가기 →</a> · <a href="https://github.com/bylhn">GitHub</a></footer></main></body></html>
