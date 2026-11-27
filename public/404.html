@@ -1,18 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
   <head>
     <meta charset="utf-8">
     <title>bylhn</title>
-    <script>
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1).join('/') + '/?/' +
-        l.pathname.slice(1).replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
+    <meta http-equiv="refresh" content="0; url=/">
+    <script>location.replace('/' + location.hash)</script>
   </head>
-  <body></body>
+  <body><a href="/">bylhn 홈으로</a></body>
 </html>
